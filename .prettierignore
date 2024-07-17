@@ -1,0 +1,6 @@
+# Ignore artifacts:
+dist
+public
+# Ignore all HTML files:
+**/*.html
+vite.config.js

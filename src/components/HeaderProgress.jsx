@@ -1,0 +1,75 @@
+/* eslint-disable prettier/prettier */
+import { LinearProgress } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+import Helper from '../utils/Helper';
+import useConfigStore from '../store/useConfigStore';
+import useDataStore from '../store/useDataStore';
+
+const HeaderProgress = () => {
+  const config = useConfigStore((state) => state);
+  const currencies = useDataStore((state) => state.currencies);
+  const setCurrencies = useDataStore((state) => state.setCurrencies);
+  const [progress, setProgress] = useState(0);
+  const startTimeRef = useRef(Date.now());
+  const requestRef = useRef();
+
+  const updateProgress = () => {
+    const elapsedTime = Date.now() - startTimeRef.current;
+    const newProgress = Math.min((elapsedTime / 60000) * 100, 100); // Calculate progress based on elapsed time
+
+    setProgress(newProgress);
+
+    if (newProgress < 100) {
+      requestRef.current = requestAnimationFrame(updateProgress);
+    } else {
+      // eslint-disable-next-line no-use-before-define
+      refetch();
+    }
+  };
+  const refetch = async () => {
+    setProgress(-10);
+    startTimeRef.current = Date.now();
+    setProgress(0);
+    requestRef.current = requestAnimationFrame(updateProgress);
+    const req = await fetch('http://localhost:4002/v1/crypto/fetch-crypto');
+    const data = await req.json();
+    setCurrencies(data);
+  };
+
+  useEffect(() => {
+    requestRef.current = requestAnimationFrame(updateProgress);
+
+    return () => cancelAnimationFrame(requestRef.current);
+  }, []);
+
+  const calculateVarient = () => {
+    const weight = Helper.calculateConfigurationWeight(config, currencies);
+    if (weight > 0) {
+      return '#3f3';
+    }
+    if (weight < 0) {
+      return '#f66';
+    }
+    return '#07d';
+  };
+  return (
+    <LinearProgress
+      variant="determinate"
+      value={progress}
+      sx={{
+        height: '3px',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 2,
+        backgroundColor: 'transparent',
+        '& .MuiLinearProgress-bar': {
+          backgroundColor: calculateVarient()
+        }
+      }}
+    />
+  );
+};
+
+export default HeaderProgress;

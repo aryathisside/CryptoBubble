@@ -1,0 +1,47 @@
+body {
+  background-color: #222222 !important;
+  overflow: hidden;
+}
+#root {
+  height: 99vh;
+}
+/* #data {
+  width: 100%;
+  flex-grow: 1;
+  min-height: 99vh;
+} */
+#canvas {
+  height: 100%;
+  background: #222222;
+}
+#canvas > * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+#canvas svg {
+  background: #222222;
+  border: 1px solid #222222;
+}
+.node:hover > .bubble {
+  stroke-width: 2px !important;
+}
+/* .bubble {
+  animation: pop 300ms;
+} */
+.node > * {
+  cursor: pointer;
+}
+.bubble {
+  cursor: pointer;
+  transition: all 200ms;
+  stroke-width: 0px;
+  stroke: white;
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
