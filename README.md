@@ -1,0 +1,1 @@
+# aicerts_crpto_bubble_3.0_reactjs
