@@ -27,12 +27,17 @@ const HeaderTabs = () => {
   return (
     <Stack direction="row">
       <HeaderProgress />
+      
       <StyledTabs variant="scrollable" value={config.period} onChange={(e, val) => updateConfig({ period: val })} sx={{ flexGrow: '1' }}>
+      <img className='ml-2' src="./image.png" alt="" style={{height:40}}/>
         <StyledTab variant={calculateVarient('min1')} label="1min" value="min1" />
         <StyledTab variant={calculateVarient('min5')} label="5min" value="min5" />
         <StyledTab variant={calculateVarient('min15')} label="15min" value="min15" />
+        <StyledTab variant={calculateVarient('hour')} label="Hour" value="hour" />
         <StyledTab variant={calculateVarient('day')} label="Day" value="day" />
         <StyledTab variant={calculateVarient('week')} label="Week" value="week" />
+        <StyledTab variant={calculateVarient('month')} label="Month" value="month" />
+        <StyledTab variant={calculateVarient('year')} label="Year" value="year" />
         {/* <StyledTab variant="green" label="Market Cap & Week" />
         <StyledTab variant="red" label="Market Cap & Month" /> */}
       </StyledTabs>

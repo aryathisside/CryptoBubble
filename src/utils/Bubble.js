@@ -119,7 +119,7 @@ class Bubble {
           symbol=symbolFull.split('/')[0];
         }
 
-        const symbolSize = roundedRadius * ( symbol < 5 ? 0.35 : 0.25);
+        const symbolSize = roundedRadius * ( symbol < 5 ? 0.55 : 0.35);
         this.canvas.fillText(symbol, roundedRadius, 1.25 * roundedRadius, symbolSize);
 
         const contentSize = roundedRadius * (this.content.length > 8 ? 0.24 : 0.3);

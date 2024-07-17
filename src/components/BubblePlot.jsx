@@ -11,7 +11,7 @@ const BubblePlot = ({ selectedPeriod }) => {
   const setCurrencies = useDataStore((state) => state.setCurrencies);
 
   const fetchData = async () => {
-    const req = await fetch('https://cryptoapi.aicerts.io/v1/crypto/fetch-crypto');
+    const req = await fetch('http://localhost:4002/v1/crypto/fetch-crypto');
     const data = await req.json();
     // setStocksData(data);
     setCurrencies(data);

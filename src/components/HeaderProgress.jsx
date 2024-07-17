@@ -31,7 +31,7 @@ const HeaderProgress = () => {
     startTimeRef.current = Date.now();
     setProgress(0);
     requestRef.current = requestAnimationFrame(updateProgress);
-    const req = await fetch('https://cryptoapi.aicerts.io/v1/crypto/fetch-crypto');
+    const req = await fetch('http://localhost:4002/v1/crypto/fetch-crypto');
     const data = await req.json();
     setCurrencies(data);
   };
