@@ -15,18 +15,18 @@ const FooterTabs = () => {
               <Typography color="white" fontWeight="bold">
                 1-100
               </Typography>
-              <KeyboardArrowDown />
+             {/* <KeyboardArrowDown />*/}
             </Stack>
           </StyledButton>
         </Box>
 
-        <Box mr={1}>
+        {/*<Box mr={1}>
           <StyledIconTabs value={value} onChange={(e, val) => setValue(val)} sx={{ flexGrow: '1' }}>
             <StyledIconTab icon={<Workspaces />} />
             <StyledIconTab icon={<Reorder />} />
             <StyledIconTab icon={<SettingsSuggest />} />
           </StyledIconTabs>
-        </Box>
+        </Box>*/}
       </Stack>
     </Box>
   );

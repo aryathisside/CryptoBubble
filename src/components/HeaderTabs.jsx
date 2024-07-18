@@ -41,7 +41,7 @@ const HeaderTabs = () => {
         {/* <StyledTab variant="green" label="Market Cap & Week" />
         <StyledTab variant="red" label="Market Cap & Month" /> */}
       </StyledTabs>
-      <Box p={1}>
+      {/*<Box p={1}>
         <StyledIconButton>
           <Edit />
         </StyledIconButton>
@@ -50,7 +50,7 @@ const HeaderTabs = () => {
         <StyledIconButton>
           <Add />
         </StyledIconButton>
-      </Box>
+      </Box>*/}
     </Stack>
   );
 };

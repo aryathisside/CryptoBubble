@@ -4,7 +4,6 @@ import './style.css';
 import BubbleManager from '../utils/BubbleManager';
 import useDataStore from '../store/useDataStore';
 import useConfigStore from '../store/useConfigStore';
-
 const BubbleCanvas = () => {
   const [canvasManager, setCanvasManager] = useState();
   const currencies = useDataStore((state) => state.currencies);
@@ -44,7 +43,9 @@ const BubbleCanvas = () => {
       canvasManager.pushCurrencies(currencies);
     }
   }, [currencies]);
-  return <canvas id="canvas" ref={canvasContainerRef} />;
+  return <>
+  <canvas id="canvas" ref={canvasContainerRef} />
+  </>;
 };
 
 export default BubbleCanvas;

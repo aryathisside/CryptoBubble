@@ -3,7 +3,7 @@ import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import BubbleCanvas from './BubbleCanvas';
 import useDataStore from '../store/useDataStore';
-
+import CryptoTable from './CryptoTable';
 
 const BubblePlot = ({ selectedPeriod }) => {
   const [isLoading, setLoading] = useState(true);
