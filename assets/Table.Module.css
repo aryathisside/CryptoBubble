@@ -6,6 +6,21 @@ html, body {
     overflow-x: hidden;
 }
 
+.solid-button {
+    border-radius: 12px;
+    border: 1px;
+    background-color: #ffffff1f;
+    transition: background-color .4s;
+    margin: 0;
+    padding: 10px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    padding: 6px 7px;
+    color: white;
+  }
+
 
 .crypto-lists table {
     width: 80%;

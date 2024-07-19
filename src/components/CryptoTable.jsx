@@ -57,16 +57,15 @@ const CryptoTable = ({ tableData }) => {
                             <td>{index + 1}</td>
                             <td>
                                 <button className="solid-button currency-name" onClick={() => handleSelect(item)}>
-                                    <div className="flex-row gap-m items-center" style={{backgroundColor:"#ffffff1f"}}>
                                         <img
                                             src={`https://cryptobubbles.net/backend/${item.image}`}
                                             alt={`Logo of ${item.name}`}
                                             title={`Logo of ${item.name}`}
                                             width={24}
                                             height={24}
+                                            className='mr-2'
                                         />
                                         <span>{item.name}</span>
-                                    </div>
                                 </button>
                             </td>
                             <td>${item.price.toFixed(2)}</td>
