@@ -179,6 +179,48 @@ class Helper {
     const secondary = Helper.getSecondaryColor(weight);
     console.log(primary, secondary);
   }
+
+  static formatPrice(value, currency) {
+    let amount = value;
+    if (amount < 0) {
+      amount = 0;
+    }
+    let fractionDigits = amount === 0 ? 2 : 3 - Math.ceil(Math.log10(amount));
+    if (fractionDigits < 0) {
+      fractionDigits = 0;
+    }
+    if (fractionDigits > 10) {
+      fractionDigits = 10;
+    }
+    if (fractionDigits === 1) {
+      fractionDigits = 2;
+    }
+    if (amount > 1e6) {
+      fractionDigits = 2;
+    }
+    if (!Number.isFinite(fractionDigits)) {
+      fractionDigits = 0;
+    }
+
+    // Create the formatting options
+    const formatOptions = {
+      style: 'currency',
+      currency: currency.code,
+      currencyDisplay: 'narrowSymbol',
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits
+    };
+
+    if (amount > 1e6) {
+      formatOptions.notation = 'compact';
+    }
+    try {
+      return amount.toLocaleString(undefined, formatOptions);
+    } catch {
+      formatOptions.currencyDisplay = 'symbol';
+      return amount.toLocaleString(undefined, formatOptions);
+    }
+  }
 }
 
 export default Helper;

@@ -9,7 +9,8 @@ import useDataStore from '../store/useDataStore';
 import Helper from '../utils/Helper';
 
 const HeaderTabs = () => {
-  const config = useConfigStore((state) => state);
+  const config = useConfigStore((state) => state.configuration);
+  const layout = useConfigStore((state) => state.layout);
   const updateConfig = useConfigStore((state) => state.setConfig);
   const currencies = useDataStore((state) => state.currencies);
 
@@ -27,8 +28,14 @@ const HeaderTabs = () => {
   return (
     <Stack direction="row">
       <HeaderProgress />
-      
-      <StyledTabs variant="scrollable" value={config.period} onChange={(e, val) => updateConfig({ period: val })} sx={{ flexGrow: '1' }}>
+      {layout === 'bubble' && (
+        <>
+      <StyledTabs
+            variant="scrollable"
+            value={config.period}
+            onChange={(e, val) => updateConfig({ period: val })}
+            sx={{ flexGrow: '1' }}
+            scrollButtons={false}>
       <img className='ml-2' src="./image.png" alt="" style={{height:40}}/>
         <StyledTab variant={calculateVarient('min1')} label="1min" value="min1" />
         <StyledTab variant={calculateVarient('min5')} label="5min" value="min5" />
@@ -51,6 +58,8 @@ const HeaderTabs = () => {
           <Add />
         </StyledIconButton>
       </Box>*/}
+      </>
+      )}
     </Stack>
   );
 };

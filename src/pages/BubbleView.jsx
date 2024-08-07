@@ -1,27 +1,22 @@
-/* eslint-disable prettier/prettier */
 import { Box, Stack } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
 import HeaderTabs from '../components/HeaderTabs';
-import FooterTabs from '../components/FooterTabs';
-import BubbleManager from '../utils/BubbleManager';
-import '../components/style.css';
 import BubblePlot from '../components/BubblePlot';
-import CryptoTable from '../components/CryptoTable';
-import useDataStore from '../store/useDataStore';
+import FooterTabs from '../components/FooterTabs';
+import ChartView from '../components/symbol-detail/ChartView';
+import useConfigStore from '../store/useConfigStore';
+import ListView from '../components/list-layout/ListView';
 
 const BubbleView = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState('min1');
-  const currencies = useDataStore((state) => state.currencies);
-
+  const layout = useConfigStore((state) => state.layout);
   return (
-    <div style={{ height: '100vh', overflowY: 'scroll', backgroundColor: '#222222' }}>
-      <Stack sx={{ p: 0, bgcolor: '#222222', height: '90%' }}>
-      <HeaderTabs selectedPeriod={selectedPeriod} setSelectedPeriod={setSelectedPeriod} />
-      <BubblePlot selectedPeriod={selectedPeriod} />
+    <Stack sx={{ p: 0, bgcolor: '#222222', height: '100%' }}>
+      <HeaderTabs />
+      {layout === 'bubble' && <BubblePlot />}
+      {layout === 'list' && <ListView />}
+      {layout === 'settings' && <Box sx={{ flexGrow: 1, width: '100%' }} />}
+      <ChartView />
       <FooterTabs />
     </Stack>
-    <CryptoTable tableData={currencies}></CryptoTable>
-    </div>
   );
 };
 

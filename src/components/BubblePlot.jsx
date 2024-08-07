@@ -3,27 +3,17 @@ import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import BubbleCanvas from './BubbleCanvas';
 import useDataStore from '../store/useDataStore';
-import CryptoTable from './CryptoTable';
 
 const BubblePlot = ({ selectedPeriod }) => {
-  const [isLoading, setLoading] = useState(true);
   const currencies = useDataStore((state) => state.currencies);
-  const setCurrencies = useDataStore((state) => state.setCurrencies);
 
-  const fetchData = async () => {
-    const req = await fetch(process.env.REACT_APP_API_URL);
-    const data = await req.json();
-    // setStocksData(data);
-    setCurrencies(data);
-    setLoading(false);
-  };
+  const isLoading = useDataStore((state) => state.loading);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
   return (
-    <Box sx={{ flexGrow: 1, width: '100%' }}>
-      {isLoading && <CircularProgress color="success" />}
+    <Box sx={{ flexGrow: 1, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      {isLoading && (
+             <CircularProgress color="success" />
+      )}
       {!isLoading && <BubbleCanvas stocksData={currencies} selectedPeriod={selectedPeriod} />}
     </Box>
   );

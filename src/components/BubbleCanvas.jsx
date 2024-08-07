@@ -7,7 +7,7 @@ import useConfigStore from '../store/useConfigStore';
 const BubbleCanvas = () => {
   const [canvasManager, setCanvasManager] = useState();
   const currencies = useDataStore((state) => state.currencies);
-  const config = useConfigStore((state) => state);
+  const config = useConfigStore((state) => state.configuration);
   const canvasContainerRef = useRef();
   useEffect(() => {
     if (canvasContainerRef.current) {

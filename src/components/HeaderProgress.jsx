@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { LinearProgress } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import Helper from '../utils/Helper';
@@ -6,12 +5,20 @@ import useConfigStore from '../store/useConfigStore';
 import useDataStore from '../store/useDataStore';
 
 const HeaderProgress = () => {
-  const config = useConfigStore((state) => state);
+  const config = useConfigStore((state) => state.configuration);
   const currencies = useDataStore((state) => state.currencies);
   const setCurrencies = useDataStore((state) => state.setCurrencies);
+  const setLoading = useDataStore((state) => state.setLoading);
+
   const [progress, setProgress] = useState(0);
   const startTimeRef = useRef(Date.now());
   const requestRef = useRef();
+
+  const apiCall = async () => {
+    const req = await fetch(process.env.REACT_APP_API_URL);
+    const data = await req.json();
+    setCurrencies(data);
+  };
 
   const updateProgress = () => {
     const elapsedTime = Date.now() - startTimeRef.current;
@@ -31,13 +38,16 @@ const HeaderProgress = () => {
     startTimeRef.current = Date.now();
     setProgress(0);
     requestRef.current = requestAnimationFrame(updateProgress);
-    const req = await fetch(process.env.REACT_APP_API_URL);
-    const data = await req.json();
-    setCurrencies(data);
+    await apiCall();
   };
 
   useEffect(() => {
     requestRef.current = requestAnimationFrame(updateProgress);
+    const initFetch = async () => {
+      await apiCall();
+      setLoading(false);
+    };
+    setTimeout(initFetch, 1500);
 
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
