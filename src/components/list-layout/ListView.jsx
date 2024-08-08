@@ -17,6 +17,7 @@ import useDataStore from '../../store/useDataStore';
 import Helper from '../../utils/Helper';
 import useConfigStore from '../../store/useConfigStore';
 import SymbolName from './SymbolName';
+import TradeLinks from '../symbol-detail/TradeLinks';
 
 const headCells = [
   {
@@ -74,6 +75,15 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: 'Year'
+  },
+  {
+    id: 'links',
+    numeric: false,
+    disablePadding: false,
+    label: 'Link',
+    minWidth: '100px',
+    center: true,
+    preventSort: true
   }
 ];
 const StyledHeadCell = styled(TableCell)(({ theme }) => ({
@@ -218,6 +228,9 @@ const ListView = () => {
                     </StyledCell>
                     <StyledCell align="right" sx={{ background: Helper.getSecondaryColor(row.performance.year, colorScheme) }}>
                       {Helper.formatPercentage(row.performance.year, true)}
+                    </StyledCell>
+                    <StyledCell align="center">
+                      <TradeLinks symbol={row} mb={0} />
                     </StyledCell>
                   </TableRow>
                 );
