@@ -28,7 +28,7 @@ class Bubble {
     this.renderFavoriteBorder = true; // Flag to render favorite border
     this.currency = currency; // Currency data associated with the bubble
     this.canvas = new Canvas(Constants.bubblePadding); // Canvas for rendering
-    this.lazyImage = ImageManager.get(`https://cryptobubbles.net/backend/${currency.image}`); // Lazy-loaded image
+    this.lazyImage = ImageManager.get(`${process.env.BUBBLE_IMAGE_PATH}/${currency.image}`); // Lazy-loaded image
   }
 
   // Apply force to the bubble's speed

@@ -22,12 +22,20 @@ const ChartView = () => {
   const [expanded, setExpanded] = useState(true);
 
   const fetchData = async () => {
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow"
+    };
     setQuotes(null);
     setIsLoading(true);
-    const response = await fetch(`https://ai-bubbles-web.appdevelop.in/api/v1/marketstack/chart/${selectedCurrency.symbol}/${period}`); // await fetch(`https://api.npoint.io/898c9b0216b7ba2385b1`);
-    const json = await response.json();
-    setQuotes(json);
-    setIsLoading(false);
+    await fetch(`http://cryptobubbles.net/backend/data/charts/${period}/${selectedCurrency.id}/USD.json`, requestOptions).then(
+      (response) => {
+        console.log(response.data);
+        const json = response.data;
+        setQuotes(json);
+        setIsLoading(false);
+      }
+    ); // await fetch(`https://api.npoint.io/898c9b0216b7ba2385b1`);
   };
   useEffect(() => {
     if (isCurrencySelected) fetchData();

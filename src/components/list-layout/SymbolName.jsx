@@ -24,8 +24,8 @@ const SymbolName = ({ symbol }) => {
             background: '#ffffff40'
           }
         }}
-       >
-        <img width={20} height={20} src={`https://cryptobubbles.net/backend/${symbol.image}`} alt={symbol.name} />
+        onClick={() => setSelectedCurrency(symbol)}>
+        <img width={20} height={20} src={`${process.env.BUBBLE_IMAGE_PATH}/${symbol.image}`} alt={symbol.name} />
         <Typography color="white" ml={1}>
           {symbol.name}
         </Typography>
