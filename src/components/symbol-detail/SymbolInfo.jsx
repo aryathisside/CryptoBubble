@@ -30,7 +30,7 @@ const SymbolInfo = ({ symbol }) => {
             1W Volume
           </Typography>
           <Typography typography="body1" sx={{ color: 'white' }}>
-            <NumberComponent value={symbol.volumeWeekly} />
+            {/*<NumberComponent value={symbol.volumeWeekly} />*/}
           </Typography>
         </Box>
       </Grid>

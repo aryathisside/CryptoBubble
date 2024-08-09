@@ -7,9 +7,10 @@ import NumberComponent from './AnimatedNumber';
 
 const PriceCalculator = ({ selectedCurrency }) => {
   const [value, setValue] = useState(1);
-  useEffect(() => {}, [value]);
+  useEffect(() => {console.log(selectedCurrency.price);}, [value]);
 
   return (
+    
     <Box display="flex" justifyContent="center" alignItems="center" py={1} mb={1} px={2}>
       <StyledTextField
         type="number"

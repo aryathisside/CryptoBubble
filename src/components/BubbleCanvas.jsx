@@ -8,6 +8,7 @@ const BubbleCanvas = () => {
   const [canvasManager, setCanvasManager] = useState();
   const currencies = useDataStore((state) => state.currencies);
   const config = useConfigStore((state) => state.configuration);
+  const setSelectedCurrency = useDataStore((state) => state.setSelectedCurrency);
   const canvasContainerRef = useRef();
   useEffect(() => {
     if (canvasContainerRef.current) {
@@ -28,6 +29,7 @@ const BubbleCanvas = () => {
       setTimeout(() => {
         cM.pushCurrencies(currencies);
       }, 1000);
+      cM.eventSelect.register((currency) => setSelectedCurrency(currency));
       cM.wakeUp();
       cM.start();
     }
@@ -43,9 +45,7 @@ const BubbleCanvas = () => {
       canvasManager.pushCurrencies(currencies);
     }
   }, [currencies]);
-  return <>
-  <canvas id="canvas" ref={canvasContainerRef} />
-  </>;
+  return <canvas id="canvas" ref={canvasContainerRef} />;
 };
 
 export default BubbleCanvas;

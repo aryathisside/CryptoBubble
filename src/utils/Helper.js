@@ -181,6 +181,7 @@ class Helper {
   }
 
   static formatPrice(value, currency) {
+   if(value!==null){
     let amount = value;
     if (amount < 0) {
       amount = 0;
@@ -221,6 +222,7 @@ class Helper {
       return amount.toLocaleString(undefined, formatOptions);
     }
   }
+   }
 }
 
 export default Helper;

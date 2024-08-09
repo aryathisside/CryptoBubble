@@ -7,6 +7,8 @@ import ChartCanvas from './ChartCanvas';
 import PriceCalculator from '../common/PriceCalulator';
 import CurrencyPerformanceGrid from './CurrencyPerformanceGrid';
 import SymbolInfo from './SymbolInfo';
+import TradeLinks from './TradeLinks';
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -22,20 +24,19 @@ const ChartView = () => {
   const [expanded, setExpanded] = useState(true);
 
   const fetchData = async () => {
-    const requestOptions = {
-      method: "GET",
-      redirect: "follow"
-    };
     setQuotes(null);
     setIsLoading(true);
-    await fetch(`http://cryptobubbles.net/backend/data/charts/${period}/${selectedCurrency.id}/USD.json`, requestOptions).then(
-      (response) => {
-        console.log(response.data);
-        const json = response.data;
-        setQuotes(json);
-        setIsLoading(false);
-      }
-    ); // await fetch(`https://api.npoint.io/898c9b0216b7ba2385b1`);
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    const response = await fetch(`${process.env.CHART_DATA_URL}/${period}/${selectedCurrency.id}/USD.json`);
+
+    const json = await response.json();
+    setQuotes(json);
+    setIsLoading(false);
+    // await fetch(`https://api.npoint.io/898c9b0216b7ba2385b1`);
   };
   useEffect(() => {
     if (isCurrencySelected) fetchData();
@@ -60,7 +61,7 @@ const ChartView = () => {
               <StyledIconButton onClick={() => setExpanded(!expanded)} sx={{ mr: 2 }}>
                 <KeyboardArrowDown sx={{ transition: 'all 0.2s', transform: expanded ? '' : 'rotateZ(-90deg)' }} />
               </StyledIconButton>
-              <img src={selectedCurrency.image} height={20} width={20} alt={selectedCurrency.symbol} style={{ marginRight: '10px' }} />
+              <img src={`${process.env.BUBBLE_IMAGE_PATH}/${selectedCurrency.image}`} height={20} width={20} alt={selectedCurrency.symbol} style={{ marginRight: '10px' }} />
               {selectedCurrency.name}
             </Box>
             <StyledIconButton onClick={() => setSelectedCurrency(null)}>
@@ -69,11 +70,12 @@ const ChartView = () => {
           </DialogTitle>
           {expanded && (
             <DialogContent sx={{ padding: 0 }}>
+              <TradeLinks symbol={selectedCurrency} />
               <PriceCalculator selectedCurrency={selectedCurrency} />
               <SymbolInfo symbol={selectedCurrency} />
               {isLoading && (
                 <Box display="flex" justifyContent="center" p={5} height={240} alignItems="center">
-                  <img className="rotate-center" src={selectedCurrency.image} height={70} width={70} alt={selectedCurrency.symbol} />
+                  <img className="rotate-center" src={`${process.env.BUBBLE_IMAGE_PATH}/${selectedCurrency.image}`} height={70} width={70} alt={selectedCurrency.symbol} />
                 </Box>
               )}
               {!isLoading && quotes && <ChartCanvas quotes={quotes} period={period} />}
