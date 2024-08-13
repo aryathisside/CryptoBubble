@@ -14,16 +14,6 @@ const BubbleCanvas = () => {
     if (canvasContainerRef.current) {
       const cM = new BubbleManager(canvasContainerRef.current);
       setCanvasManager(cM);
-
-      // const properties = {
-      //   id: '1706517258919',
-      //   name: '',
-      //   color: 'performance',
-      //   content: 'performance',
-      //   size: 'performance',
-      //   period: selectedPeriod
-      // };
-
       cM.setProperties(config);
       // Push the currencies to the canvas manager
       setTimeout(() => {

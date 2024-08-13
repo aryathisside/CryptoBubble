@@ -1,12 +1,10 @@
 import { Box, Stack, Typography } from '@mui/material';
-import { KeyboardArrowDown, Reorder, SettingsSuggest, Workspaces } from '@mui/icons-material';
-import { useState } from 'react';
+import {  Reorder, SettingsSuggest, Workspaces } from '@mui/icons-material';
 import StyledButton from '../ui/overrides/Button';
 import { StyledIconTab, StyledIconTabs } from '../ui/overrides/IconTabs';
 import useConfigStore from '../store/useConfigStore';
 
 const FooterTabs = () => {
-  const [value, setValue] = useState(0);
   const layout = useConfigStore((state) => state.layout);
   const setLayout = useConfigStore((state) => state.setLayout);
 

@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Box, CircularProgress } from '@mui/material';
-import { useEffect, useState } from 'react';
 import BubbleCanvas from './BubbleCanvas';
 import useDataStore from '../store/useDataStore';
 

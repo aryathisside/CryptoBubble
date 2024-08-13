@@ -132,7 +132,7 @@ const ListView = () => {
   const rows = useDataStore((state) => state.currencies);
   const { currency, colorScheme } = useConfigStore((state) => state.configuration);
   const [sort, setSort] = useState();
-  const [sortDirection, setSortDirection] = useState('dsc');
+  const [sortDirection, setSortDirection] = useState('desc');
   const [sortedRows, setSortedRows] = useState(rows);
 
   useEffect(() => {
@@ -163,15 +163,15 @@ const ListView = () => {
 
   const updateSort = (id) => {
     if (sort === id) {
-      if (sortDirection === 'dsc') {
+      if (sortDirection === 'desc') {
         setSortDirection('asc');
       } else {
-        setSortDirection('dsc');
+        setSortDirection('desc');
         setSort();
       }
     } else {
       setSort(id);
-      setSortDirection('dsc');
+      setSortDirection('desc');
     }
   };
 
@@ -196,7 +196,7 @@ const ListView = () => {
                       disabled={headCell.preventSort}
                       hideSortIcon={headCell.preventSort}
                       active={headCell.id === sort}
-                      direction={headCell.id === sort ? sortDirection : 'dsc'}
+                      direction={headCell.id === sort ? sortDirection : 'desc'}
                       sx={{ flexDirection: headCell.numeric ? '' : 'row-reverse' }}>
                       {headCell.label}
                     </StyledSortLabel>
@@ -206,8 +206,10 @@ const ListView = () => {
             </TableHead>
             <TableBody>
               {sortedRows.map((row) => {
+                
+               
                 return (
-                  <TableRow key={row.symbol} sx={{ transition: 'background .4s', ':hover': { background: '#ffffff14' } }}>
+                  <TableRow key={row.id} sx={{ transition: 'background .4s', ':hover': { background: '#ffffff14' } }}>
                     <StyledCell align="right">{row.rank}</StyledCell>
                     <StyledCell>
                       <SymbolName symbol={row} />

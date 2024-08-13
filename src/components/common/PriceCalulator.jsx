@@ -1,13 +1,13 @@
 import { Box, Typography } from '@mui/material';
 import { Edit } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import StyledTextField from '../../ui/overrides/TextField';
-import Helper from '../../utils/Helper';
+
 import NumberComponent from './AnimatedNumber';
 
 const PriceCalculator = ({ selectedCurrency }) => {
   const [value, setValue] = useState(1);
-  useEffect(() => {console.log(selectedCurrency.price);}, [value]);
+ 
 
   return (
     
