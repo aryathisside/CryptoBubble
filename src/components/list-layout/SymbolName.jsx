@@ -1,10 +1,10 @@
 import { Box, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import StyledIconButton from '../../ui/overrides/IconButton';
-import useDataStore from '../../store/useDataStore';
+
 
 const SymbolName = ({ symbol }) => {
-  const setSelectedCurrency = useDataStore((state) => state.setSelectedCurrency);
+  const imagePath = process.env.BUBBLE_IMAGE_PATH;
   return (
     <Box display="flex" alignItems="center" gap={1}>
       <StyledIconButton>
@@ -24,8 +24,8 @@ const SymbolName = ({ symbol }) => {
             background: '#ffffff40'
           }
         }}
-        onClick={() => setSelectedCurrency(symbol)}>
-        <img width={20} height={20} src={`${process.env.BUBBLE_IMAGE_PATH}/${symbol.image}`} alt={symbol.name} />
+       >
+        <img width={20} height={20} src={`${imagePath}/${symbol.image}`} alt={symbol.name} />
         <Typography color="white" ml={1}>
           {symbol.name}
         </Typography>

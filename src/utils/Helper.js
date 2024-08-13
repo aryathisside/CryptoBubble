@@ -173,13 +173,6 @@ class Helper {
     return weightTotal > 0 ? weightedSum / weightTotal : 0;
   }
 
-  static calculatePropetiesColor(config, data) {
-    const weight = Helper.calculateConfigurationWeight(config, data);
-    const primary = Helper.getPrimaryColor(weight);
-    const secondary = Helper.getSecondaryColor(weight);
-    console.log(primary, secondary);
-  }
-
   static formatPrice(value, currency) {
    if(value!==null){
     let amount = value;
@@ -223,6 +216,19 @@ class Helper {
     }
   }
    }
+
+   static handleResize(callback){
+    const resizeHandler = () => {
+      callback(window.innerWidth <= 768);
+    };
+
+    resizeHandler()
+    window.addEventListener('resize', resizeHandler);
+
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }
 }
 
 export default Helper;
