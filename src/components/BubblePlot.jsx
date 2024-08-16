@@ -2,6 +2,7 @@
 import { Box, CircularProgress } from '@mui/material';
 import BubbleCanvas from './BubbleCanvas';
 import useDataStore from '../store/useDataStore';
+import Logo from "/image2.png"
 
 const BubblePlot = ({ selectedPeriod }) => {
   const currencies = useDataStore((state) => state.currencies);
@@ -11,7 +12,9 @@ const BubblePlot = ({ selectedPeriod }) => {
   return (
     <Box sx={{ flexGrow: 1, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       {isLoading && (
-             <CircularProgress color="success" />
+        <Box>
+          <img className="scale-up-center" src={Logo} alt="CRYPTO + Bubble" width={200} />
+        </Box>
       )}
       {!isLoading && <BubbleCanvas stocksData={currencies} selectedPeriod={selectedPeriod} />}
     </Box>
