@@ -10,23 +10,23 @@ const FooterTabs = () => {
 
   return (
     <Box pb={1 / 2}>
-      <Stack direction="row" justifyContent="space-between">
-        <Box ml={1}>
+      <Stack direction="row" justifyContent="end">
+        {/* <Box ml={1}>
           <StyledButton>
             <Stack direction="row" gap={1}>
               <Typography color="white" fontWeight="bold">
                 1-100
               </Typography>
-             {/* <KeyboardArrowDown />*/}
+             <KeyboardArrowDown />
             </Stack>
           </StyledButton>
-        </Box>
+        </Box> */}
 
         <Box mr={1}>
           <StyledIconTabs value={layout} onChange={(e, val) => setLayout(val)} sx={{ flexGrow: '1' }}>
             <StyledIconTab value="bubble" icon={<Workspaces />} />
             <StyledIconTab value="list" icon={<Reorder />} />
-            <StyledIconTab value="settings" icon={<SettingsSuggest />} />
+            {/* <StyledIconTab value="settings" icon={<SettingsSuggest />} /> */}
           </StyledIconTabs>
         </Box>
       </Stack>
