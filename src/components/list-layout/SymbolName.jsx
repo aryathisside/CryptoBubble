@@ -7,9 +7,9 @@ const SymbolName = ({ symbol }) => {
   const imagePath = process.env.BUBBLE_IMAGE_PATH;
   return (
     <Box display="flex" alignItems="center" gap={1}>
-      <StyledIconButton>
+      {/* <StyledIconButton>
         <Add />
-      </StyledIconButton>
+      </StyledIconButton> */}
       <Box
         display="flex"
         alignItems="center"
