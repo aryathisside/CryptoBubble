@@ -8,7 +8,8 @@ export default defineConfig(({ mode }) => {
     define: {
       'process.env.REACT_APP_API_URL': JSON.stringify(env.REACT_APP_API_URL),
       'process.env.BUBBLE_IMAGE_PATH': JSON.stringify(env.BUBBLE_IMAGE_PATH),
-      'process.env.CHART_DATA_URL': JSON.stringify(env.CHART_DATA_URL)
+      'process.env.CHART_DATA_URL': JSON.stringify(env.CHART_DATA_URL),
+      'process.env.CRYPTO_NEWS_URL': JSON.stringify(env.CRYPTO_NEWS_URL)
     },
     plugins: [react()],
   }
