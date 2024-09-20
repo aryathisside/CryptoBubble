@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Helper from '../utils/Helper';
 import useConfigStore from '../store/useConfigStore';
 import useDataStore from '../store/useDataStore';
+const CACHE_DURATION = 60000; // 1 minute
 
 const HeaderProgress = () => {
   const config = useConfigStore((state) => state.configuration);
@@ -15,8 +16,12 @@ const HeaderProgress = () => {
   const requestRef = useRef();
 
   const apiCall = async () => {
+    console.log('calling api .....');
     const req = await fetch(process.env.REACT_APP_API_URL);
     const data = await req.json();
+    localStorage.setItem('cryptoData', JSON.stringify(data));
+    localStorage.setItem('cryptoDataTimestamp', Date.now()); // Store timestamp
+
     setCurrencies(data);
   };
 
@@ -38,19 +43,43 @@ const HeaderProgress = () => {
     startTimeRef.current = Date.now();
     setProgress(0);
     requestRef.current = requestAnimationFrame(updateProgress);
+
     await apiCall();
   };
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(updateProgress);
-    const initFetch = async () => {
-      await apiCall();
-      setLoading(false);
+    const fetchDataFromLocalStorage = () => {
+      const storedData = localStorage.getItem('cryptoData');
+      const storedTimeStamp = localStorage.getItem('cryptoDataTimestamp');
+      if (storedData && storedTimeStamp) {
+        const elapsedTime = Date.now() - storedTimeStamp;
+        if (elapsedTime < CACHE_DURATION) {
+          setCurrencies(JSON.parse(storedData));
+          setLoading(false);
+        } else {
+          // If more than 1 minute has passed, fetch new data
+          setLoading(true);
+          apiCall().then(() => setLoading(false));
+        }
+      } else {
+        setLoading(true);
+        apiCall().then(() => setLoading(false));
+      }
     };
-    setTimeout(initFetch, 1500);
 
-    return () => cancelAnimationFrame(requestRef.current);
-  }, []);
+    fetchDataFromLocalStorage();
+
+    const intervalId = setInterval(() => {
+      apiCall();
+    }, 60000); // 60 seconds interval
+
+    requestRef.current = requestAnimationFrame(updateProgress);
+
+    return () => {
+      clearInterval(intervalId);
+      cancelAnimationFrame(requestRef.current);
+    };
+  }, [setCurrencies, setLoading]);
 
   const calculateVarient = () => {
     const weight = Helper.calculateConfigurationWeight(config, currencies);

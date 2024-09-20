@@ -28,7 +28,16 @@ class Bubble {
     this.renderFavoriteBorder = true; // Flag to render favorite border
     this.currency = currency; // Currency data associated with the bubble
     this.canvas = new Canvas(Constants.bubblePadding); // Canvas for rendering
-    this.lazyImage = ImageManager.get(`${process.env.BUBBLE_IMAGE_PATH}/${currency.image}`); // Lazy-loaded image
+   // Load the image asynchronously
+   ImageManager.get(`${process.env.BUBBLE_IMAGE_PATH}/${currency.image}`)
+   .then(image => {
+     this.lazyImage = image; // Store the loaded image
+     this.rerender(this.radius); // Rerender once the image is loaded
+   })
+   .catch(() => {
+     console.error("Failed to load image");
+     this.lazyImage = null; // Handle loading failure
+   });
   }
 
   // Apply force to the bubble's speed
@@ -65,7 +74,7 @@ class Bubble {
 
   // Rerender the bubble if its fingerprint has changed
   rerender(radius) {
-    const image = this.lazyImage();
+    const image = this.lazyImage;
     const roundedRadius = Math.round(radius);
     const shouldRenderBorder = this.renderFavoriteBorder && false;
     const fingerprint = `${this.color} ${roundedRadius} ${this.content} ${Boolean(image)} ${shouldRenderBorder}`;
