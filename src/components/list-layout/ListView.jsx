@@ -130,7 +130,9 @@ const StyledCell = styled(TableCell)(({ theme }) => ({
 }));
 const ListView = () => {
   const rows = useDataStore((state) => state.currencies);
-  const { currency, colorScheme } = useConfigStore((state) => state.configuration);
+  const  currency  = useConfigStore((state) => state.currency);
+  console.log("curreuncy in list view",currency)
+  const colorScheme = useConfigStore((state) => state.colorScheme);
   const [sort, setSort] = useState();
   const [sortDirection, setSortDirection] = useState('desc');
   const [sortedRows, setSortedRows] = useState(rows);

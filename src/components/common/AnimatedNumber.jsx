@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import Tween from '../../utils/Tween';
 import Helper from '../../utils/Helper';
+import useConfigStore from '../../store/useConfigStore';
 
 const NumberComponent = ({ value }) => {
+  const colorScheme = useConfigStore((state) => state.colorScheme);
   const [previousValue, setPreviousValue] = useState(value);
   const [currentValue, setCurrentValue] = useState(value);
   const [colorStyle, setColorStyle] = useState('');
@@ -27,7 +29,7 @@ const NumberComponent = ({ value }) => {
       setPreviousValue(current);
       animatorRef.current.set(current);
       const difference = current - previous;
-      const color = Helper.getPrimaryColor(difference, 'red-green');
+      const color = Helper.getPrimaryColor(difference, colorScheme);
       setColorStyle(color ? `${color}` : '');
       animationFrameIdRef.current = requestAnimationFrame(updateAnimation);
     }

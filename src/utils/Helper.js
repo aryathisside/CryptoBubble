@@ -174,12 +174,15 @@ class Helper {
   }
 
   static formatPrice(value, currency) {
+   
    if(value!==null){
     let amount = value;
     if (amount < 0) {
       amount = 0;
     }
+  
     let fractionDigits = amount === 0 ? 2 : 3 - Math.ceil(Math.log10(amount));
+    console.log("value in format price", value, currency)
     if (fractionDigits < 0) {
       fractionDigits = 0;
     }

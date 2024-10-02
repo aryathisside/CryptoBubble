@@ -5,6 +5,7 @@ import FooterTabs from '../components/FooterTabs';
 import ChartView from '../components/symbol-detail/ChartView';
 import useConfigStore from '../store/useConfigStore';
 import ListView from '../components/list-layout/ListView';
+import SettingsView from '../components/settings/SettingsView';
 
 const BubbleView = () => {
   const layout = useConfigStore((state) => state.layout);
@@ -13,7 +14,7 @@ const BubbleView = () => {
       <HeaderTabs />
       {layout === 'bubble' && <BubblePlot />}
       {layout === 'list' && <ListView />}
-      {layout === 'settings' && <Box sx={{ flexGrow: 1, width: '100%' }} />}
+      {layout === 'settings' && <SettingsView />}
       <ChartView />
       <FooterTabs />
     </Stack>

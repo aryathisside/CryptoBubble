@@ -1,5 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material';
 import Helper from '../../utils/Helper';
+import useConfigStore from '../../store/useConfigStore';
 
 const BoxItem = ({ children, onClick, selected }) => {
   return (
@@ -21,8 +22,9 @@ const BoxItem = ({ children, onClick, selected }) => {
   );
 };
 const FirstText = ({ text, selected, value }) => {
+  const colorScheme = useConfigStore((state) => state.colorScheme);
   let color = 'rgba(255,255,255,.25)';
-  if (value > 0 || value < 0) color = Helper.getSecondaryColor(value);
+  if (value > 0 || value < 0) color = Helper.getSecondaryColor(value,colorScheme);
   return (
     <Typography
       fontSize={14}
@@ -38,8 +40,9 @@ const FirstText = ({ text, selected, value }) => {
   );
 };
 const SecondText = ({ value }) => {
+  const colorScheme = useConfigStore((state) => state.colorScheme);
   let color = 'white';
-  if (value > 0 || value < 0) color = Helper.getPrimaryColor(value);
+  if (value > 0 || value < 0) color = Helper.getPrimaryColor(value, colorScheme);
   return (
     <Typography fontWeight={400} sx={{ color }}>
       {Helper.formatPercentage(value, true)}

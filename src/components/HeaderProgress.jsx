@@ -3,10 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import Helper from '../utils/Helper';
 import useConfigStore from '../store/useConfigStore';
 import useDataStore from '../store/useDataStore';
-const CACHE_DURATION = 60000; // 1 minute
+const CACHE_DURATION = 50000; // 1 minute
 
 const HeaderProgress = () => {
   const config = useConfigStore((state) => state.configuration);
+  const colorScheme = useConfigStore((state) => state.colorScheme);
   const currencies = useDataStore((state) => state.currencies);
   const setCurrencies = useDataStore((state) => state.setCurrencies);
   const setLoading = useDataStore((state) => state.setLoading);
@@ -19,8 +20,8 @@ const HeaderProgress = () => {
     console.log('calling api .....');
     const req = await fetch(process.env.REACT_APP_API_URL);
     const data = await req.json();
-    localStorage.setItem('cryptoData', JSON.stringify(data));
-    localStorage.setItem('cryptoDataTimestamp', Date.now()); // Store timestamp
+    // localStorage.setItem('cryptoData', JSON.stringify(data));
+    // localStorage.setItem('cryptoDataTimestamp', Date.now()); // Store timestamp
 
     setCurrencies(data);
   };
@@ -47,49 +48,27 @@ const HeaderProgress = () => {
     await apiCall();
   };
 
+  
   useEffect(() => {
-    const fetchDataFromLocalStorage = () => {
-      const storedData = localStorage.getItem('cryptoData');
-      const storedTimeStamp = localStorage.getItem('cryptoDataTimestamp');
-      if (storedData && storedTimeStamp) {
-        const elapsedTime = Date.now() - storedTimeStamp;
-        if (elapsedTime < CACHE_DURATION) {
-          setCurrencies(JSON.parse(storedData));
-          setLoading(false);
-        } else {
-          // If more than 1 minute has passed, fetch new data
-          setLoading(true);
-          apiCall().then(() => setLoading(false));
-        }
-      } else {
-        setLoading(true);
-        apiCall().then(() => setLoading(false));
-      }
-    };
-
-    fetchDataFromLocalStorage();
-
-    const intervalId = setInterval(() => {
-      apiCall();
-    }, 60000); // 60 seconds interval
-
     requestRef.current = requestAnimationFrame(updateProgress);
-
-    return () => {
-      clearInterval(intervalId);
-      cancelAnimationFrame(requestRef.current);
+    const initFetch = async () => {
+      await apiCall();
+      setLoading(false);
     };
-  }, [setCurrencies, setLoading]);
+    setTimeout(initFetch, 1500);
+
+    return () => cancelAnimationFrame(requestRef.current);
+  }, []);
 
   const calculateVarient = () => {
     const weight = Helper.calculateConfigurationWeight(config, currencies);
-    if (weight > 0) {
-      return '#3f3';
-    }
-    if (weight < 0) {
-      return '#f66';
-    }
-    return '#07d';
+    // if (weight > 0) {
+    //   return '#3f3';
+    // }
+    // if (weight < 0) {
+    //   return '#f66';
+    // }
+    return Helper.getPrimaryColor(weight, colorScheme);
   };
   return (
     <LinearProgress

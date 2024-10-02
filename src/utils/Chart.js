@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-syntax */
+import useConfigStore from '../store/useConfigStore';
 import CanvasManager from './CanvasManager';
 import Helper from './Helper';
 
@@ -8,7 +9,7 @@ class Chart extends CanvasManager {
     this.quotes = null;
     this.baseCurrency = null;
     this.period = null;
-    this.colors = 'red-green';
+    this.colors = useConfigStore.getState().colorScheme;
     this.pointerX = null;
     this.eventFrame.register(() => this.render());
     this.eventResize.register(() => this.render());

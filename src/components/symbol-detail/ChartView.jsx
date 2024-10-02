@@ -10,6 +10,7 @@ import SymbolInfo from './SymbolInfo';
 import TradeLinks from './TradeLinks';
 import { Scrollbar } from 'react-scrollbars-custom';
 import NewsSection from '../NewsSection';
+import WishlistAdd from './WishlistAdd';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -104,6 +105,7 @@ const ChartView = () => {
               <StyledIconButton onClick={() => setExpanded(!expanded)} sx={{ mr: 2 }}>
                 <KeyboardArrowDown sx={{ transition: 'all 0.2s', transform: expanded ? '' : 'rotateZ(-90deg)' }} />
               </StyledIconButton>
+              <WishlistAdd symbol={selectedCurrency} />
               <img
                 src={`${process.env.BUBBLE_IMAGE_PATH}/${selectedCurrency.image}`}
                 height={20}
