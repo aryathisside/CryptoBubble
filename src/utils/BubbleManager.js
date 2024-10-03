@@ -358,4 +358,6 @@ class BubbleManager extends CanvasManager {
   }
 }
 
+
+
 export default BubbleManager;

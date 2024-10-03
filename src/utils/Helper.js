@@ -119,10 +119,18 @@ class Helper {
     switch (contentTemplate) {
       case 'name':
         return currency.name;
+      case 'rank':
+        return currency.rank;
       case 'performance':
         return Helper.formatPercentage(currency.performance[period]);
+      case 'volume':
+        return Helper.formatPrice(currency.volume, baseCurrency);
+      case 'volumeWeekly':
+        return Helper.formatPrice(currency.volumeWeekly, baseCurrency);
+      case 'price':
+        return Helper.formatPrice(currency.price, baseCurrency);
       default:
-        return 'Content';
+        return '';
     }
   }
 
@@ -174,7 +182,6 @@ class Helper {
   }
 
   static formatPrice(value, currency) {
-   
    if(value!==null){
     let amount = value;
     if (amount < 0) {
@@ -182,7 +189,6 @@ class Helper {
     }
   
     let fractionDigits = amount === 0 ? 2 : 3 - Math.ceil(Math.log10(amount));
-    console.log("value in format price", value, currency)
     if (fractionDigits < 0) {
       fractionDigits = 0;
     }

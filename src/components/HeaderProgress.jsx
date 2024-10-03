@@ -17,7 +17,6 @@ const HeaderProgress = () => {
   const requestRef = useRef();
 
   const apiCall = async () => {
-    console.log('calling api .....');
     const req = await fetch(process.env.REACT_APP_API_URL);
     const data = await req.json();
     // localStorage.setItem('cryptoData', JSON.stringify(data));

@@ -33,7 +33,6 @@ const FooterTabs = () => {
   };
 
   const updateFilterHandle = (fil) => {
-    console.log("fill is", fil)
     updateFilter(fil);
     setIsFilterOpen(false);
   };

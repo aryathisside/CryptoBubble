@@ -65,10 +65,8 @@ const ChartView = () => {
     const handleNewsSection = async (symbol) => {
       try {
         setLoading(true);
-        console.log("symbol is ", symbol)
         const response = await fetch(`${process.env.CRYPTO_NEWS_URL}/${symbol}`);
         const result = await response.json();
-        console.log(result)
         setNewsData(result);
       } catch (error) {
         console.log(error);

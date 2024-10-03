@@ -43,6 +43,7 @@ const NumberComponent = ({ value }) => {
   }, [value]);
 
   const formatValue = () => {
+    
     return Helper.formatPrice(currentValue, { code: 'usd' });
   };
 
