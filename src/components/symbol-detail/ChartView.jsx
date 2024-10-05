@@ -27,6 +27,7 @@ const ChartView = () => {
   const [fetchError, setFetchError] = useState(false);
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchNews, setFetchNews]=useState(false)
 
   const fetchData = async () => {
     setQuotes(null);
@@ -57,11 +58,9 @@ const ChartView = () => {
     }
     setIsLoading(false);
   };
-  useEffect(() => {
-    if (isCurrencySelected) fetchData();
-  }, [isCurrencySelected, period]);
 
-  useEffect(() => {
+
+
     const handleNewsSection = async (symbol) => {
       try {
         setLoading(true);
@@ -74,14 +73,22 @@ const ChartView = () => {
         setLoading(false)
       }
     };
-    handleNewsSection(selectedCurrency?.symbol);
-  }, [selectedCurrency]);
+    // handleNewsSection(selectedCurrency?.symbol);
+
+    useEffect(() => {
+      if (isCurrencySelected) {
+        fetchData(); // Fetch chart data
+        handleNewsSection(selectedCurrency.symbol); // Fetch news data
+      }
+    }, [isCurrencySelected, period]);
+ 
 
 
   return (
     <Dialog
       fullWidth
       open={isCurrencySelected}
+      
       hideBackdrop
       maxWidth="md"
       scroll="paper"
