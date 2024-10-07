@@ -3,7 +3,7 @@ import { Add, Delete, Edit } from '@mui/icons-material';
 import StyledIconButton from '../../ui/overrides/IconButton';
 import useConfigStore from '../../store/useConfigStore';
 import StyledTextField from '../../ui/overrides/TextField';
-import Logo from '../../../public/image2.png';
+import Logo from '/image2.png';
 import ColorSettings from './ColorSettings';
 
 const SettingsView = () => {
