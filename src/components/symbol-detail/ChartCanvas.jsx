@@ -26,7 +26,7 @@ const ChartCanvas = ({ quotes, period }) => {
     };
   });
   return (
-    <Box className="price-chart" >
+    <Box className="price-chart" height={300} >
       <canvas ref={canvasContainerRef} />
     </Box>
   );

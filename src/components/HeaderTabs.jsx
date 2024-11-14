@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {  Box, Stack, ClickAwayListener, Grow, Typography } from '@mui/material';
+import { Box, Stack, ClickAwayListener, Grow, Typography } from '@mui/material';
 import { StyledTab, StyledTabs } from '../ui/overrides/Tabs';
 import HeaderProgress from './HeaderProgress';
 import useConfigStore from '../store/useConfigStore';
@@ -11,6 +11,7 @@ import { Add, Edit, Search } from '@mui/icons-material';
 import StyledTextField from '../ui/overrides/TextField';
 import Constant from '../utils/Constant';
 import ConfigurationDialog from './layout/ConfigurationDialog';
+import FooterTabs from './FooterTabs';
 
 const HeaderTabs = () => {
   const config = useConfigStore((state) => state.configuration);
@@ -34,7 +35,7 @@ const HeaderTabs = () => {
       const filter = symbols.filter(
         (item) => item.symbol.toLowerCase().includes(searchTerm.toLowerCase()) || item.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      
+
       setFilteredSymbols(filter);
     } else {
       setFilteredSymbols(symbols);
@@ -51,7 +52,7 @@ const HeaderTabs = () => {
   useEffect(() => {
     const cleanup = Helper.handleResize(setIsMobile);
 
-    return cleanup; 
+    return cleanup;
   }, []);
 
   const calculateVarient = (item) => {
@@ -76,74 +77,87 @@ const HeaderTabs = () => {
   };
 
   return (
-    <Stack direction="row"  >
+    <Stack direction="row" gap={isMobile ? 1 : 5}  bgcolor={'#171A24'} display={'flex'}  alignItems={'center'} padding={1.5}>
       <HeaderProgress />
-      {layout === 'bubble' && (
+      {/* {layout === 'bubble' && ( */}
         <>
-        <img 
-            className="ml-2" 
-            src={isMobile ? './image2.png' : './image.png'} 
-            alt="Brand Image" 
-            style={{ height: 40 }} 
-          />
-      {/* <StyledTabs
-            variant="scrollable"
-            value={config.period}
-            onChange={(e, val) => updateConfig({ period: val })}
-            sx={{ flexGrow: '1' }}
-            scrollButtons={false}>
-      
-        <StyledTab variant={calculateVarient('min1')} label="1min" value="min1" />
-        <StyledTab variant={calculateVarient('min5')} label="5min" value="min5" />
-        <StyledTab variant={calculateVarient('min15')} label="15min" value="min15" />
-        <StyledTab variant={calculateVarient('hour')} label="Hour" value="hour" />
-        <StyledTab variant={calculateVarient('day')} label="Day" value="day" />
-        <StyledTab variant={calculateVarient('week')} label="Week" value="week" />
-        <StyledTab variant={calculateVarient('month')} label="Month" value="month" />
-        <StyledTab variant={calculateVarient('year')} label="Year" value="year" />
-      </StyledTabs> */}
-      <StyledTabs
-            variant="scrollable"
-            value={config.id}
-            onChange={(e, val) => updateConfig(allConfigs.find((item) => val === item.id))}
-            scrollButtons={false}>
-            {allConfigs.map((item) => {
-              return <StyledTab key={item.id} variant={calculateVarient(item)} label={item.name || Constant.renderLabel(item)} value={item.id} />;
-            })}
-          </StyledTabs>
-      </>
-      )}
-       <Box p={1}>
-            <StyledIconButton onClick={() => setEditConfig(true)}>
-              <Edit />
-            </StyledIconButton>
-          </Box>
-          <Box p={1}>
-            <StyledIconButton onClick={() => handleAddConfig()}>
-              <Add />
-            </StyledIconButton>
-          </Box>
-       <Box p={1}>
-          {!searchEnabled && (
-            <StyledIconButton onClick={() => setSearchEnabled(true)}>
-              <Search />
-            </StyledIconButton>
-          )}
-        </Box>
-        {searchEnabled && (
+          <img className="ml-2" src={isMobile ? './image2.png' : './image.png'} alt="Brand Image" style={{ height: 40 }} />
+
           <ClickAwayListener onClickAway={() => handleClose()}>
-            <Box width="30%" position="relative">
-              <StyledTextField
+            <Box width={isMobile && searchEnabled ?"60%":"20%"} position="relative">
+            {(isMobile && searchEnabled) || !isMobile ? (
+                <StyledTextField
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 autoFocus
                 fullWidth
                 ref={anchorEl}
-                placeholder="Search symbol"
-                InputProps={{ startAdornment: <Search /> }}
+                placeholder="Search..."
+                InputProps={{
+                  startAdornment: <Search sx={{ color: '#3D424B', mr: 1 }} />,
+                  sx: { border: 'none', backgroundColor: '#2A2E36', boxShadow: 'none',  }
+                }}
+                sx={{
+                  backgroundColor: '#2A2E36',
+                  borderRadius: '8px',
+                  '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+                  '& input::placeholder': { textAlign: 'left' }, // Aligns placeholder left
+                  '& .MuiInputBase-input': { 
+                    color: '#3D424B', 
+                    paddingLeft: '8px', // Ensure text is aligned to the left
+                    textAlign: 'left', 
+                  },
+            
+
+                }}
               />
 
-              <Grow in={searchEnabled}>
+ 
+) : (
+  isMobile && !searchEnabled && (
+    <StyledIconButton sx={{height:"100%"}} onClick={() => setSearchEnabled(true)}>
+    <Search />
+  </StyledIconButton>
+   
+  )
+)}
+              {/* <StyledTextField
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                autoFocus
+                fullWidth
+                ref={anchorEl}
+                placeholder="Search..."
+                InputProps={{
+                  startAdornment: <Search sx={{ color: '#3D424B', mr: 1 }} />,
+                  sx: { border: 'none', backgroundColor: '#2A2E36', boxShadow: 'none',  }
+                }}
+                sx={{
+                  backgroundColor: '#2A2E36',
+                  borderRadius: '8px',
+                  '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+                  '& input::placeholder': { textAlign: 'left' }, // Aligns placeholder left
+                  '& .MuiInputBase-input': { 
+                    color: '#3D424B', 
+                    paddingLeft: '8px', // Ensure text is aligned to the left
+                    textAlign: 'left', 
+                  },
+            
+
+                }}
+              />
+              {
+                isMobile && ( <Box p={1}>
+                  {!searchEnabled && (
+                    <StyledIconButton onClick={() => setSearchEnabled(true)}>
+                      <Search />
+                    </StyledIconButton>
+                  )}
+                </Box>)
+              } */}
+
+              <Grow in={isMobile?searchEnabled:searchTerm !== ''}>
+               
                 <Box
                   sx={{
                     position: 'absolute',
@@ -154,10 +168,13 @@ const HeaderTabs = () => {
                     borderRadius: 1,
                     width: '100%',
                     maxHeight: 240,
-                    background: '#444444e6',
+                    background: '#171A24',
                     backdropFilter: 'blur(8px)',
-                    overflow: 'scroll',
-                    boxShadow: '0px 0px 7px 7px #00000027'
+                    // overflow: 'scroll',
+                    boxShadow: '0px 0px 7px 7px #00000027',
+                    overflowY: 'scroll', // Enable vertical scrolling
+                      scrollbarWidth: 'none', // Hide scrollbar for Firefox
+                      '&::-webkit-scrollbar': { display: 'none' } 
                   }}>
                   {filteredSymbols.map((symbol, index) => {
                     return (
@@ -172,10 +189,10 @@ const HeaderTabs = () => {
                           px: 2,
                           transition: 'background .4s',
                           ':hover': { background: '#ffffff14' },
-                          borderBottom: filteredSymbols.length - 1 !== index ? '1px solid #656565' : ''
+                          borderBottom: filteredSymbols.length - 1 !== index ? '' : ''
                         }}>
                         <Box display="flex" alignItems="center">
-                          <img width={20} height={20} src={`${process.env.BUBBLE_IMAGE_PATH }/${symbol.image}`} alt={symbol.name} />
+                          <img width={20} height={20} src={`${process.env.BUBBLE_IMAGE_PATH}/${symbol.image}`} alt={symbol.name} />
                           <Typography color="white" ml={1} px={1} py={1}>
                             {symbol.name}
                           </Typography>
@@ -195,8 +212,32 @@ const HeaderTabs = () => {
               </Grow>
             </Box>
           </ClickAwayListener>
-        )}
-        <ConfigurationDialog/>
+
+        {layout === "bubble" &&  (!isMobile || !searchEnabled) && (  <StyledTabs
+          
+          sx={{ width:isMobile?"90%":"40%"}}
+              variant="scrollable"
+              value={config.id}
+              onChange={(e, val) => updateConfig(allConfigs.find((item) => val === item.id))}
+              scrollButtons={false}>
+              {allConfigs.map((item) => {
+                return <StyledTab key={item.id} variant={calculateVarient(item)} label={item.name || Constant.renderLabel(item)} value={item.id} />;
+              })}
+            </StyledTabs>)}
+        </>
+      
+      <Box p={1} display={'flex'} gap={1}  padding={0}>
+        <StyledIconButton sx={{height:"100%"}} onClick={() => setEditConfig(true)}>
+          <Edit />
+        </StyledIconButton>
+        <StyledIconButton sx={{height:"100%"}} onClick={() => handleAddConfig()}>
+          <Add />
+        </StyledIconButton>
+      </Box>
+     
+
+      <ConfigurationDialog />
+      {isMobile?null:<FooterTabs/>}
     </Stack>
   );
 };

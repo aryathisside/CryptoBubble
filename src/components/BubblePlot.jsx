@@ -10,7 +10,7 @@ const BubblePlot = ({ selectedPeriod }) => {
   const isLoading = useDataStore((state) => state.loading);
 
   return (
-    <Box sx={{ flexGrow: 1, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <Box sx={{ flexGrow: 1, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', height:"10vh" }}>
       {isLoading && (
         <Box>
           <img className="scale-up-center" src={Logo} alt="CRYPTO + Bubble" width={200} />

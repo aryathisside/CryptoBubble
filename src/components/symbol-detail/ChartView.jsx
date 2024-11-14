@@ -11,6 +11,7 @@ import TradeLinks from './TradeLinks';
 import { Scrollbar } from 'react-scrollbars-custom';
 import NewsSection from '../NewsSection';
 import WishlistAdd from './WishlistAdd';
+import Helper from '../../utils/Helper';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -28,6 +29,14 @@ const ChartView = () => {
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [fetchNews, setFetchNews]=useState(false)
+  const [isMobile, setIsMobile]=useState(false)
+
+
+  useEffect(() => {
+    const cleanup = Helper.handleResize(setIsMobile);
+
+    return cleanup;
+  }, []);
 
   const fetchData = async () => {
     setQuotes(null);
@@ -96,7 +105,7 @@ const ChartView = () => {
       sx={{ '& .MuiDialog-container': { alignItems: 'start' } }}
       PaperProps={{
         sx: {
-          background: '#444444e6',
+          background: '#171A24',
           backdropFilter: 'blur(8px)',
           marginTop: 'min(10%, 100px)',
           marginX: 2,
@@ -130,8 +139,10 @@ const ChartView = () => {
               <Grid container overflow={'hidden'}>
                 <Grid item xs={12} md={8.5}>
                   <TradeLinks symbol={selectedCurrency} />
+                  <Box display={"flex"} alignItems={"center"} flexDirection={isMobile?"column":"row"}  justifyContent={"space-between"}>
                   <PriceCalculator selectedCurrency={selectedCurrency} />
                   <SymbolInfo symbol={selectedCurrency} />
+                  </Box>
                   {isLoading && (
                     <Box display="flex" justifyContent="center" p={5} height={240} alignItems="center">
                       <img
@@ -151,16 +162,16 @@ const ChartView = () => {
                       </Typography>
                     </Box>
                   )}
-                  {!isLoading && quotes && <ChartCanvas quotes={quotes} period={period} />}
+                  {!isLoading && quotes && <ChartCanvas  quotes={quotes} period={period} />}
                   {selectedCurrency && <CurrencyPerformanceGrid symbol={selectedCurrency} period={period} setPeriod={setPeriod} />}
                 </Grid>
-                <Grid item xs={12} md={3.5} display={'flex'} flexDirection={'column'} paddingX={1}>
-                  <Typography variant="h7" color="white" borderBottom={'1px solid white'} width={'100%'} paddingY={1}>
+                <Grid item xs={12} md={3.5} display={'flex'} flexDirection={'column'} paddingX={1} paddingBottom={2}>
+                  <Typography variant="h7" color="white" borderBottom={'2px solid #2A2E36'} width={'100%'} paddingY={1} >
                     Latest News
                   </Typography>
                   <Box
                     marginTop={2}
-                    height={420}
+                    height={isMobile?420:"100%"}
                     sx={{
                       overflowY: 'scroll', // Enable vertical scrolling
                       scrollbarWidth: 'none', // Hide scrollbar for Firefox

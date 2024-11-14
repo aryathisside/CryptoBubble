@@ -5,13 +5,13 @@ const StyledTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     padding: '5px 10px',
     color: 'white',
-    borderRadius: '12px',
+    borderRadius: '5px',
     input: {
       padding: '5px',
       textAlign: 'center'
     },
     '& fieldset': {
-      borderColor: '#ccc'
+      borderColor: '#2A2E36'
     },
     '&:hover fieldset': {
       borderColor: '#B2BAC2'

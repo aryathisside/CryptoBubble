@@ -1,11 +1,22 @@
 import { Box, Grid, Typography } from '@mui/material';
 import NumberComponent from '../common/AnimatedNumber';
+import Helper from '../../utils/Helper';
+import { useEffect, useState } from 'react';
 
 const SymbolInfo = ({ symbol }) => {
+
+  const [isMobile, setIsMobile]=useState(false)
+
+
+  useEffect(() => {
+    const cleanup = Helper.handleResize(setIsMobile);
+
+    return cleanup;
+  }, []);
   return (
-    <Grid container mb={1} >
+    <Grid container mb={1} width={isMobile?"100%":"50%"} display={"flex"} justifyContent={isMobile?"center":"space-between"} >
       <Grid  item xs={4}>
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box display="flex" flexDirection="column" alignItems="center" width={"fit-content"}>
           <Typography typography="body2" sx={{ color: '#ccc' }}>
             Rank
           </Typography>
@@ -14,18 +25,9 @@ const SymbolInfo = ({ symbol }) => {
           </Typography>
         </Box>
       </Grid>
+     
       <Grid item xs={4}>
-        {/* <Box display="flex" flexDirection="column" alignItems="center">
-          <Typography typography="body2" sx={{ color: '#ccc' }}>
-            1W Volume
-          </Typography>
-          <Typography typography="body1" sx={{ color: 'white' }}>
-            <NumberComponent value={symbol.volumeWeekly} />
-          </Typography>
-        </Box> */}
-      </Grid>
-      <Grid item xs={4}>
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box display="flex" flexDirection="column" alignItems="center" width={"fit-content"}>
           <Typography typography="body2" sx={{ color: '#ccc' }}>
             24h Volume
           </Typography>

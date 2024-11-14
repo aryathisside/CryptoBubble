@@ -23,6 +23,8 @@ const BubbleCanvas = () => {
     if (canvasContainerRef.current) {
       const cM = new BubbleManager(canvasContainerRef.current);
       setCanvasManager(cM);
+
+      
       cM.setProperties({...config, colors:colorScheme,baseCurrency});
       // Push the currencies to the canvas manager
       setTimeout(() => {
@@ -69,7 +71,7 @@ const BubbleCanvas = () => {
   
 
 
-  return <canvas id="canvas" ref={canvasContainerRef} />;
+  return <canvas style={{backgroundColor:"#000000"}}  id="canvas" ref={canvasContainerRef} />;
 };
 
 export default BubbleCanvas;

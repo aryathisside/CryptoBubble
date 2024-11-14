@@ -5,7 +5,7 @@ import React from 'react';
 const NewsSection = ({newsItem}) => {
   return (
     <>
-      <Box key={newsItem.id} mb={2} bgcolor={'#505050'} padding={1} borderRadius={2} marginRight={1}>
+      <Box key={newsItem.id} mb={2} bgcolor={'none'} padding={1} borderRadius={2} marginRight={1} border={"2px solid #2A2E36"}>
        <Link href={newsItem.url} target={"_blank"} sx={{textDecoration:"none"}}>
        <Typography variant="subtitle2" color="white" sx={{ fontSize: '0.85rem' }}>
           {newsItem.title}
