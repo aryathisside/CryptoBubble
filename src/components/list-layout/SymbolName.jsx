@@ -18,7 +18,7 @@ const SymbolName = ({ symbol }) => {
           padding: '6px 15px',
           cursor: 'pointer',
           color: 'white',
-          background: '#ffffff1f',
+          // background: '#ffffff1f',
           borderRadius: 20,
           ':hover': {
             background: '#ffffff40'

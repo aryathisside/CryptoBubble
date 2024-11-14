@@ -13,36 +13,123 @@ const WishlistAdd = ({ symbol }) => {
   const blocklist = useConfigStore((state) => state.blocklist);
   const updateBlocklist = useConfigStore((state) => state.updateBlocklist);
 
+
+  const getUserEmail = () => {
+    return localStorage.getItem('userEmail'); // Assuming the email is stored in localStorage
+  };
+  
+  const sendWishlistUpdateToBackend = async (wishlistType, symbolId, id) => {
+    const userEmail = getUserEmail();
+    
+    if (!userEmail) {
+      console.error('User not logged in');
+      return;
+    }
+  
+    const requestData = {
+      email: userEmail,
+      wishlistName: wishlistType,  // 'favorites', 'blocklist', 'watchlist'
+      symbolId: symbolId,
+      id
+      
+    };
+  
+    try {
+      const response = await fetch(process.env.WISHLIST_UPDATE, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+  
+      if (response.ok) {
+        console.log('Wishlist updated successfully');
+      } else {
+        console.error('Failed to update wishlist');
+      }
+    } catch (error) {
+      console.error('Error while sending wishlist update:', error);
+    }
+  };
+
+  const deleteWishlistFromBackend = async (wishlistType, symbolId) => {
+    const userEmail = getUserEmail();
+  
+    if (!userEmail) {
+      console.error('User not logged in');
+      return;
+    }
+  
+    const requestData = {
+      email: userEmail,
+      wishlistName: wishlistType,
+      symbolId: symbolId
+    };
+  
+    try {
+      const response = await fetch(process.env.WISHLIST_DELETE, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+  
+      if (response.ok) {
+        console.log('Wishlist item deleted successfully');
+      } else {
+        console.error('Failed to delete item from wishlist');
+      }
+    } catch (error) {
+      console.error('Error while deleting item from wishlist:', error);
+    }
+  };
+  
+
   const toggleFav = () => {
     let newFav = favorites;
     if (newFav.includes(symbol.id)) {
       newFav = newFav.filter((item) => item !== symbol.id);
+      deleteWishlistFromBackend('favorites', symbol.id)
     } else {
       newFav.push(symbol.id);
+      sendWishlistUpdateToBackend('favorites', symbol.id);  // Send to backend
     }
     updateFavorites(newFav);
+   
   };
 
   const toggleBlocklist = () => {
     let newBlock = blocklist;
     if (newBlock.includes(symbol.id)) {
       newBlock = newBlock.filter((item) => item !== symbol.id);
+      deleteWishlistFromBackend('blocklist', symbol.id)
     } else {
       newBlock.push(symbol.id);
+      sendWishlistUpdateToBackend('blocklist', symbol.id); 
     }
     updateBlocklist(newBlock);
+    
+    
   };
 
   const toggleWatchlist = (id) => {
     const findIndex = watchlists.findIndex((item) => item.id === id);
     let wl = watchlists[findIndex].symbols;
+    const watchlistName = watchlists[findIndex].name || `Watchlist ${findIndex + 1}`;
     if (wl.includes(symbol.id)) {
       wl = wl.filter((item) => item !== symbol.id);
+      deleteWishlistFromBackend(watchlistName, symbol.id)
+      
     } else {
       wl.push(symbol.id);
+      sendWishlistUpdateToBackend(watchlistName, symbol.id,id)
     }
     watchlists[findIndex].symbols = wl;
+    console.log(watchlists)
     updateAllWatchlist(watchlists);
+    
   };
 
   const isWatchlist = () => {

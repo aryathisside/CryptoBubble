@@ -70,9 +70,10 @@ const ConfigurationDialog = () => {
       maxWidth="sm"
       scroll="paper"
       TransitionComponent={Transition}
+      
       sx={{ '& .MuiDialog-container': { alignItems: 'start' } }}
       PaperProps={{
-        sx: { background: '#444444e6', backdropFilter: 'blur(8px)', marginTop: 'min(10%, 100px)', marginX: 2, width: 'calc(100% - 32px)' }
+        sx: { background: '#171A24',paddingX:2, backdropFilter: 'blur(8px)', marginTop: 'min(10%, 100px)', marginX: 2, width: 'calc(100% - 32px)' }
       }}>
       <>
         <DialogTitle typography="body1" display="flex" alignItems="center" justifyContent="space-between" color="white" sx={{ padding: 1 }}>
@@ -81,11 +82,13 @@ const ConfigurationDialog = () => {
               <KeyboardArrowDown sx={{ transition: 'all 0.2s', transform: expanded ? '' : 'rotateZ(-90deg)' }} />
             </StyledIconButton>
             <StyledTextField
+            sx={{backgroundColor:"#00000033"}}
               value={config.name}
               onChange={(e) => updateName(e.target.value)}
               fullWidth
               placeholder={Constant.renderLabel(config)}
               InputProps={{ startAdornment: <Edit /> }}
+              
             />
           </Box>
           <Box>
@@ -118,7 +121,7 @@ const ConfigurationDialog = () => {
                   <StyledButton
                     onClick={() => updatePeriod(item.value)}
                     key={item.value}
-                    sx={{ mr: 1, mb: 1, px: 2, background: config.period === item.value ? '#0477DD !important' : null }}>
+                    sx={{ mr: 1, mb: 1, px: 2, background: config.period === item.value ? '#2A2E36 !important' : null }}>
                     <Typography color="white" textTransform="none">
                       {item.label}
                     </Typography>
@@ -134,7 +137,7 @@ const ConfigurationDialog = () => {
                   <StyledButton
                     onClick={() => updateSize(item.value)}
                     key={item.value}
-                    sx={{ mr: 1, mb: 1, px: 2, background: config.size === item.value ? '#0477DD !important' : null }}>
+                    sx={{ mr: 1, mb: 1, px: 2, background: config.size === item.value ? '#2A2E36 !important' : null }}>
                     <Typography color="white" textTransform="none">
                       {item.label}
                     </Typography>
@@ -150,7 +153,7 @@ const ConfigurationDialog = () => {
                   <StyledButton
                     onClick={() => updateContent(item.value)}
                     key={item.value}
-                    sx={{ mr: 1, mb: 1, px: 2, background: config.content === item.value ? '#0477DD !important' : null }}>
+                    sx={{ mr: 1, mb: 1, px: 2, background: config.content === item.value ? '#2A2E36 !important' : null }}>
                     <Typography color="white" textTransform="none">
                       {item.label}
                     </Typography>
@@ -166,7 +169,7 @@ const ConfigurationDialog = () => {
                   <StyledButton
                     onClick={() => updateColor(item.value)}
                     key={item.value}
-                    sx={{ mr: 1, mb: 1, px: 2, background: config.color === item.value ? '#0477DD !important' : null }}>
+                    sx={{ mr: 1, mb: 1, px: 2, background: config.color === item.value ? '#2A2E36 !important' : null }}>
                     <Typography color="white" textTransform="none">
                       {item.label}
                     </Typography>

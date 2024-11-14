@@ -22,14 +22,17 @@ export const StyledTab = styled((props) => <Tab disableRipple {...props} />, { s
   ({ theme, variant = 'buy' }) => ({
     textTransform: 'none',
     fontWeight: theme.typography.fontWeightNormal,
-    fontSize: theme.typography.pxToRem(17),
+    fontSize: theme.typography.pxToRem(14),
     marginRight: theme.spacing(0),
     marginLeft: theme.spacing(1),
-    border: variant === 'neutral' ? 'solid #07d' : `solid ${Helper.getPrimaryColor(variant === 'sell' ? -1 : 1, useConfigStore.getState().colorScheme)} 2px;`,
-    borderTop: 0,
+    // border: variant === 'neutral' ? 'solid #07d' : `solid ${Helper.getPrimaryColor(variant === 'sell' ? -1 : 1, useConfigStore.getState().colorScheme)} 2px;`,
+    // borderTop: "12px",
+    borderRadius:"8px",
     background: '#ffffff1f',
-    borderBottomLeftRadius: '12px',
-    borderBottomRightRadius: '12px',
+   
+   
+    // borderBottomLeftRadius: '12px',
+    // borderBottomRightRadius: '12px',
     color: '#fff',
     minWidth: 0,
     transitionProperty: 'background-color,transform,opacity,border-color',

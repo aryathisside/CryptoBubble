@@ -89,7 +89,7 @@ const headCells = [
 const StyledHeadCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     cursor: 'pointer',
-    backgroundColor: '#3d3d3d',
+    backgroundColor: '#2A2E36',
     color: theme.palette.common.white,
     borderBottom: 0,
     padding: 5,
@@ -181,12 +181,12 @@ const ListView = () => {
       <Paper sx={{ width: '100%', overflow: 'hidden', background: 'transparent', boxShadow: 'none' }}>
         <TableContainer sx={{ maxHeight: 'calc(95vh - 70px)', marginTop: '2px'}}>
           <Table stickyHeader>
-            <TableHead>
-              <TableRow>
+            <TableHead >
+              <TableRow >
                 {headCells.map((headCell) => (
                   <StyledHeadCell
                     key={headCell.id}
-                    align={headCell.numeric ? 'right' : headCell.center ? 'center' : 'left'}
+                    align={headCell.numeric ? 'center' : headCell.center ? 'center' : 'left'}
                     sx={{ minWidth: headCell.minWidth }}
                     onClick={() => {
                       if (headCell.preventSort) return;
@@ -215,22 +215,38 @@ const ListView = () => {
                     <StyledCell>
                       <SymbolName symbol={row} />
                     </StyledCell>
-                    <StyledCell align="right">{Helper.formatPrice(row.price, currency)}</StyledCell>
-                    <StyledCell align="right">{Helper.formatPrice(row.volume, currency)}</StyledCell>
-                    <StyledCell align="right" sx={{ background: Helper.getSecondaryColor(row.performance.hour, colorScheme) }}>
-                      {Helper.formatPercentage(row.performance.hour, true)}
+                    <StyledCell align="center">{Helper.formatPrice(row.price, currency)}</StyledCell>
+                    <StyledCell align="center">{Helper.formatPrice(row.volume, currency)}</StyledCell>
+                    <StyledCell align="center" >
+                    <Box   display={"flex"} justifyContent={"center"} alignItems={"center"} padding={1} sx={{ background: Helper.getSecondaryColor(row.performance.year, colorScheme) }}>
+                    {Helper.formatPercentage(row.performance.hour, true)}
+                    </Box>
+                    
                     </StyledCell>
-                    <StyledCell align="right" sx={{ background: Helper.getSecondaryColor(row.performance.day, colorScheme) }}>
-                      {Helper.formatPercentage(row.performance.day, true)}
+                    <StyledCell align="right" >
+                    <Box   display={"flex"} justifyContent={"center"} alignItems={"center"} padding={1} sx={{ background: Helper.getSecondaryColor(row.performance.year, colorScheme) }}>
+                    {Helper.formatPercentage(row.performance.day, true)}
+                    </Box>
+                     
                     </StyledCell>
-                    <StyledCell align="right" sx={{ background: Helper.getSecondaryColor(row.performance.week, colorScheme) }}>
-                      {Helper.formatPercentage(row.performance.week, true)}
+                    <StyledCell align="right" >
+                    <Box   display={"flex"} justifyContent={"center"} alignItems={"center"} padding={1} sx={{ background: Helper.getSecondaryColor(row.performance.year, colorScheme) }}>
+                    {Helper.formatPercentage(row.performance.week, true)}
+                    </Box>
+                    
                     </StyledCell>
-                    <StyledCell align="right" sx={{ background: Helper.getSecondaryColor(row.performance.month, colorScheme) }}>
-                      {Helper.formatPercentage(row.performance.month, true)}
+                    <StyledCell align="right">
+                    <Box   display={"flex"} justifyContent={"center"} alignItems={"center"} padding={1} sx={{ background: Helper.getSecondaryColor(row.performance.year, colorScheme) }}>
+                    {Helper.formatPercentage(row.performance.month, true)}
+                    </Box>
+                     
                     </StyledCell>
-                    <StyledCell align="right" sx={{ background: Helper.getSecondaryColor(row.performance.year, colorScheme) }}>
+                    <StyledCell align="right" >
+                      <Box   display={"flex"} justifyContent={"center"} alignItems={"center"} padding={1} sx={{ background: Helper.getSecondaryColor(row.performance.year, colorScheme) }}>
                       {Helper.formatPercentage(row.performance.year, true)}
+
+                      </Box>
+                      
                     </StyledCell>
                     <StyledCell align="center">
                       <TradeLinks symbol={row} mb={0} />

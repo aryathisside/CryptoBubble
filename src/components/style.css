@@ -113,6 +113,8 @@ body {
   left: 0;
   top: 0;
   touch-action: none;
+  
+  
 }
 .rotate-center {
   -webkit-animation: rotate-center 700ms ease-in-out infinite both;
