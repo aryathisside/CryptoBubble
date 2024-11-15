@@ -8,13 +8,16 @@ import useConfigStore from '../../store/useConfigStore';
 export const StyledTabs = styled(Tabs)({
   '& .MuiTabs-indicator': {
     display: 'flex',
+    
     justifyContent: 'center',
     backgroundColor: 'transparent'
   },
   '& .MuiTabs-indicatorSpan': {
     maxWidth: 40,
     width: '100%',
-    backgroundColor: '#222222'
+    backgroundColor: '#222222',
+  
+
   }
 });
 

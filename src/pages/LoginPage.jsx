@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import StyledIconButton from '../ui/overrides/IconButton';
 import LoginForm from '../components/LoginForm';
 import {useNavigate} from "react-router-dom"
+import Helper from '../utils/Helper';
+import MobileLogin from '../components/mobile/MobileLogin';
+import MobileSignup from '../components/mobile/MobileSignup';
 
 const LoginPage = () => {
+  const [isLogin,setIslogin]=useState(true)
     const navigate = useNavigate()
+    const [isMobile, setIsMobile] = useState(false);
+    const handleMobileToggle=(val)=>{
+      setIslogin(val)
+    }
 
     const handleForgotPasswordClick = () => {
         navigate('/forgot-password'); // Redirect to the Forgot Password page
@@ -16,8 +24,34 @@ const LoginPage = () => {
         setIsSignup(val)
 
     }
+
+    useEffect(() => {
+      // Handle window resize for mobile detection
+      const cleanup = Helper.handleResize(setIsMobile);
+      return cleanup;
+    }, []);
   return (
-    <Stack
+    isMobile ? (<Stack sx={{
+      display: 'flex',
+      p: 0,
+      height: '100vh', // Ensure full viewport height
+      backgroundImage: `url(/LoginBackground.svg)`, // Set background image
+      backgroundSize: 'cover', // Make the image cover the entire area
+      backgroundPosition: 'center', // Center the background image
+      backgroundRepeat: 'no-repeat' // Prevent the image from repeating
+    }} >
+      <Box  width={'100%'} height={'100%'}  display={'flex'} flexDirection={'column'}  justifyContent={"center"} alignItems={"center"} >
+  {
+    isLogin ?(<MobileLogin showSignup={handleMobileToggle}/>):(<MobileSignup showSignup={handleMobileToggle}/>)
+  }
+    
+
+        
+
+      </Box>
+
+    </Stack>):(
+      <Stack
       sx={{
         display: 'flex',
         p: 0,
@@ -77,6 +111,8 @@ const LoginPage = () => {
        </Box>
       </Box>
     </Stack>
+    )
+    
   );
 };
 

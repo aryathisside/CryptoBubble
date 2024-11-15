@@ -6,6 +6,7 @@ import FormButton from '../ui/overrides/FormButton';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import axios from 'axios';  // Ensure to import axios for making API calls
 import { useNavigate } from 'react-router-dom';
+import { Login } from '../utils/auth';
 
 const LoginForm = ({isSignupPage}) => {
   // State to track whether it's sign up mode
@@ -23,40 +24,20 @@ const LoginForm = ({isSignupPage}) => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    try {
+
       setLoading(true); // Set loading to true while waiting for the response
-
-      // Send login request to the backend
-      const response = await axios.post(process.env.USER_LOGIN, { email, password });
-
-      // Handle successful login (response contains the token)
-      console.log('Login successful:', response.data);
-      localStorage.setItem('token', response.data.token); // Store token in localStorage
-      localStorage.setItem("userEmail", response.data.userEmail)
-
-      // Clear any existing error messages
-      setError('');
-      navigate("/")
-    } catch (err) {
-      // Check for specific backend errors
-
-      // Handling specific errors from the backend
-      if (err.response?.status === 400) {
-        setError(err.response?.data?.message || 'Please provide both email and password');
-      } else if (err.response?.status === 404) {
-        // Handle "User not found" error
-        setError(err.response?.data?.message || 'User not found');
-      } else if (err.response?.status === 401) {
-        // Handle incorrect password or unauthorized errors
-        setError(err.response?.data?.message || 'Incorrect password');
-      } else {
-        // For any other errors (500, etc.)
-        setError(err.response?.data?.message || 'An error occurred while logging in');
+      const response = await Login(email, password)
+      if(response.status === "failed"){
+        setError(response.message)
+        setEmail("")
+        setPassword("")
+        setLoading(false)
+      }else{
+        setError("")
+        navigate("/")
+        setLoading(false)
       }
-      console.error(err);
-    } finally {
-      setLoading(false); // Set loading to false after the response (success or failure)
-    }
+
   };
 
   // Function to handle the "Create a new account" button click
@@ -69,17 +50,20 @@ const LoginForm = ({isSignupPage}) => {
   const requestOtp = async () => {
     try {
       setLoading(true);
-      console.log(firstName, lastName, email, password)
+ 
       const response = await axios.post(process.env.USER_SIGNUP, {
         firstname: firstName,
         lastname: lastName,
         email,
         password,
       });
+      
+    
       setIsOtpSent(true); // Move to OTP verification step
       setError(''); // Clear error messages
       console.log(response.data.message); // Confirmation message (e.g., "OTP sent to email")
     } catch (err) {
+      console.log(error)
       setError(err.response?.data?.message || 'An error occurred during signup');
     } finally {
       setLoading(false);
@@ -102,7 +86,7 @@ const LoginForm = ({isSignupPage}) => {
       setError('');
       setIsSignUp(false); // Reset form to login state
       setIsOtpSent(false); // Reset OTP sent status
-      window.location.reload()
+     navigate("/")
     } catch (err) {
       setError(err.response?.data?.message || 'OTP verification failed');
     } finally {

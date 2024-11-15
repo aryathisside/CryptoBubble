@@ -33,7 +33,7 @@ const SettingsView = () => {
   return (
     <Box sx={{ flexGrow: 1, width: '100%', px: 2, py: 3, overflow: 'scroll' }}>
       <Stack>
-        <Box display="flex" justifyContent="space-between" mb={2}>
+        <Box display="flex" justifyContent="space-between" alignItems={"center"} mb={2}>
           <Typography typography="h6" color="white">
             Colors
           </Typography>
@@ -63,9 +63,9 @@ const SettingsView = () => {
             </Box>
           );
         })}
-        <Box display="flex" justifyContent="center" mt={7} sx={{ opacity: 0.85 }}>
+        {/* <Box display="flex" justifyContent="center" mt={7} sx={{ opacity: 0.85 }}>
           <img src={Logo} alt="AI + Bubbles" width={300} style={{ maxWidth: '40vw' }} />
-        </Box>
+        </Box> */}
       </Stack>
     </Box>
   );

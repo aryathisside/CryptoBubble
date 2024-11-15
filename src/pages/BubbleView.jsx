@@ -8,6 +8,7 @@ import ListView from '../components/list-layout/ListView';
 import SettingsView from '../components/settings/SettingsView';
 import { useEffect, useState } from 'react';
 import Helper from '../utils/Helper';
+import MobileFooter from '../components/mobile/MobileFooter';
 
 const BubbleView = () => {
   
@@ -21,14 +22,14 @@ const BubbleView = () => {
   }, []);
   const layout = useConfigStore((state) => state.layout);
   return (
-    <Stack sx={{ p: 0, bgcolor: '#000000', height: '100%' }}>
+    <Stack sx={{ p: 0, bgcolor: '#000000', height:isMobile?"90%" :'100%',display:"flex" }}>
       <HeaderTabs />
       {layout === 'bubble' && <BubblePlot />}
       {layout === 'list' && <ListView />}
       {layout === 'settings' && <SettingsView />}
       <ChartView />
       {
-        isMobile ? <FooterTabs/>:null
+        isMobile ? <MobileFooter/>:null
       }
       {/* <FooterTabs /> */}
     </Stack>

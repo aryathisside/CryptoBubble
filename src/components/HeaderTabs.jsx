@@ -77,14 +77,14 @@ const HeaderTabs = () => {
   };
 
   return (
-    <Stack direction="row" gap={isMobile ? 1 : 5}  bgcolor={'#171A24'} display={'flex'}  alignItems={'center'} padding={1.5}>
+    <Stack direction="row" gap={isMobile ? 8 : 2}  bgcolor={'#171A24'} display={'flex'} justifyContent={"space-between"}  alignItems={'center'} padding={1.5}>
       <HeaderProgress />
       {/* {layout === 'bubble' && ( */}
         <>
-          <img className="ml-2" src={isMobile ? './image2.png' : './image.png'} alt="Brand Image" style={{ height: 40 }} />
+          <img className="ml-2" src={searchEnabled ? './image2.png' : './image.png'} alt="Brand Image" style={{ height: 40 }} />
 
           <ClickAwayListener onClickAway={() => handleClose()}>
-            <Box width={isMobile && searchEnabled ?"60%":"20%"} position="relative">
+            <Box width={isMobile && searchEnabled ?"60%":"40%"} position="relative">
             {(isMobile && searchEnabled) || !isMobile ? (
                 <StyledTextField
                 value={searchTerm}
@@ -213,9 +213,9 @@ const HeaderTabs = () => {
             </Box>
           </ClickAwayListener>
 
-        {layout === "bubble" &&  (!isMobile || !searchEnabled) && (  <StyledTabs
+        {layout === "bubble" &&  (!isMobile) && (  <StyledTabs
           
-          sx={{ width:isMobile?"90%":"40%"}}
+          sx={{ width:isMobile?"90%":"60%"}}
               variant="scrollable"
               value={config.id}
               onChange={(e, val) => updateConfig(allConfigs.find((item) => val === item.id))}
@@ -226,14 +226,16 @@ const HeaderTabs = () => {
             </StyledTabs>)}
         </>
       
-      <Box p={1} display={'flex'} gap={1}  padding={0}>
-        <StyledIconButton sx={{height:"100%"}} onClick={() => setEditConfig(true)}>
-          <Edit />
-        </StyledIconButton>
-        <StyledIconButton sx={{height:"100%"}} onClick={() => handleAddConfig()}>
-          <Add />
-        </StyledIconButton>
-      </Box>
+    {
+      !isMobile &&   <Box p={1} display={'flex'} gap={1}  padding={0}>
+      <StyledIconButton sx={{height:"100%"}} onClick={() => setEditConfig(true)}>
+        <Edit />
+      </StyledIconButton>
+      <StyledIconButton sx={{height:"100%"}} onClick={() => handleAddConfig()}>
+        <Add />
+      </StyledIconButton>
+    </Box>
+    }
      
 
       <ConfigurationDialog />
