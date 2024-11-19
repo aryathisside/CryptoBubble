@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import StyledIconButton from '../../ui/overrides/IconButton'
 import FormButton from '../../ui/overrides/FormButton'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import { Login } from '../../utils/auth'
+import { handleGoogleLogin, handleLinkedinLogin, Login } from '../../utils/auth'
 
 const MobileLogin = ({showSignup}) => {
 
@@ -82,10 +82,10 @@ const handleSignUpClick=()=>{
             Login with social media
           </Typography>
           <Grid display={'flex'} gap={2}>
-            <StyledIconButton sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
+            <StyledIconButton onClick={handleGoogleLogin} sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
               <img height={25} src="Social Media.png" alt="" />
             </StyledIconButton>
-            <StyledIconButton sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
+            <StyledIconButton onClick={handleLinkedinLogin} sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
               <img height={25} src="Social Media (1).png" alt="" />
             </StyledIconButton>
            

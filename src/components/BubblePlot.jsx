@@ -4,7 +4,9 @@ import BubbleCanvas from './BubbleCanvas';
 import useDataStore from '../store/useDataStore';
 import Logo from "/image2.png"
 
+
 const BubblePlot = ({ selectedPeriod }) => {
+ 
   const currencies = useDataStore((state) => state.currencies);
 
   const isLoading = useDataStore((state) => state.loading);

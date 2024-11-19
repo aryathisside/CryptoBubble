@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom"
 import Helper from '../utils/Helper';
 import MobileLogin from '../components/mobile/MobileLogin';
 import MobileSignup from '../components/mobile/MobileSignup';
+import { handleGoogleLogin, handleLinkedinLogin } from '../utils/auth';
 
 const LoginPage = () => {
   const [isLogin,setIslogin]=useState(true)
@@ -30,6 +31,8 @@ const LoginPage = () => {
       const cleanup = Helper.handleResize(setIsMobile);
       return cleanup;
     }, []);
+
+   
   return (
     isMobile ? (<Stack sx={{
       display: 'flex',
@@ -86,15 +89,15 @@ const LoginPage = () => {
             Log in with your social media
           </Typography>
           <Grid display={'flex'} gap={2}>
-            <StyledIconButton sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
+            <StyledIconButton onClick={handleGoogleLogin} sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
               <img height={25} src="Social Media.png" alt="" />
             </StyledIconButton>
-            <StyledIconButton sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
+            <StyledIconButton onClick={handleLinkedinLogin} sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
               <img height={25} src="Social Media (1).png" alt="" />
             </StyledIconButton>
-            <StyledIconButton sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
+            {/* <StyledIconButton sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
               <img height={25} src="Social Media (2).png" alt="" />
-            </StyledIconButton>
+            </StyledIconButton> */}
           </Grid>
         </Box>
         <Box width={'100%'} border={'2px solid #2A2E36'}></Box>

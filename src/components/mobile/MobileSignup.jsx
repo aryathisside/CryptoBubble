@@ -7,6 +7,7 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Email, Lock } from '@mui/icons-material';
+import { handleGoogleLogin, handleLinkedinLogin } from '../../utils/auth';
 
 const MobileSignup = ({ showSignup }) => {
   const [firstName, setFirstName] = useState('');
@@ -108,10 +109,10 @@ const MobileSignup = ({ showSignup }) => {
           Login with social media
         </Typography>
         <Grid display={'flex'} gap={2}>
-          <StyledIconButton sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
+          <StyledIconButton onClick={handleGoogleLogin} sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
             <img height={25} src="Social Media.png" alt="" />
           </StyledIconButton>
-          <StyledIconButton sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
+          <StyledIconButton onClick={handleLinkedinLogin} sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
             <img height={25} src="Social Media (1).png" alt="" />
           </StyledIconButton>
         </Grid>
