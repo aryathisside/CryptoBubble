@@ -18,6 +18,10 @@ export default defineConfig(({ mode }) => {
       'process.env.WISHLIST_UPDATE': JSON.stringify(env.WISHLIST_UPDATE),
       'process.env.WISHLIST_DELETE': JSON.stringify(env.WISHLIST_DELETE),
       'process.env.GET_WISHLIST': JSON.stringify(env.GET_WISHLIST),
+      'process.env.GOOGLE_LOGIN': JSON.stringify(env.GOOGLE_LOGIN),
+      'process.env.LINKEDIN_LOGIN': JSON.stringify(env.LINKEDIN_LOGIN),
+
+
 
     },
     plugins: [react()],

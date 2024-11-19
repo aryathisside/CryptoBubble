@@ -39,9 +39,9 @@ export const Login = async (email,password) => {
 
 export const handleGoogleLogin = () => {
   // Redirect the user to the Google OAuth endpoint on your server
-  window.location.href = "http://localhost:3001/api/auth/google"; // Update with your backend URL
+  window.location.href = process.env.GOOGLE_LOGIN // Update with your backend URL
 };
 export const handleLinkedinLogin = () => {
   // Redirect the user to the Google OAuth endpoint on your server
-  window.location.href = "http://localhost:3001/api/auth/linkedin"; // Update with your backend URL
+  window.location.href = process.env.LINKEDIN_LOGIN; // Update with your backend URL
 };
