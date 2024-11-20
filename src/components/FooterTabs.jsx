@@ -8,6 +8,7 @@ import useDataStore from '../store/useDataStore';
 import StyledIconButton from '../ui/overrides/IconButton';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import { useNavigate } from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const FooterTabs = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -50,6 +51,14 @@ const FooterTabs = () => {
   const updateFilterHandle = (fil) => {
     updateFilter(fil);
     setIsFilterOpen(false);
+  };
+
+  const handleLogout = () => {
+    // Clear token from localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem("userEmail")
+    setHasToken(false); // Update the state to reflect logout
+   
   };
 
   return (
@@ -155,18 +164,31 @@ const FooterTabs = () => {
           >
             <SettingsSuggest /> {/* or whichever icon you want to show */}
           </StyledIconButton>
-          <StyledIconButton
-          onClick={redirectLogin}
-          
-            sx={{ height: '100%', width:"90px", display:
+           {hasToken ? (
+            <StyledIconButton onClick={handleLogout} sx={{ height: '100%', width:"90px", display:
+              'flex', justifyContent:"center", alignItems:"center",
+              
+              }}>
+              {/* <ExitToAppIcon /> */}
+              <LogoutIcon/>
+              <Typography color="white"  sx={{ fontSize: '12px', ml: 1 }}
+           >
+           
+                Logout
+              </Typography>
+            </StyledIconButton>
+          ) : (
+            <StyledIconButton onClick={redirectLogin}  sx={{ height: '100%', width:"90px", display:
               'flex', justifyContent:"center", alignItems:"center",
               
               }}
-           
-          >
-            <PersonOutlineOutlinedIcon/>
-         <span style={{fontSize:"15px"}}> Login</span>
-          </StyledIconButton>
+           >
+              <PersonOutlineOutlinedIcon />
+              <Typography color="white" sx={{ fontSize: '12px', ml: 1 }}>
+                Login
+              </Typography>
+            </StyledIconButton>
+          )}
 
           {/* <StyledIconTabs value={layout} onChange={(e, val) => setLayout(val)} sx={{ flexGrow: '1' }}>
             <StyledIconTab value="bubble" icon={<Workspaces />} />

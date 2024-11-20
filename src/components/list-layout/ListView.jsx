@@ -182,7 +182,7 @@ const ListView = () => {
         <TableContainer sx={{ maxHeight: 'calc(95vh - 70px)', marginTop: '2px'}}>
           <Table stickyHeader>
             <TableHead >
-              <TableRow >
+              <TableRow  >
                 {headCells.map((headCell) => (
                   <StyledHeadCell
                     key={headCell.id}

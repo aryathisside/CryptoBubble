@@ -4,13 +4,15 @@ import BubbleCanvas from './BubbleCanvas';
 import useDataStore from '../store/useDataStore';
 import Logo from "/image2.png"
 
+
 const BubblePlot = ({ selectedPeriod }) => {
+ 
   const currencies = useDataStore((state) => state.currencies);
 
   const isLoading = useDataStore((state) => state.loading);
 
   return (
-    <Box sx={{ flexGrow: 1, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', height:"10vh" }}>
+    <Box sx={{ flexGrow: 1, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
       {isLoading && (
         <Box>
           <img className="scale-up-center" src={Logo} alt="CRYPTO + Bubble" width={200} />

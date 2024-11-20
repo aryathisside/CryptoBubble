@@ -1,5 +1,7 @@
+// index.js
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter as Router } from 'react-router-dom'; // Import BrowserRouter
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import App from './App';
@@ -10,10 +12,11 @@ const root = createRoot(rootElement);
 
 root.render(
   // <React.StrictMode>
-  <ThemeProvider theme={theme}>
-    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-    <CssBaseline />
-    <App />
-  </ThemeProvider>
+    <Router> {/* Wrap the entire App with Router */}
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </Router>
   // </React.StrictMode>
 );

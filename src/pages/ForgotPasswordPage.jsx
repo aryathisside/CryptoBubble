@@ -1,13 +1,23 @@
 import { Box, Stack, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FormInput from '../ui/overrides/Input'
 import { Email } from '@mui/icons-material'
 import FormButton from '../ui/overrides/FormButton'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import axios from 'axios'
+import Helper from '../utils/Helper'
 
 const ForgotPasswordPage = () => {
     const [email,setEmail]=useState("")
+
+    const [isMobile, setIsMobile] = useState(false);
+ 
+  
+    useEffect(() => {
+      // Handle window resize for mobile detection
+      const cleanup = Helper.handleResize(setIsMobile);
+      return cleanup;
+    }, []);
 
     const sendResetLink = async () => {
         try {
@@ -35,7 +45,7 @@ const ForgotPasswordPage = () => {
       backgroundPosition: 'right', // Center the background image
       backgroundRepeat: 'no-repeat' // Prevent the image from repeating
     }}>
-       <Box width={"45%"} height={"60%"}  display={"flex"} justifyContent={"center"} flexDirection={"column"} gap={2} alignItems={"center"}>
+       <Box width={isMobile?"100%":"45%"} height={"60%"}  display={"flex"} justifyContent={"center"} flexDirection={"column"} gap={2} alignItems={"center"}>
        <Typography variant="h5" color="white">
        Forgot Password?
           </Typography>
