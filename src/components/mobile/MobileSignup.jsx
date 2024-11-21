@@ -1,5 +1,5 @@
-import { Box, Grid, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { Alert, Box, Grid, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import FormInput from '../../ui/overrides/Input';
 import StyledIconButton from '../../ui/overrides/IconButton';
 import FormButton from '../../ui/overrides/FormButton';
@@ -20,6 +20,16 @@ const MobileSignup = ({ showSignup }) => {
   const [error, setError] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+
+      return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
+    }
+  }, [error]);
 
   const requestOtp = async () => {
     try {
@@ -132,6 +142,11 @@ const MobileSignup = ({ showSignup }) => {
           Login <ArrowRightAltIcon className="arrow" />
         </FormButton>
       </Box>
+      {error && (
+  <Alert style={{position:"absolute" , right:5 ,top:5}} variant="filled" severity="error" sx={{ mt: 2 }}>
+    {error}
+  </Alert>
+)}
     </Box>
   );
 };

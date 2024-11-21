@@ -1,5 +1,5 @@
-import { Box, Grid, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import { Alert, Box, Grid, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import FormInput from '../../ui/overrides/Input'
 import { Email, Lock} from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
@@ -16,6 +16,16 @@ const MobileLogin = ({showSignup}) => {
     const [isMobile, setIsMobile] = useState(false);
     const [loading, setLoading] = useState(false); // To show loading during request
     const [error, setError] = useState('');
+
+    useEffect(() => {
+      if (error) {
+        const timer = setTimeout(() => {
+          setError('');
+        }, 5000);
+  
+        return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
+      }
+    }, [error]);
 
     const handleForgotPasswordClick = () => {
         navigate('/forgot-password'); // Redirect to the Forgot Password page
@@ -100,6 +110,12 @@ const handleSignUpClick=()=>{
           Create a new account <ArrowRightAltIcon className="arrow" />
         </FormButton>
         </Box>
+
+        {error && (
+  <Alert style={{position:"absolute" , right:5 ,top:5}} variant="filled" severity="error" sx={{ mt: 2 }}>
+    {error}
+  </Alert>
+)}
 
 
     </Box>
