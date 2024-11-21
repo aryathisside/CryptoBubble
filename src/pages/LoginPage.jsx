@@ -38,7 +38,7 @@ const LoginPage = () => {
       display: 'flex',
       p: 0,
       height: '100vh', // Ensure full viewport height
-      backgroundImage: `url(/LoginBackground.svg)`, // Set background image
+      backgroundImage: `url(/Loginbg.png)`, // Set background image
       backgroundSize: 'cover', // Make the image cover the entire area
       backgroundPosition: 'center', // Center the background image
       backgroundRepeat: 'no-repeat' // Prevent the image from repeating
@@ -59,14 +59,14 @@ const LoginPage = () => {
         display: 'flex',
         p: 0,
         height: '100vh', // Ensure full viewport height
-        backgroundImage: `url(/LoginBackground.svg)`, // Set background image
+        backgroundImage: `url(/Loginbg.png)`, // Set background image
         backgroundSize: 'cover', // Make the image cover the entire area
         backgroundPosition: 'right', // Center the background image
         backgroundRepeat: 'no-repeat' // Prevent the image from repeating
       }}>
       <Box  width={'40%'} height={'100%'}  display={'flex'} flexDirection={'column'}  justifyContent={"center"} alignItems={"center"} >
        <Box display={"flex"} flexDirection={"column"} width={"90%"} gap={3} padding={3} >
-       <Box display="flex" gap={1} alignItems="center">
+       <Box display="flex" gap={1} alignItems="center" onClick={()=> navigate('/') }>
           <img height={40} src={`./image2.png`} />
           <Typography variant="h5" color="white">
             Crypto+ bubble
