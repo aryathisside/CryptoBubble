@@ -34,7 +34,7 @@ const MobileLogin = ({showSignup}) => {
     }else{
       setError("")
       setLoading(false)
-      window.location.reload()
+     navigate("/")
     }
 
 };
@@ -44,8 +44,8 @@ const handleSignUpClick=()=>{
 
 }
   return (
-    <Box  width={'100%'} height={'100%'}  display={'flex'} flexDirection={'column'} py={4} gap={3} alignItems={"center"} px={2} >
-     <Box width={'100%'} height={'100%'}  display={'flex'} flexDirection={'column'} py={4} gap={3} alignItems={"center"} px={2}>
+    <Box  width={'100%'} height={'100%'}  display={'flex'} flexDirection={'column'} gap={3}  px={2} >
+     <Box width={'100%'}   display={'flex'} flexDirection={'column'} py={4}  gap={3} alignItems={"center"} px={2} >
      <Box display={"flex"} flexDirection={"column"} justifyContent={"center"
        } alignItems={"center"} width={"100%"} gap={1}>
        <Typography variant="h5" color="white" fontWeight={"bold"}>
@@ -92,7 +92,7 @@ const handleSignUpClick=()=>{
           </Grid>
      </Box>
 
-        <Box display={"flex"} flexDirection={"column"} width={"100%"} gap={2} justifySelf={"flex-end"}>
+        <Box display={"flex"} flexDirection={"column"} width={"100%"} gap={2}  >
         <FormButton onClick={handleLogin} disabled={loading} >
           {loading ? 'Logging in...' : 'Log In'} <ArrowRightAltIcon className="arrow" />
         </FormButton>

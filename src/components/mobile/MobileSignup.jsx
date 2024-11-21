@@ -72,8 +72,8 @@ const MobileSignup = ({ showSignup }) => {
     showSignup(true);
   };
   return (
-    <Box width={'100%'} height={'100%'} display={'flex'} flexDirection={'column'} py={3} gap={3} alignItems={'center'} px={2}>
-      <Box width={'100%'} height={'100%'} display={'flex'} flexDirection={'column'} gap={3} alignItems={'center'}>
+    <Box width={'100%'} height={'100%'} display={'flex'} flexDirection={'column'} py={2} gap={3} alignItems={'center'} px={2}>
+      <Box width={'100%'}  display={'flex'} flexDirection={'column'} gap={3} alignItems={'center'}  >
         <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} width={'100%'} gap={1}>
           <Typography variant="h5" color="white" fontWeight={'bold'}>
             Create An a Account
@@ -87,7 +87,7 @@ const MobileSignup = ({ showSignup }) => {
             <FormInput id="otp" label="OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
           </Box>
         ) : (
-          <Box display={'flex'} flexDirection={'column'} width={'100%'} gap={2}>
+          <Box display={'flex'} flexDirection={'column'} width={'100%'} gap={1}>
             <FormInput id="first-name" label="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
             <FormInput id="last-name" label="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
             <FormInput id="email" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} icon={<Email sx={{ color: '#A9A9A9' }} />} />
