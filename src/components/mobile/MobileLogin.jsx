@@ -34,6 +34,7 @@ const MobileLogin = ({showSignup}) => {
     }else{
       setError("")
       setLoading(false)
+      window.location.reload()
     }
 
 };
