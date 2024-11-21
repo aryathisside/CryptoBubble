@@ -12,6 +12,8 @@ import StyledTextField from '../ui/overrides/TextField';
 import Constant from '../utils/Constant';
 import ConfigurationDialog from './layout/ConfigurationDialog';
 import FooterTabs from './FooterTabs';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useLocation } from 'react-router-dom';
 
 const HeaderTabs = () => {
   const config = useConfigStore((state) => state.configuration);
@@ -29,6 +31,8 @@ const HeaderTabs = () => {
   const allConfigs = useConfigStore((state) => state.allConfigs);
   const updateAllConfig = useConfigStore((state) => state.updateAllConfigs);
   const setConfig = useConfigStore((state) => state.setConfig);
+  const [hasToken, setHasToken] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     if (searchTerm && searchTerm !== '') {
@@ -76,8 +80,31 @@ const HeaderTabs = () => {
     setEditConfig(true);
   };
 
+  const handleLogout = () => {
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get('token');
+    const userEmail = queryParams.get('userEmail');
+  
+    // Remove query parameters from the URL
+    if (token || userEmail) {
+      const newUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  
+    // Clear tokens and user data from localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('userEmail');
+  
+    // Update state or perform other actions
+    setHasToken(false); // Update the state to reflect logout
+  
+    // Redirect to login or home page
+    window.location.href ='/login';
+  };
+  
+
   return (
-    <Stack direction="row" gap={isMobile ? 8 : 2}  bgcolor={'#171A24'} display={'flex'} justifyContent={"space-between"}  alignItems={'center'} padding={1.5}>
+    <Stack direction="row" gap={isMobile ? 1 : 2}  bgcolor={'#171A24'} display={'flex'} justifyContent={"space-between"}  alignItems={'center'} padding={1.5}>
       <HeaderProgress />
       {/* {layout === 'bubble' && ( */}
         <>
@@ -115,12 +142,25 @@ const HeaderTabs = () => {
  
 ) : (
   isMobile && !searchEnabled && (
-    <StyledIconButton sx={{height:"100%"}} onClick={() => setSearchEnabled(true)}>
+    <Box display={"flex"} gap={1} justifyContent={"flex-end"}>
+     <StyledIconButton sx={{height:"100%"}} onClick={() => setSearchEnabled(true)}>
     <Search />
   </StyledIconButton>
+   <StyledIconButton onClick={handleLogout}  sx={{ height: '100%', width:"40px", display:
+    'flex', justifyContent:"center", alignItems:"center",
+    
+    }}>
+    {/* <ExitToAppIcon /> */}
+    <LogoutIcon/>
+  
+  </StyledIconButton>
+
+    </Box>
+   
    
   )
 )}
+
               {/* <StyledTextField
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}

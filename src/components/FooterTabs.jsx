@@ -7,7 +7,7 @@ import useConfigStore from '../store/useConfigStore';
 import useDataStore from '../store/useDataStore';
 import StyledIconButton from '../ui/overrides/IconButton';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const FooterTabs = () => {
@@ -19,6 +19,7 @@ const FooterTabs = () => {
   const watchlists = useConfigStore((state) => state.watchlists);
   const navigation = useNavigate()
   const [hasToken, setHasToken] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     // Check for JWT token in localStorage
@@ -54,11 +55,24 @@ const FooterTabs = () => {
   };
 
   const handleLogout = () => {
-    // Clear token from localStorage
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get('token');
+    const userEmail = queryParams.get('userEmail');
+  
+    // Remove query parameters from the URL
+    if (token || userEmail) {
+      const newUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  
+    // Clear tokens and user data from localStorage
     localStorage.removeItem('token');
-    localStorage.removeItem("userEmail")
+    localStorage.removeItem('userEmail');
+  
+    // Update state or perform other actions
     setHasToken(false); // Update the state to reflect logout
-   
+  
+    
   };
 
   return (

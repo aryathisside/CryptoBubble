@@ -1,5 +1,5 @@
-import { Box, Grid, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { Alert, Box, Grid, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import FormInput from '../../ui/overrides/Input';
 import StyledIconButton from '../../ui/overrides/IconButton';
 import FormButton from '../../ui/overrides/FormButton';
@@ -20,6 +20,16 @@ const MobileSignup = ({ showSignup }) => {
   const [error, setError] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+
+      return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
+    }
+  }, [error]);
 
   const requestOtp = async () => {
     try {
@@ -72,8 +82,8 @@ const MobileSignup = ({ showSignup }) => {
     showSignup(true);
   };
   return (
-    <Box width={'100%'} height={'100%'} display={'flex'} flexDirection={'column'} py={3} gap={3} alignItems={'center'} px={2}>
-      <Box width={'100%'} height={'100%'} display={'flex'} flexDirection={'column'} gap={3} alignItems={'center'}>
+    <Box width={'100%'} height={'100%'} display={'flex'} flexDirection={'column'} py={2} gap={3} alignItems={'center'} px={2}>
+      <Box width={'100%'}  display={'flex'} flexDirection={'column'} gap={3} alignItems={'center'}  >
         <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} width={'100%'} gap={1}>
           <Typography variant="h5" color="white" fontWeight={'bold'}>
             Create An a Account
@@ -87,7 +97,7 @@ const MobileSignup = ({ showSignup }) => {
             <FormInput id="otp" label="OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
           </Box>
         ) : (
-          <Box display={'flex'} flexDirection={'column'} width={'100%'} gap={2}>
+          <Box display={'flex'} flexDirection={'column'} width={'100%'} gap={1}>
             <FormInput id="first-name" label="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
             <FormInput id="last-name" label="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
             <FormInput id="email" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} icon={<Email sx={{ color: '#A9A9A9' }} />} />
@@ -132,6 +142,11 @@ const MobileSignup = ({ showSignup }) => {
           Login <ArrowRightAltIcon className="arrow" />
         </FormButton>
       </Box>
+      {error && (
+  <Alert style={{position:"absolute" , right:5 ,top:5}} variant="filled" severity="error" sx={{ mt: 2 }}>
+    {error}
+  </Alert>
+)}
     </Box>
   );
 };
