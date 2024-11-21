@@ -1,5 +1,5 @@
-import { Stack } from '@mui/material';
-import React, { useState } from 'react';
+import { Alert, Stack } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import FormInput from '../ui/overrides/Input';
 import { Email, Lock } from '@mui/icons-material';
 import FormButton from '../ui/overrides/FormButton';
@@ -22,6 +22,17 @@ const LoginForm = ({isSignupPage}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+
+      return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
+    }
+  }, [error]);
 
   const handleLogin = async () => {
 
@@ -170,10 +181,10 @@ const LoginForm = ({isSignupPage}) => {
 
       {/* Displaying error message if login fails */}
       {error && (
-        <Stack mt={2} color="error.main">
-          <span>{error}</span>
-        </Stack>
-      )}
+  <Alert style={{position:"absolute" , right:55 ,top:5}} variant="filled" severity="error" sx={{ mt: 2 }}>
+    {error}
+  </Alert>
+)}
     </Stack>
   );
 };

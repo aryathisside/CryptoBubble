@@ -33,7 +33,6 @@ const MobileLogin = ({showSignup}) => {
       setLoading(false)
     }else{
       setError("")
-     window.location.reload()
       setLoading(false)
     }
 
