@@ -97,7 +97,7 @@ const MobileSignup = ({ showSignup }) => {
             <FormInput id="otp" label="OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
           </Box>
         ) : (
-          <Box display={'flex'} flexDirection={'column'} width={'100%'} gap={1}>
+          <Box display={'flex'} flexDirection={'column'} width={'100%'} gap={2}>
             <FormInput id="first-name" label="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
             <FormInput id="last-name" label="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
             <FormInput id="email" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} icon={<Email sx={{ color: '#A9A9A9' }} />} />
@@ -115,7 +115,7 @@ const MobileSignup = ({ showSignup }) => {
         {/* <Typography onClick={handleForgotPasswordClick} variant="subtitle" color="#A9A9A9">
             Forgot Password?
           </Typography> */}
-        <Typography variant="subtitle" color="#A9A9A9">
+        {/* <Typography variant="subtitle" color="#A9A9A9">
           Login with social media
         </Typography>
         <Grid display={'flex'} gap={2}>
@@ -125,7 +125,7 @@ const MobileSignup = ({ showSignup }) => {
           <StyledIconButton onClick={handleLinkedinLogin} sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
             <img height={25} src="Social Media (1).png" alt="" />
           </StyledIconButton>
-        </Grid>
+        </Grid> */}
       </Box>
 
       <Box display={'flex'} flexDirection={'column'} width={'100%'} gap={2} justifySelf={'flex-end'}>

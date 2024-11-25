@@ -88,7 +88,7 @@ const handleSignUpClick=()=>{
         <Typography onClick={handleForgotPasswordClick} variant="subtitle" color="#A9A9A9">
             Forgot Password?
           </Typography>
-          <Typography variant="subtitle" color="#A9A9A9">
+          {/* <Typography variant="subtitle" color="#A9A9A9">
             Login with social media
           </Typography>
           <Grid display={'flex'} gap={2}>
@@ -99,7 +99,7 @@ const handleSignUpClick=()=>{
               <img height={25} src="Social Media (1).png" alt="" />
             </StyledIconButton>
            
-          </Grid>
+          </Grid> */}
      </Box>
 
         <Box display={"flex"} flexDirection={"column"} width={"100%"} gap={2}  >
