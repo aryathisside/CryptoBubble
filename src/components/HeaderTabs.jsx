@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Box, Stack, ClickAwayListener, Grow, Typography } from '@mui/material';
+import { Box, Stack, ClickAwayListener, Grow, Typography, TextField } from '@mui/material';
 import { StyledTab, StyledTabs } from '../ui/overrides/Tabs';
 import HeaderProgress from './HeaderProgress';
 import useConfigStore from '../store/useConfigStore';
@@ -8,7 +8,7 @@ import Helper from '../utils/Helper';
 import { useEffect, useRef, useState } from 'react';
 import StyledIconButton from '../ui/overrides/IconButton';
 import { Add, Edit, Search } from '@mui/icons-material';
-import StyledTextField from '../ui/overrides/TextField';
+import StyledTextField, { SearchTextField } from '../ui/overrides/TextField';
 import Constant from '../utils/Constant';
 import ConfigurationDialog from './layout/ConfigurationDialog';
 import FooterTabs from './FooterTabs';
@@ -33,6 +33,7 @@ const HeaderTabs = () => {
   const setConfig = useConfigStore((state) => state.setConfig);
   const [hasToken, setHasToken] = useState(false);
   const location = useLocation();
+  const setLayout = useConfigStore((state) => state.setLayout);
 
   useEffect(() => {
     if (searchTerm && searchTerm !== '') {
@@ -108,12 +109,12 @@ const HeaderTabs = () => {
       <HeaderProgress />
       {/* {layout === 'bubble' && ( */}
         <>
-          <img className="ml-2" src={searchEnabled ? './image2.png' : './image.png'} alt="Brand Image" style={{ height: 40 }} />
+          <img className="ml-2" src={searchEnabled ? './image2.png' : './image.png'} alt="Brand Image" style={{ height: 40 , cursor:"pointer"}} onClick={()=>{setLayout("bubble")}}  />
 
           <ClickAwayListener onClickAway={() => handleClose()}>
             <Box width={isMobile && searchEnabled ?"60%":"40%"} position="relative">
             {(isMobile && searchEnabled) || !isMobile ? (
-                <StyledTextField
+                <SearchTextField
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 autoFocus
@@ -130,8 +131,8 @@ const HeaderTabs = () => {
                   '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
                   '& input::placeholder': { textAlign: 'left' }, // Aligns placeholder left
                   '& .MuiInputBase-input': { 
-                    color: '#3D424B', 
-                    paddingLeft: '8px', // Ensure text is aligned to the left
+                    color: 'white', 
+                  
                     textAlign: 'left', 
                   },
             

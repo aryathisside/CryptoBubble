@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Email, Lock } from '@mui/icons-material';
 import { handleGoogleLogin, handleLinkedinLogin } from '../../utils/auth';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const MobileSignup = ({ showSignup }) => {
   const [firstName, setFirstName] = useState('');
@@ -20,6 +21,11 @@ const MobileSignup = ({ showSignup }) => {
   const [error, setError] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   useEffect(() => {
     if (error) {
@@ -105,10 +111,14 @@ const MobileSignup = ({ showSignup }) => {
             <FormInput
               id="password"
               label="Password"
-              type="password"
+              type= {showPassword ? "text" :"password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              icon={<Lock sx={{ color: '#A9A9A9' }} />}
+              icon={
+                <span onClick={togglePasswordVisibility} style={{ cursor: "pointer" }}>
+                  {showPassword ? <Lock sx={{ color: "#A9A9A9" }} /> : <VisibilityIcon sx={{ color: "#A9A9A9" }} />}
+                </span>
+              }
             />
           </Box>
         )}

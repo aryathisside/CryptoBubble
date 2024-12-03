@@ -7,6 +7,7 @@ import StyledIconButton from '../../ui/overrides/IconButton'
 import FormButton from '../../ui/overrides/FormButton'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { handleGoogleLogin, handleLinkedinLogin, Login } from '../../utils/auth'
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const MobileLogin = ({showSignup}) => {
 
@@ -16,6 +17,11 @@ const MobileLogin = ({showSignup}) => {
     const [isMobile, setIsMobile] = useState(false);
     const [loading, setLoading] = useState(false); // To show loading during request
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
 
     useEffect(() => {
       if (error) {
@@ -78,10 +84,14 @@ const handleSignUpClick=()=>{
       <FormInput
         id="password"
         label="Password"
-        type="password"
+        type= {showPassword ? "text" :"password"}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        icon={<Lock sx={{ color: '#A9A9A9' }} />}
+        icon={
+          <span onClick={togglePasswordVisibility} style={{ cursor: "pointer" }}>
+            {showPassword ? <Lock sx={{ color: "#A9A9A9" }} /> : <VisibilityIcon sx={{ color: "#A9A9A9" }} />}
+          </span>
+        }
         
       />
         </Box>
