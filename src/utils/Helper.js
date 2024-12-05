@@ -228,7 +228,7 @@ class Helper {
 
    static handleResize(callback){
     const resizeHandler = () => {
-      callback(window.innerWidth <= 768);
+      callback(window.innerWidth <= 1024);
     };
 
     resizeHandler()

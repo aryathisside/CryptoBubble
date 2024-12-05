@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, IconButton, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import FormInput from '../ui/overrides/Input'
 import { Email } from '@mui/icons-material'
@@ -6,12 +6,14 @@ import FormButton from '../ui/overrides/FormButton'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import axios from 'axios'
 import Helper from '../utils/Helper'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { useNavigate } from 'react-router-dom'
 
 const ForgotPasswordPage = () => {
     const [email,setEmail]=useState("")
 
     const [isMobile, setIsMobile] = useState(false);
- 
+    const navigate = useNavigate()
   
     useEffect(() => {
       // Handle window resize for mobile detection
@@ -45,6 +47,9 @@ const ForgotPasswordPage = () => {
       backgroundPosition: 'right', // Center the background image
       backgroundRepeat: 'no-repeat' // Prevent the image from repeating
     }}>
+        <Box position={"absolute"} top= {isMobile?10:30} left={isMobile?10:50}>
+        <IconButton onClick={()=>navigate("/login")}> <ArrowBackIosIcon sx={{color:'white !important', fontSize:"2.4rem"}} /> </IconButton>
+        </Box>
        <Box width={isMobile?"100%":"45%"} height={"60%"}  display={"flex"} justifyContent={"center"} flexDirection={"column"} gap={2} alignItems={"center"}>
        <Typography variant="h5" color="white">
        Forgot Password?

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid, IconButton, Stack, Typography } from '@mui/material';
 import StyledIconButton from '../ui/overrides/IconButton';
 import LoginForm from '../components/LoginForm';
 import {useNavigate} from "react-router-dom"
@@ -7,6 +7,8 @@ import Helper from '../utils/Helper';
 import MobileLogin from '../components/mobile/MobileLogin';
 import MobileSignup from '../components/mobile/MobileSignup';
 import { handleGoogleLogin, handleLinkedinLogin } from '../utils/auth';
+import BackgrouondImage from "/Loginbg.png"
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const LoginPage = () => {
   const [isLogin,setIslogin]=useState(true)
@@ -38,7 +40,7 @@ const LoginPage = () => {
       display: 'flex',
       p: 0,
       height: '100vh', // Ensure full viewport height
-      backgroundImage: `url(/Loginbg.png)`, // Set background image
+      backgroundImage: `url(${BackgrouondImage})`, // Set background image
       backgroundSize: 'cover', // Make the image cover the entire area
       backgroundPosition: 'center', // Center the background image
       backgroundRepeat: 'no-repeat' // Prevent the image from repeating
@@ -59,14 +61,17 @@ const LoginPage = () => {
         display: 'flex',
         p: 0,
         height: '100vh', // Ensure full viewport height
-        backgroundImage: `url(/Loginbg.png)`, // Set background image
+        backgroundImage: `url(${BackgrouondImage})`, // Set background image
         backgroundSize: 'cover', // Make the image cover the entire area
         backgroundPosition: 'right', // Center the background image
         backgroundRepeat: 'no-repeat' // Prevent the image from repeating
       }}>
-      <Box  width={'40%'} height={'100%'}  display={'flex'} flexDirection={'column'}  justifyContent={"center"} alignItems={"center"} >
+      <Box  width={'40%'} height={'100%'}  display={'flex'} flexDirection={'column'}  justifyContent={"center"} alignItems={"center"}  >
        <Box display={"flex"} flexDirection={"column"} width={"90%"} gap={3} padding={3} >
-       <Box display="flex" gap={1} alignItems="center" onClick={()=> navigate('/') } sx={{cursor:"pointer"}}>
+        <Box >
+        <IconButton onClick={()=>window.location.reload()}> <ArrowBackIosIcon sx={{color:'white !important', fontSize:"2.4rem"}} /> </IconButton>
+        </Box>
+       <Box display="flex" gap={1} alignItems="center" onClick={()=> navigate('/') } sx={{cursor:"pointer"}}  >
           <img height={40} src={`./image2.png`} />
           <Typography variant="h5" color="white">
             Crypto+ bubble

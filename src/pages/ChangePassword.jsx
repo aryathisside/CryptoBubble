@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Alert, Box, Stack, Typography } from '@mui/material';
+import { Alert, Box, IconButton, Stack, Typography } from '@mui/material';
 import FormInput from '../ui/overrides/Input';
 import FormButton from '../ui/overrides/FormButton';
 import Helper from '../utils/Helper';
 import { Email, Lock } from '@mui/icons-material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -18,6 +19,8 @@ const ChangePassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false); // To show loading during request
+
+  
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -87,6 +90,9 @@ const ChangePassword = () => {
         backgroundPosition: 'right', // Center the background image
         backgroundRepeat: 'no-repeat' // Prevent the image from repeating
       }}>
+          <Box position={"absolute"} top= {isMobile?10:30} left={isMobile?10:50}>
+        <IconButton onClick={()=>navigate("/login")}> <ArrowBackIosIcon sx={{color:'white !important', fontSize:"2.4rem"}} /> </IconButton>
+        </Box>
       <Box
         width={isMobile ? '100%' : '45%'}
         height={'60%'}

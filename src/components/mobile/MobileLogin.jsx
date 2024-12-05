@@ -50,7 +50,8 @@ const MobileLogin = ({showSignup}) => {
     }else{
       setError("")
       setLoading(false)
-     navigate("/")
+      // navigate("/")
+      window.location.reload()
     }
 
 };
