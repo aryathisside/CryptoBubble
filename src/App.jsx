@@ -6,6 +6,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/PasswordResetPage';
 import useConfigStore from './store/useConfigStore';
 import Helper from './utils/Helper';
+import ChangePassword from './pages/ChangePassword';
 
 const App = () => {
   const initializeWishlist = useConfigStore((state) => state.initializeWishlist);
@@ -67,6 +68,8 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/change-password" element={<ChangePassword />} />
+
       </Routes>
 
   );

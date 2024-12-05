@@ -142,7 +142,7 @@ const SettingsView = () => {
         </Box>
         <Box
           marginTop={2}
-          height={120}
+          height={isMobile?240 :500}
           sx={{
             overflowY: 'scroll', // Enable vertical scrolling
             scrollbarWidth: 'none', // Hide scrollbar for Firefox

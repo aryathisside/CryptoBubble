@@ -22,7 +22,7 @@ const BubbleView = () => {
   }, []);
   const layout = useConfigStore((state) => state.layout);
   return (
-    <Stack sx={{ p: 0, bgcolor: '#000000', height:isMobile?"90%" :'100%',display:"flex" }}>
+    <Stack sx={{ p: 0, bgcolor: '#000000', height:isMobile?"95%" :'100%',display:"flex" }}>
       <HeaderTabs />
       {layout === 'bubble' && <BubblePlot />}
       {layout === 'list' && <ListView />}

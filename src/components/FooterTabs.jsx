@@ -103,7 +103,7 @@ const FooterTabs = () => {
               width: 600,
               maxWidth: '90vw',
               right:0,
-              top:70,
+              top:110,
              
               borderRadius: 1,
               boxShadow: '0px 0px 7px 7px #00000027',
