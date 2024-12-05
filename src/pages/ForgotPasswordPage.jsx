@@ -6,8 +6,9 @@ import FormButton from '../ui/overrides/FormButton'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import axios from 'axios'
 import Helper from '../utils/Helper'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from 'react-router-dom'
+import StyledIconButton from '../ui/overrides/IconButton'
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 const ForgotPasswordPage = () => {
     const [email,setEmail]=useState("")
@@ -47,9 +48,7 @@ const ForgotPasswordPage = () => {
       backgroundPosition: 'right', // Center the background image
       backgroundRepeat: 'no-repeat' // Prevent the image from repeating
     }}>
-        <Box position={"absolute"} top= {isMobile?10:30} left={isMobile?10:50}>
-        <IconButton onClick={()=>navigate("/login")}> <ArrowBackIosIcon sx={{color:'white !important', fontSize:"2.4rem"}} /> </IconButton>
-        </Box>
+       
        <Box width={isMobile?"100%":"45%"} height={"60%"}  display={"flex"} justifyContent={"center"} flexDirection={"column"} gap={2} alignItems={"center"}>
        <Typography variant="h5" color="white">
        Forgot Password?
@@ -72,6 +71,15 @@ const ForgotPasswordPage = () => {
       </Box>
           
         </Box> 
+        <Box position={'absolute'} display={"flex"} top={20} right={20} >
+        <StyledIconButton sx={{width:"90px",py:2, display:"flex", justifyContent:"center"}} onClick={() => navigate("/login")}>
+          {' '}
+          <ArrowLeftIcon sx={{ color: '#A9A9A9 !important', fontSize:"2rem" }} />
+         <Typography variant='subtitle2' color= '#A9A9A9 '>
+         Back
+         </Typography>
+        </StyledIconButton>
+      </Box>
     </Stack>
   )
 }
