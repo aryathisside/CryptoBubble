@@ -8,6 +8,9 @@ const FormInput = ({ icon, ...props }) => {
         backgroundColor: '#2A2E36',
         borderRadius: '8px',
         '& .MuiOutlinedInput-root': {
+          '& input': {
+            color: 'white', // Set typed text color to white
+          },
           '& fieldset': {
             border: 'none',
           },
@@ -19,7 +22,7 @@ const FormInput = ({ icon, ...props }) => {
           },
         },
         '& .MuiInputLabel-root.Mui-focused': {
-          color: '#A9A9A9',
+          color: 'white',
         },
         '& .MuiInputLabel-root': {
           color: 'white',
