@@ -43,7 +43,7 @@ const ResetPasswordPage = () => {
 
       if (response.status === 200) {
         alert('Password has been reset successfully.');
-        navigate('/'); // Redirect to login after successful reset
+        navigate('/login'); // Redirect to login after successful reset
       }
     } catch (error) {
       alert('Failed to reset password. Please try again.');

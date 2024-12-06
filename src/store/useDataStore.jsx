@@ -8,7 +8,15 @@ const useDataStore = create((set) => ({
   loading: true,
   setLoading: (value) => set({ loading: value }),
   filter: { type: 'all', id: null },
-  updateFilter: (filter) => set({ filter })
+  updateFilter: (filter) => set({ filter }),
+   // New authentication state
+   isAuthenticated: !!localStorage.getItem('token'), // Initialize from localStorage
+   setAuthenticated: (status) => set({ isAuthenticated: status }),
+   logout: () => {
+     localStorage.removeItem('token');
+     localStorage.removeItem('userEmail');
+     set({ isAuthenticated: false });
+   },
 }));
 
 export default useDataStore;

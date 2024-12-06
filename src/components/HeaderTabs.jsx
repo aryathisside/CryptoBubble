@@ -34,6 +34,8 @@ const HeaderTabs = () => {
   const [hasToken, setHasToken] = useState(false);
   const location = useLocation();
   const setLayout = useConfigStore((state) => state.setLayout);
+  const { isAuthenticated, logout } = useDataStore();
+  
 
   useEffect(() => {
     if (searchTerm && searchTerm !== '') {
@@ -92,15 +94,10 @@ const HeaderTabs = () => {
       window.history.replaceState({}, document.title, newUrl);
     }
   
-    // Clear tokens and user data from localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('userEmail');
-  
+   
     // Update state or perform other actions
     setHasToken(false); // Update the state to reflect logout
-  
-    // Redirect to login or home page
-    window.location.href ='/login';
+    logout()
   };
   
 

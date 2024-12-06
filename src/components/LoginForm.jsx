@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { Login } from '../utils/auth';
 import PersonIcon from '@mui/icons-material/Person';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import useDataStore from '../store/useDataStore';
 
 const LoginForm = ({ isSignupPage }) => {
   // State to track whether it's sign up mode
@@ -24,6 +25,7 @@ const LoginForm = ({ isSignupPage }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const navigate = useNavigate();
+  const setAuthenticated = useDataStore((state) => state.setAuthenticated);
 
   useEffect(() => {
     if (error) {
@@ -42,13 +44,19 @@ const LoginForm = ({ isSignupPage }) => {
       setError(response.message);
       setEmail('');
       setPassword('');
+      setAuthenticated(true)
       setLoading(false);
+
     } else {
       setError('');
       navigate('/');
       setLoading(false);
     }
   };
+  const backToLogin = ()=>{
+    isSignupPage(false)
+    setIsSignUp(false)
+  }
 
   // Function to handle the "Create a new account" button click
   const handleSignUpClick = () => {
@@ -170,10 +178,15 @@ const LoginForm = ({ isSignupPage }) => {
           )}
 
           {/* "Create a new account" button for switching to Sign Up mode */}
-          {!isSignUp && (
+          {!isSignUp ? (
             <FormButton onClick={handleSignUpClick}>
               Create a new account <ArrowRightAltIcon className="arrow" />
             </FormButton>
+          ):(
+            <FormButton onClick={backToLogin}>
+              Back to Login <ArrowRightAltIcon className="arrow" />
+            </FormButton>
+
           )}
         </>
       )}
