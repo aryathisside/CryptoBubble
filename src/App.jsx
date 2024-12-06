@@ -7,30 +7,30 @@ import ResetPasswordPage from './pages/PasswordResetPage';
 import useConfigStore from './store/useConfigStore';
 import Helper from './utils/Helper';
 import ChangePassword from './pages/ChangePassword';
+import useDataStore from './store/useDataStore';
 
 const App = () => {
   const initializeWishlist = useConfigStore((state) => state.initializeWishlist);
   const [isMobile, setIsMobile] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const { isAuthenticated, logout } = useDataStore();
   
   // Capture URL query params like token and userEmail
   const location = useLocation();
 
+  const setAuthenticated = useDataStore((state) => state.setAuthenticated);
+
   useEffect(() => {
-    // Check if token and userEmail are present in the URL query params (after successful Google login)
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get('token');
     const userEmail = queryParams.get('userEmail');
 
     if (token && userEmail) {
-      // Store them in localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('userEmail', userEmail);
-
-      // Set authentication state to true
-      setIsAuthenticated(true);
+      setAuthenticated(true); // Update Zustand state
     }
-  }, [location.search]);  // Only run this effect when the query params change
+  }, [location.search]);
 
   useEffect(() => {
     // Handle window resize for mobile detection
@@ -46,7 +46,8 @@ const App = () => {
   useEffect(() => {
     // Check if token exists in localStorage
     const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token); // Update auth status based on token presence
+    console.log(token)
+    setAuthenticated(!!token); // Update auth status based on token presence
   }, []);
 
   return (

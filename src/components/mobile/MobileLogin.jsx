@@ -8,6 +8,7 @@ import FormButton from '../../ui/overrides/FormButton'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { handleGoogleLogin, handleLinkedinLogin, Login } from '../../utils/auth'
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import useDataStore from '../../store/useDataStore'
 
 const MobileLogin = ({showSignup}) => {
 
@@ -18,6 +19,8 @@ const MobileLogin = ({showSignup}) => {
     const [loading, setLoading] = useState(false); // To show loading during request
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const setAuthenticated = useDataStore((state) => state.setAuthenticated);
+
 
     const togglePasswordVisibility = () => {
       setShowPassword(!showPassword);
@@ -50,8 +53,9 @@ const MobileLogin = ({showSignup}) => {
     }else{
       setError("")
       setLoading(false)
+      setAuthenticated(true)
       // navigate("/")
-      window.location.reload()
+      // window.location.reload()
     }
 
 };

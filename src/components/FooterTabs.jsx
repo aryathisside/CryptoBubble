@@ -18,13 +18,17 @@ const FooterTabs = () => {
   const setLayout = useConfigStore((state) => state.setLayout);
   const watchlists = useConfigStore((state) => state.watchlists);
   const navigation = useNavigate()
-  const [hasToken, setHasToken] = useState(false);
   const location = useLocation();
+  const { isAuthenticated, logout } = useDataStore();
+  const setAuthenticated = useDataStore((state) => state.setAuthenticated);
 
   useEffect(() => {
-    // Check for JWT token in localStorage
-    setHasToken(!!localStorage.getItem('token'));
-  }, []);
+    console.log('FooterTabs: isAuthenticated:', isAuthenticated);
+    const token = localStorage.getItem("token")
+    setAuthenticated(!!token)
+    
+
+  }, [isAuthenticated]);
 
   const redirectLogin = ()=>{
     navigation("/login")
@@ -64,22 +68,14 @@ const FooterTabs = () => {
       const newUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, newUrl);
     }
-  
-    // Clear tokens and user data from localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('userEmail');
-  
-    // Update state or perform other actions
-    setHasToken(false); // Update the state to reflect logout
-  
-    
+    logout()
   };
 
   return (
     <Box pb={1 / 2}>
       <Stack direction="row" justifyContent="space-between" gap={1}>
         <Box position="relative" ml={1}>
-          <StyledButton onClick={() => setIsFilterOpen(!isFilterOpen)} disabled={!hasToken} sx={{ width:"100px", height:"100%"  }} >
+          <StyledButton onClick={() => setIsFilterOpen(!isFilterOpen)} disabled={!isAuthenticated} sx={{ width:"100px", height:"100%"  }} >
             <Stack direction="row" display="flex" justifyContent="center"alignItems="center">
               <Typography color="white" fontWeight="bold" textTransform="none" fontSize={"12px"}>
                 {renderName()}
@@ -93,7 +89,7 @@ const FooterTabs = () => {
             </Stack>
           </StyledButton>
         {
-          hasToken &&   <Grow in={isFilterOpen}>
+          isAuthenticated &&   <Grow in={isFilterOpen}>
           <Box
             position="absolute"
             sx={{
@@ -178,7 +174,7 @@ const FooterTabs = () => {
           >
             <SettingsSuggest /> {/* or whichever icon you want to show */}
           </StyledIconButton>
-           {hasToken ? (
+           {isAuthenticated ? (
             <StyledIconButton onClick={handleLogout} sx={{ height: '100%', width:"90px", display:
               'flex', justifyContent:"center", alignItems:"center",
               

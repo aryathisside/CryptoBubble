@@ -10,6 +10,8 @@ import { handleGoogleLogin, handleLinkedinLogin } from '../utils/auth';
 import BackgrouondImage from '/Loginbg.png';
 
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import useDataStore from '../store/useDataStore';
+
 
 const LoginPage = () => {
   const [isLogin, setIslogin] = useState(true);
@@ -18,6 +20,7 @@ const LoginPage = () => {
   const handleMobileToggle = (val) => {
     setIslogin(val);
   };
+ 
 
   const handleForgotPasswordClick = () => {
     navigate('/forgot-password'); // Redirect to the Forgot Password page
@@ -107,11 +110,11 @@ const LoginPage = () => {
         </Box>
       </Box>
       <Box position={'absolute'} display={"flex"} top={20} right={20} >
-        <StyledIconButton sx={{width:"90px",py:2, display:"flex", justifyContent:"center"}} onClick={() => window.location.reload()}>
+        <StyledIconButton sx={{width:90, display:"flex", justifyContent:"center", alignItems:"center"}} onClick={() => navigate("/")}>
           {' '}
           <ArrowLeftIcon sx={{ color: '#A9A9A9 !important', fontSize:"2rem" }} />
          <Typography variant='subtitle2' color= '#A9A9A9 '>
-         Back
+         Home
          </Typography>
         </StyledIconButton>
       </Box>
