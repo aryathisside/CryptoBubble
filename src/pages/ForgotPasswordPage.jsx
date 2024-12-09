@@ -1,4 +1,4 @@
-import { Box, IconButton, Stack, Typography } from '@mui/material'
+import { Alert, Box, IconButton, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import FormInput from '../ui/overrides/Input'
 import { Email } from '@mui/icons-material'
@@ -12,6 +12,10 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 const ForgotPasswordPage = () => {
     const [email,setEmail]=useState("")
+    const [error, setError]=useState({
+      message:"",
+      severity:""
+    })
 
     const [isMobile, setIsMobile] = useState(false);
     const navigate = useNavigate()
@@ -22,14 +26,42 @@ const ForgotPasswordPage = () => {
       return cleanup;
     }, []);
 
+    useEffect(() => {
+      if (error) {
+        const timer = setTimeout(() => {
+          setError({
+            message:"",
+            severity:""
+          });
+        }, 5000);
+  
+        return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
+      }
+    }, [error]);
+
     const sendResetLink = async () => {
         try {
             const response = await axios.post(process.env.FORGOT_PASSWORD, { email });
             if (response.status === 200) {
-                alert("Password reset link has been sent to your email.");
+                setError({
+                  message:"Password reset link has been sent to your email.",
+                  severity:"success"
+                })
             }
         } catch (error) {
-            alert("Failed to send reset link. Please try again.");
+          if(error.response){
+            console.log(error.response.data.message)
+            setError({
+              message:error.response?.data?.message,
+              severity:"error"
+            })
+            return
+          }
+        
+            setError({
+              message:"Failed to send reset link. Please try again.",
+              severity:"error"
+            })
             console.error("Error in sendResetLink:", error);
         }
     };
@@ -80,6 +112,9 @@ const ForgotPasswordPage = () => {
          </Typography>
         </StyledIconButton>
       </Box>
+      <Alert style={{position:"absolute" , right:5 ,top:5}} variant="filled" severity={error.severity} sx={{ mt: 2 }}>
+    {error.message}
+  </Alert>
     </Stack>
   )
 }
