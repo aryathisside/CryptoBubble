@@ -5,9 +5,7 @@ import StyledIconButton from '../../ui/overrides/IconButton';
 import FormButton from '../../ui/overrides/FormButton';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { Email, Lock } from '@mui/icons-material';
-import { handleGoogleLogin, handleLinkedinLogin } from '../../utils/auth';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const MobileSignup = ({ showSignup }) => {
@@ -15,8 +13,6 @@ const MobileSignup = ({ showSignup }) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(false); // To show loading during request
   const [error, setError] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -74,7 +70,7 @@ const MobileSignup = ({ showSignup }) => {
       localStorage.setItem("userEmail", response.data.userEmail)
       console.log('Signup successful:', response.data);
       setError('');
-      setIsSignUp(false); // Reset form to login state
+     
       setIsOtpSent(false); // Reset OTP sent status
       window.location.reload()
     } catch (err) {

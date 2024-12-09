@@ -13,6 +13,25 @@ const ResetPasswordPage = () => {
   const navigate = useNavigate();
   
   const [isMobile, setIsMobile] = useState(false);
+
+  const [error, setError]=useState({
+    message:"",
+    severity:""
+  })
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError({
+          message:"",
+          severity:""
+        });
+      }, 5000);
+
+      return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
+    }
+  }, [error]);
+
  
   
   useEffect(() => {
@@ -29,7 +48,10 @@ const ResetPasswordPage = () => {
 
   const handlePasswordReset = async () => {
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      setError({
+        message:'Passwords do not match',
+        severity:"warning"
+      })
       return;
     }
 
@@ -42,11 +64,23 @@ const ResetPasswordPage = () => {
       });
 
       if (response.status === 200) {
-        alert('Password has been reset successfully.');
+        setError(
+          {
+            message:'Password has been reset successfully.',
+            severity:"success"
+          }
+          
+        )
         navigate('/login'); // Redirect to login after successful reset
       }
     } catch (error) {
-      alert('Failed to reset password. Please try again.');
+      setError(
+        {
+          message:'Failed to reset password. Please try again.',
+          severity:"success"
+        }
+        
+      )
       console.error('Error in handlePasswordReset:', error);
     }
   };
