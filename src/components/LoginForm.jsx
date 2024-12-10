@@ -18,7 +18,10 @@ const LoginForm = ({ isSignupPage }) => {
   // States for input fields and error handling
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState({
+    message: '',
+    severity: ''
+  });
   const [loading, setLoading] = useState(false); // To show loading during request
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
@@ -30,7 +33,10 @@ const LoginForm = ({ isSignupPage }) => {
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
-        setError('');
+        setError({
+          message: '',
+          severity: ''
+        });
       }, 5000);
 
       return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
@@ -41,22 +47,27 @@ const LoginForm = ({ isSignupPage }) => {
     setLoading(true); // Set loading to true while waiting for the response
     const response = await Login(email, password);
     if (response.status === 'failed') {
-      setError(response.message);
+      setError({
+        message: response.message,
+        severity: 'error'
+      });
       setEmail('');
       setPassword('');
-      setAuthenticated(true)
+      setAuthenticated(true);
       setLoading(false);
-
     } else {
-      setError('');
+      setError({
+        message: 'Logged in successfully...',
+        severity: 'success'
+      });
       navigate('/');
       setLoading(false);
     }
   };
-  const backToLogin = ()=>{
-    isSignupPage(false)
-    setIsSignUp(false)
-  }
+  const backToLogin = () => {
+    isSignupPage(false);
+    setIsSignUp(false);
+  };
 
   // Function to handle the "Create a new account" button click
   const handleSignUpClick = () => {
@@ -75,13 +86,20 @@ const LoginForm = ({ isSignupPage }) => {
         email,
         password
       });
+      setError({
+        message: 'Otp send successfully to your email',
+        severity: 'success'
+      });
 
       setIsOtpSent(true); // Move to OTP verification step
-      setError(''); // Clear error messages
+      // Clear error messages
       console.log(response.data.message); // Confirmation message (e.g., "OTP sent to email")
     } catch (err) {
       console.log(error);
-      setError(err.response?.data?.message || 'An error occurred during signup');
+      setError({
+        message: err.response?.data?.message || 'An error occurred during signup',
+        severity: 'error'
+      });
     } finally {
       setLoading(false);
     }
@@ -97,15 +115,22 @@ const LoginForm = ({ isSignupPage }) => {
         lastname: lastName,
         password
       });
+      setError({
+        message: 'Your account has been created successfully...',
+        severity: 'success'
+      });
       localStorage.setItem('token', response.data.token); // Store token if needed
       localStorage.setItem('userEmail', response.data.userEmail);
       console.log('Signup successful:', response.data);
-      setError('');
+
       setIsSignUp(false); // Reset form to login state
       setIsOtpSent(false); // Reset OTP sent status
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'OTP verification failed');
+      setError({
+        message: err.response?.data?.message || 'OTP verification failed',
+        severity: 'error'
+      });
     } finally {
       setLoading(false);
     }
@@ -121,7 +146,19 @@ const LoginForm = ({ isSignupPage }) => {
       {/* Conditionally render First Name and Last Name inputs if it's Sign Up mode */}
       {isOtpSent ? (
         <>
-          <FormInput id="otp" label="OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
+          <FormInput
+            id="otp"
+            label="OTP"
+            type="text"
+            value={otp}
+            onKeyPress={(e) => {
+              if (!/[0-9]/.test(e.key)) {
+                e.preventDefault(); // Prevent non-numeric input
+              }
+            }}
+            onChange={(e) => setOtp(e.target.value)}
+          />
+
           <FormButton onClick={verifyOtp} disabled={loading}>
             {loading ? 'Verifying...' : 'Verify OTP'} <ArrowRightAltIcon className="arrow" />
           </FormButton>
@@ -153,12 +190,12 @@ const LoginForm = ({ isSignupPage }) => {
           <FormInput
             id="password"
             label="Password"
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             icon={
-              <span onClick={togglePasswordVisibility} style={{ cursor: "pointer" }}>
-                {showPassword ? <Lock sx={{ color: "#A9A9A9" }} /> : <VisibilityIcon sx={{ color: "#A9A9A9" }} />}
+              <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
+                {showPassword ? <Lock sx={{ color: '#A9A9A9' }} /> : <VisibilityIcon sx={{ color: '#A9A9A9' }} />}
               </span>
             }
           />
@@ -182,19 +219,18 @@ const LoginForm = ({ isSignupPage }) => {
             <FormButton onClick={handleSignUpClick}>
               Create a new account <ArrowRightAltIcon className="arrow" />
             </FormButton>
-          ):(
+          ) : (
             <FormButton onClick={backToLogin}>
               Back to Login <ArrowRightAltIcon className="arrow" />
             </FormButton>
-
           )}
         </>
       )}
 
       {/* Displaying error message if login fails */}
       {error && (
-        <Alert style={{ position: 'absolute', right: 55, top: 5 }} variant="filled" severity="error" sx={{ mt: 2 }}>
-          {error}
+        <Alert style={{ position: 'absolute', right: 55, top: 5, zIndex: 1000 }} variant="filled" severity={error.severity} sx={{ mt: 2 }}>
+          {error.message}
         </Alert>
       )}
     </Stack>

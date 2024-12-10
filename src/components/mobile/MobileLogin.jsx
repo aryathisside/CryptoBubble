@@ -17,7 +17,10 @@ const MobileLogin = ({showSignup}) => {
     const navigate = useNavigate()
     const [isMobile, setIsMobile] = useState(false);
     const [loading, setLoading] = useState(false); // To show loading during request
-    const [error, setError] = useState('');
+    const [error, setError] = useState({
+      message: '',
+      severity: ''
+    });
     const [showPassword, setShowPassword] = useState(false);
     const setAuthenticated = useDataStore((state) => state.setAuthenticated);
 
@@ -29,7 +32,10 @@ const MobileLogin = ({showSignup}) => {
     useEffect(() => {
       if (error) {
         const timer = setTimeout(() => {
-          setError('');
+          setError({
+            message: '',
+            severity: ''
+          });
         }, 5000);
   
         return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
@@ -46,12 +52,18 @@ const MobileLogin = ({showSignup}) => {
     setLoading(true); // Set loading to true while waiting for the response
     const response = await Login(email, password)
     if(response.status === "failed"){
-      setError(response.message)
+      setError({
+        message: response.message,
+        severity: 'error'
+      });
       setEmail("")
       setPassword("")
       setLoading(false)
     }else{
-      setError("")
+      setError({
+        message: 'Logged in successfully...',
+        severity: 'success'
+      });
       setLoading(false)
       setAuthenticated(true)
       // navigate("/")
@@ -127,8 +139,8 @@ const handleSignUpClick=()=>{
         </Box>
 
         {error && (
-  <Alert style={{position:"absolute" , right:5 ,top:5}} variant="filled" severity="error" sx={{ mt: 2 }}>
-    {error}
+  <Alert style={{position:"absolute" , right:5 ,top:5}} variant="filled" severity={error.severity} sx={{ mt: 2 }}>
+    {error.message}
   </Alert>
 )}
 
