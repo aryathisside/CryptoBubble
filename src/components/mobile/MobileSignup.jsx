@@ -14,7 +14,10 @@ const MobileSignup = ({ showSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false); // To show loading during request
-  const [error, setError] = useState('');
+  const [error, setError] = useState({
+    message: '',
+    severity: ''
+  });
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +29,10 @@ const MobileSignup = ({ showSignup }) => {
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
-        setError('');
+        setError({
+          message: '',
+          severity: ''
+        });
       }, 5000);
 
       return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
@@ -43,19 +49,25 @@ const MobileSignup = ({ showSignup }) => {
         email,
         password
       });
+      setError({
+        message: 'Otp send successfully to your email',
+        severity: 'success'
+      });
 
       setIsOtpSent(true); // Move to OTP verification step
-      setError(''); // Clear error messages
+      
       console.log(response.data.message); // Confirmation message (e.g., "OTP sent to email")
     } catch (err) {
       console.log(error);
-      setError(err.response?.data?.message || 'An error occurred during signup');
+      setError({
+        message: err.response?.data?.message || 'An error occurred during signup',
+        severity: 'error'
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  
   const verifyOtp = async () => {
     try {
       setLoading(true);
@@ -64,17 +76,24 @@ const MobileSignup = ({ showSignup }) => {
         otp,
         firstname: firstName,
         lastname: lastName,
-        password,
+        password
+      });
+      setError({
+        message: 'Your account has been created successfully...',
+        severity: 'success'
       });
       localStorage.setItem('token', response.data.token); // Store token if needed
-      localStorage.setItem("userEmail", response.data.userEmail)
+      localStorage.setItem('userEmail', response.data.userEmail);
       console.log('Signup successful:', response.data);
-      setError('');
      
+
       setIsOtpSent(false); // Reset OTP sent status
-      window.location.reload()
+      window.location.reload();
     } catch (err) {
-      setError(err.response?.data?.message || 'OTP verification failed');
+      setError({
+        message: err.response?.data?.message || 'OTP verification failed',
+        severity: 'error'
+      });
     } finally {
       setLoading(false);
     }
@@ -85,7 +104,7 @@ const MobileSignup = ({ showSignup }) => {
   };
   return (
     <Box width={'100%'} height={'100%'} display={'flex'} flexDirection={'column'} py={2} gap={3} alignItems={'center'} px={2}>
-      <Box width={'100%'}  display={'flex'} flexDirection={'column'} gap={3} alignItems={'center'}  >
+      <Box width={'100%'} display={'flex'} flexDirection={'column'} gap={3} alignItems={'center'}>
         <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} width={'100%'} gap={1}>
           <Typography variant="h5" color="white" fontWeight={'bold'}>
             Create An a Account
@@ -96,7 +115,18 @@ const MobileSignup = ({ showSignup }) => {
         </Box>
         {isOtpSent ? (
           <Box display={'flex'} flexDirection={'column'} width={'100%'} gap={2}>
-            <FormInput id="otp" label="OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
+            <FormInput
+              id="otp"
+              label="OTP"
+              type="text"
+              value={otp}
+              onKeyPress={(e) => {
+                if (!/[0-9]/.test(e.key)) {
+                  e.preventDefault(); // Prevent non-numeric input
+                }
+              }}
+              onChange={(e) => setOtp(e.target.value)}
+            />
           </Box>
         ) : (
           <Box display={'flex'} flexDirection={'column'} width={'100%'} gap={2}>
@@ -107,12 +137,12 @@ const MobileSignup = ({ showSignup }) => {
             <FormInput
               id="password"
               label="Password"
-              type= {showPassword ? "text" :"password"}
+              type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               icon={
-                <span onClick={togglePasswordVisibility} style={{ cursor: "pointer" }}>
-                  {showPassword ? <Lock sx={{ color: "#A9A9A9" }} /> : <VisibilityIcon sx={{ color: "#A9A9A9" }} />}
+                <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
+                  {showPassword ? <Lock sx={{ color: '#A9A9A9' }} /> : <VisibilityIcon sx={{ color: '#A9A9A9' }} />}
                 </span>
               }
             />
@@ -136,23 +166,23 @@ const MobileSignup = ({ showSignup }) => {
 
       <Box display={'flex'} flexDirection={'column'} width={'100%'} gap={2} justifySelf={'flex-end'}>
         {isOtpSent ? (
-         <FormButton onClick={verifyOtp} disabled={loading}>
-         {loading ? 'Verifying...' : 'Verify OTP'} <ArrowRightAltIcon className="arrow" />
-       </FormButton>
+          <FormButton onClick={verifyOtp} disabled={loading}>
+            {loading ? 'Verifying...' : 'Verify OTP'} <ArrowRightAltIcon className="arrow" />
+          </FormButton>
         ) : (
           <FormButton onClick={requestOtp} disabled={loading}>
             {loading ? 'Sending OTP...' : 'Sign Up'} <ArrowRightAltIcon className="arrow" />
           </FormButton>
         )}
         <FormButton onClick={handleLoginClick}>
-         Back To Login <ArrowRightAltIcon className="arrow" />
+          Back To Login <ArrowRightAltIcon className="arrow" />
         </FormButton>
       </Box>
       {error && (
-  <Alert style={{position:"absolute" , right:5 ,top:5}} variant="filled" severity="error" sx={{ mt: 2 }}>
-    {error}
-  </Alert>
-)}
+        <Alert style={{ position: 'absolute', right: 5, top: 5 }} variant="filled" severity={error.severity} sx={{ mt: 2 }}>
+          {error.message}
+        </Alert>
+      )}
     </Box>
   );
 };

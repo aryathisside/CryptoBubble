@@ -225,19 +225,21 @@ class Helper {
     }
   }
    }
-
-   static handleResize(callback){
+   static handleResize(callback) {
     const resizeHandler = () => {
-      callback(window.innerWidth <= 1224);
+      const isMobileOrTablet =
+        /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 1224;
+      callback(isMobileOrTablet);
     };
-
-    resizeHandler()
-    window.addEventListener('resize', resizeHandler);
-
+  
+    resizeHandler(); // Trigger the check immediately on load
+    window.addEventListener("resize", resizeHandler);
+  
     return () => {
-      window.removeEventListener('resize', resizeHandler);
+      window.removeEventListener("resize", resizeHandler);
     };
   }
+  
 }
 
 export default Helper;
