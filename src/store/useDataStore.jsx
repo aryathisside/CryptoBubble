@@ -16,6 +16,7 @@ const useDataStore = create((set) => ({
      localStorage.removeItem('token');
      localStorage.removeItem('userEmail');
      set({ isAuthenticated: false });
+     window.location.href = '/';
    },
 }));
 

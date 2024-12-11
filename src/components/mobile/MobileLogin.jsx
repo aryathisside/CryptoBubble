@@ -76,6 +76,10 @@ const handleSignUpClick=()=>{
     showSignup(false)
 
 }
+const handleSkip=async ()=>{
+  await localStorage.setItem('token',"login without crediantials");
+  window.location.href = "/"
+}
   return (
     <Box  width={'100%'} height={'100%'}  display={'flex'} flexDirection={'column'} gap={3}  px={2} >
      <Box width={'100%'}   display={'flex'} flexDirection={'column'} py={4}  gap={3} alignItems={"center"} px={2} >
@@ -135,6 +139,9 @@ const handleSignUpClick=()=>{
         </FormButton>
         <FormButton onClick={handleSignUpClick}>
           Create a new account <ArrowRightAltIcon className="arrow" />
+        </FormButton>
+        <FormButton onClick={handleSkip}>
+          Skip <ArrowRightAltIcon className="arrow" />
         </FormButton>
         </Box>
 
