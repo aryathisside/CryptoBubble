@@ -44,6 +44,7 @@ const SettingsView = () => {
   const removeWatchlist = (id) => {
     const wl = watchlists.filter((item) => item.id !== id);
     updateAllWatchlist(wl);
+    updateFilter({ type: 'all', id: null })
   };
 
   const updateFilterHandle = (fil) => {

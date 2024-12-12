@@ -66,6 +66,7 @@ const MobileLogin = ({showSignup}) => {
       });
       setLoading(false)
       setAuthenticated(true)
+      // window.location.href = "/"
       // navigate("/")
       // window.location.reload()
     }
@@ -78,7 +79,8 @@ const handleSignUpClick=()=>{
 }
 const handleSkip=async ()=>{
   await localStorage.setItem('token',"login without crediantials");
-  window.location.href = "/"
+  // window.location.href = "/"
+  setAuthenticated(true)
 }
   return (
     <Box  width={'100%'} height={'100%'}  display={'flex'} flexDirection={'column'} gap={3}  px={2} >

@@ -14,6 +14,7 @@ import ConfigurationDialog from './layout/ConfigurationDialog';
 import FooterTabs from './FooterTabs';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useLocation } from 'react-router-dom';
+import LoginIcon from '@mui/icons-material/Login';
 
 const HeaderTabs = () => {
   const config = useConfigStore((state) => state.configuration);
@@ -35,6 +36,15 @@ const HeaderTabs = () => {
   const location = useLocation();
   const setLayout = useConfigStore((state) => state.setLayout);
   const { isAuthenticated, logout } = useDataStore();
+  const [isGuest, setIsGuest]=useState(false)
+
+  useEffect(()=>{
+    const email = localStorage.getItem("userEmail")
+    if(!email){
+      setIsGuest(true)
+    }
+
+  },[])
   
 
   useEffect(() => {
@@ -144,14 +154,26 @@ const HeaderTabs = () => {
      <StyledIconButton sx={{height:"100%"}} onClick={() => setSearchEnabled(true)}>
     <Search />
   </StyledIconButton>
-   <StyledIconButton onClick={handleLogout}  sx={{ height: '100%', width:"40px", display:
-    'flex', justifyContent:"center", alignItems:"center",
-    
-    }}>
-    {/* <ExitToAppIcon /> */}
-    <LogoutIcon/>
-  
-  </StyledIconButton>
+   {
+    isGuest ? (
+      <StyledIconButton onClick={handleLogout}  sx={{ height: '100%', width:"40px", display:
+        'flex', justifyContent:"center", alignItems:"center",
+        
+        }}>
+        {/* <ExitToAppIcon /> */}
+        <LoginIcon/>
+      </StyledIconButton>
+    ):(
+      <StyledIconButton onClick={handleLogout}  sx={{ height: '100%', width:"40px", display:
+        'flex', justifyContent:"center", alignItems:"center",
+        
+        }}>
+        {/* <ExitToAppIcon /> */}
+        <LogoutIcon/>
+      
+      </StyledIconButton>
+    )
+   }
 
     </Box>
    

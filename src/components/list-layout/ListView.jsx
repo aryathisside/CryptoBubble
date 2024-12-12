@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  Typography,
   styled,
   tableCellClasses
 } from '@mui/material';
@@ -135,9 +136,31 @@ const ListView = () => {
   const [sort, setSort] = useState();
   const [sortDirection, setSortDirection] = useState('desc');
   const [sortedRows, setSortedRows] = useState(rows);
+  const [filteredRows, setFilteredRows] = useState([]);
+  const filter = useDataStore((state) => state.filter);
+  const favorites = useConfigStore((state) => state.favorites);
+  const blocklist = useConfigStore((state) => state.blocklist);
+  const watchlists = useConfigStore((state) => state.watchlists);
 
   useEffect(() => {
-    const sorted = [...rows];
+    let filtered = [];
+    if (filter.type === 'all') {
+      filtered = rows.filter((item) => !blocklist.includes(item.id));
+    } else if (filter.type === 'favorite') {
+      filtered = rows.filter((item) => favorites.includes(item.id));
+    } else if (filter.type === 'blocklist') {
+      filtered = rows.filter((item) => blocklist.includes(item.id));
+    } else if (filter.type === 'watchlist' && filter.id) {
+      const wt = watchlists.find((item) => item.id === filter.id);
+      filtered = rows.filter((item) => wt.symbols.includes(item.id));
+    }
+    setFilteredRows(filtered);
+  }, [rows, favorites, filter, blocklist, watchlists]);
+
+  useEffect(() => {
+    console.log(rows)
+    const sorted = [...filteredRows];
+   
     if (sort) {
       if (sort === 'rank') {
         sorted.sort((a, b) => (sortDirection === 'asc' ? a.rank - b.rank : b.rank - a.rank));
@@ -160,7 +183,7 @@ const ListView = () => {
       }
     }
     setSortedRows(sorted);
-  }, [sort, sortDirection]);
+  }, [sort, sortDirection,filteredRows]);
 
   const updateSort = (id) => {
     if (sort === id) {
@@ -175,6 +198,24 @@ const ListView = () => {
       setSortDirection('desc');
     }
   };
+
+  if(filteredRows.length === 0){
+    return <Box
+    sx={{
+      flexGrow: 1,
+      width: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+    }}
+  >
+     <Typography variant="h6" color="white">
+    {filter.type} List is empty
+  </Typography>
+
+  </Box> 
+  }
 
   return (
     <Box sx={{ flexGrow: 1, width: '100%', overflow:"auto" }}>
@@ -207,8 +248,6 @@ const ListView = () => {
             </TableHead>
             <TableBody>
               {sortedRows.map((row) => {
-                
-               
                 return (
                   <TableRow key={row.id} sx={{ transition: 'background .4s', ':hover': { background: '#ffffff14' } }}>
                     <StyledCell align="right">{row.rank}</StyledCell>

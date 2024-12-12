@@ -62,6 +62,7 @@ const MobileFooter = () => {
 
   const handleAddConfig = () => {
     const item = { ...Constant.DEFAULT_CONFIGS[0] };
+    console.log(item)
     item.period = 'min1';
     item.id = Date.now();
     allConfigs.push(item);

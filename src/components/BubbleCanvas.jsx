@@ -28,7 +28,7 @@ const BubbleCanvas = () => {
       cM.setProperties({...config, colors:colorScheme,baseCurrency});
       // Push the currencies to the canvas manager
       setTimeout(() => {
-        cM.pushCurrencies(currencies);
+        // cM.pushCurrencies(currencies);
       }, 1000);
       cM.eventSelect.register((currency) => setSelectedCurrency(currency));
       cM.wakeUp();
@@ -41,11 +41,11 @@ const BubbleCanvas = () => {
     }
   }, [config, colorScheme]);
 
-  useEffect(() => {
-    if (canvasManager) {
-      canvasManager.pushCurrencies(currencies);
-    }
-  }, [selectedCurrency]);
+  // useEffect(() => {
+  //   if (canvasManager) {
+  //     canvasManager.pushCurrencies(currencies);
+  //   }
+  // }, [selectedCurrency]);
 
   useEffect(() => {
     let filtered = [];
@@ -71,7 +71,7 @@ const BubbleCanvas = () => {
   
 
 
-  return <canvas style={{backgroundColor:"#000000"}}  id="canvas" ref={canvasContainerRef} />;
+  return <canvas style={{backgroundColor:"#000000"}}  id="canvas" ref={canvasContainerRef} />
 };
 
 export default BubbleCanvas;

@@ -1,4 +1,4 @@
-import { Box, Grow, Stack, Typography } from '@mui/material';
+import { Box, Grow, Stack, Tooltip, Typography } from '@mui/material';
 import { Block, KeyboardArrowDown, RemoveRedEye, Reorder, SettingsSuggest, Star, Workspaces } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import StyledButton from '../ui/overrides/Button';
@@ -21,6 +21,10 @@ const FooterTabs = () => {
   const location = useLocation();
   const { isAuthenticated, logout } = useDataStore();
   const setAuthenticated = useDataStore((state) => state.setAuthenticated);
+
+  useEffect(()=>{
+    setIsFilterOpen(false)
+  },[layout])
 
   useEffect(() => {
     console.log('FooterTabs: isAuthenticated:', isAuthenticated);
@@ -75,19 +79,26 @@ const FooterTabs = () => {
     <Box pb={1 / 2}>
       <Stack direction="row" justifyContent="space-between" gap={1}>
         <Box position="relative" ml={1}>
-          <StyledButton onClick={() => setIsFilterOpen(!isFilterOpen)} disabled={!isAuthenticated} sx={{ width:"100px", height:"100%"  }} >
+        <Tooltip title="Wish list" arrow>
+        <StyledButton onClick={() => setIsFilterOpen(!isFilterOpen)} disabled={!isAuthenticated} sx={{ width:"100px", height:"100%"  }} >
             <Stack direction="row" display="flex" justifyContent="center"alignItems="center">
               <Typography color="white" fontWeight="bold" textTransform="none" fontSize={"12px"}>
                 {renderName()}
               </Typography>
-              <KeyboardArrowDown
-                sx={{
-                  transition: 'transform 0.4s',
-                  transform: isFilterOpen ? 'rotateZ(180deg)' : ''
-                }}
-              />
+            {
+              isAuthenticated &&   <KeyboardArrowDown
+              sx={{
+                transition: 'transform 0.4s',
+                transform: isFilterOpen ? 'rotateZ(180deg)' : ''
+              }}
+            />
+
+            }
             </Stack>
           </StyledButton>
+
+        </Tooltip>
+          
         {
           isAuthenticated &&   <Grow in={isFilterOpen}>
           <Box
@@ -99,7 +110,8 @@ const FooterTabs = () => {
               width: 600,
               maxWidth: '90vw',
               right:0,
-              top:65,
+              top:70,
+              zIndex:1000,
              
               borderRadius: 1,
               boxShadow: '0px 0px 7px 7px #00000027',
@@ -109,6 +121,7 @@ const FooterTabs = () => {
             <Stack>
 
               <Box>
+                
               <StyledButton
                     onClick={() => updateFilterHandle({ type: 'all', id: null })}
                     sx={{ mr: 1, mb: 1, px: 2, background: filter.type === 'all' ? '#0477DD !important' : null }}>
@@ -155,27 +168,40 @@ const FooterTabs = () => {
         </Box>
 
         <Box mr={1} display={"flex"} gap={1}>
-          <StyledIconButton
+        <Tooltip title="Bubble view" arrow>
+        <StyledIconButton
             sx={{ height: '100%' }}
             onClick={() => setLayout('bubble')} // Update this to handle the layout changes as needed
           >
             <Workspaces /> {/* or whichever icon you want to show */}
           </StyledIconButton>
-          <StyledIconButton
+
+        </Tooltip>
+        <Tooltip title="List view" arrow>
+        <StyledIconButton
             sx={{ height: '100%' }}
             onClick={() => setLayout('list')} // Update this to handle the layout changes as needed
           >
             <Reorder /> {/* or whichever icon you want to show */}
           </StyledIconButton>
 
-          <StyledIconButton
+        </Tooltip>
+        <Tooltip title="setting" arrow>
+        <StyledIconButton
             sx={{ height: '100%' }}
             onClick={() => setLayout('settings')} // Update this to handle the layout changes as needed
           >
             <SettingsSuggest /> {/* or whichever icon you want to show */}
           </StyledIconButton>
+
+        </Tooltip>
+        
+        
+
+      
            {isAuthenticated ? (
-            <StyledIconButton onClick={handleLogout} sx={{ height: '100%', width:"90px", display:
+           <Tooltip title="Logout" arrow>
+             <StyledIconButton onClick={handleLogout} sx={{ height: '100%', width:"90px", display:
               'flex', justifyContent:"center", alignItems:"center",
               
               }}>
@@ -187,6 +213,7 @@ const FooterTabs = () => {
                 Logout
               </Typography>
             </StyledIconButton>
+           </Tooltip>
           ) : (
             <StyledIconButton onClick={redirectLogin}  sx={{ height: '100%', width:"90px", display:
               'flex', justifyContent:"center", alignItems:"center",

@@ -13,10 +13,11 @@ const useDataStore = create((set) => ({
    isAuthenticated: !!localStorage.getItem('token'), // Initialize from localStorage
    setAuthenticated: (status) => set({ isAuthenticated: status }),
    logout: () => {
+    localStorage.removeItem("config")
      localStorage.removeItem('token');
      localStorage.removeItem('userEmail');
      set({ isAuthenticated: false });
-     window.location.href = '/';
+    //  window.location.href = '/';
    },
 }));
 
