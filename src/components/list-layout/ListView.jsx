@@ -19,6 +19,7 @@ import Helper from '../../utils/Helper';
 import useConfigStore from '../../store/useConfigStore';
 import SymbolName from './SymbolName';
 import TradeLinks from '../symbol-detail/TradeLinks';
+import Logo from "/image2.png";
 
 const headCells = [
   {
@@ -141,6 +142,7 @@ const ListView = () => {
   const favorites = useConfigStore((state) => state.favorites);
   const blocklist = useConfigStore((state) => state.blocklist);
   const watchlists = useConfigStore((state) => state.watchlists);
+  const isLoading = useDataStore((state) => state.loading);
 
   useEffect(() => {
     let filtered = [];
@@ -199,7 +201,7 @@ const ListView = () => {
     }
   };
 
-  if(filteredRows.length === 0){
+  if(filteredRows.length === 0 && filter.type !== 'all' ){
     return <Box
     sx={{
       flexGrow: 1,
@@ -217,10 +219,20 @@ const ListView = () => {
   </Box> 
   }
 
+
+
   return (
-    <Box sx={{ flexGrow: 1, width: '100%', overflow:"auto" }}>
+   <>
+   
+
+<Box sx={{ flexGrow: 1, width: '100%', overflow:"auto" }}>
       <Paper sx={{ width: '100%', overflow: 'hidden', background: 'transparent', boxShadow: 'none' }}>
-        <TableContainer sx={{ maxHeight: 'calc(95vh - 70px)', marginTop: '2px'}}>
+      {isLoading ? (
+          <Box width={"100%"} height={"100%"} display={"flex"} justifyContent={"center"} ali>
+            <img className="scale-up-center" src={Logo} alt="CRYPTO + Bubble" width={200} />
+          </Box>
+        ):(
+          <TableContainer sx={{ maxHeight: 'calc(95vh - 70px)', marginTop: '2px'}}>
           <Table stickyHeader>
             <TableHead >
               <TableRow  >
@@ -296,8 +308,13 @@ const ListView = () => {
             </TableBody>
           </Table>
         </TableContainer>
+
+        )}
+   
       </Paper>
     </Box>
+   
+   </>
   );
 };
 

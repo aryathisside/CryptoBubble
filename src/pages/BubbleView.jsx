@@ -13,6 +13,7 @@ import MobileFooter from '../components/mobile/MobileFooter';
 const BubbleView = () => {
   
   const [isMobile, setIsMobile]=useState(false)
+ 
 
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const BubbleView = () => {
 
     return cleanup;
   }, []);
+  
   const layout = useConfigStore((state) => state.layout);
   return (
     <Stack sx={{ p: 0, bgcolor: '#000000', height:isMobile?"95%" :'100%',display:"flex" }}>

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import useConfigStore from './useConfigStore';
 
 const useDataStore = create((set) => ({
   currencies: [],
@@ -17,6 +18,7 @@ const useDataStore = create((set) => ({
      localStorage.removeItem('token');
      localStorage.removeItem('userEmail');
      set({ isAuthenticated: false });
+     useConfigStore.getState().updateAllWatchlist([]); // Reset watchlists to an empty array
     //  window.location.href = '/';
    },
 }));

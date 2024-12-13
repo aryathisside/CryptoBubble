@@ -38,7 +38,6 @@ const BubblePlot = ({ selectedPeriod }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column',
       }}
     >
       {isLoading && (
@@ -49,11 +48,11 @@ const BubblePlot = ({ selectedPeriod }) => {
       {!isLoading && filteredCurrencies.length > 0 && (
         <BubbleCanvas stocksData={filteredCurrencies} selectedPeriod={selectedPeriod} />
       )}
-      {!isLoading && filteredCurrencies.length === 0 && (
-        <Typography variant="h6" color="white">
-          {filter.type} List is empty
-        </Typography>
-      )}
+      {!isLoading && filteredCurrencies.length === 0 && filter.type !== 'all' && (
+    <Typography variant="h6" color="white">
+      {filter.type} List is empty
+    </Typography>
+  )}
     </Box>
   );
 };

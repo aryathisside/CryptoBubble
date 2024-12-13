@@ -18,6 +18,17 @@ const SettingsView = () => {
   const updateFilter = useDataStore((state) => state.updateFilter);
   const filter = useDataStore((state) => state.filter);
   const [isMobile, setIsMobile] = useState(false);
+  const { isAuthenticated, logout } = useDataStore();
+
+  const [isGuest, setIsGuest]=useState(false)
+
+  useEffect(()=>{
+    const email = localStorage.getItem("userEmail")
+    if(!email){
+      setIsGuest(true)
+    }
+
+  },[])
 
   useEffect(() => {
     const cleanup = Helper.handleResize(setIsMobile);
@@ -48,6 +59,10 @@ const SettingsView = () => {
   };
 
   const updateFilterHandle = (fil) => {
+    if(isGuest){
+     return logout()
+
+    }
     updateFilter(fil);
   };
   return (

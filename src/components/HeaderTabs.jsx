@@ -115,8 +115,11 @@ const HeaderTabs = () => {
     <Stack direction="row" gap={isMobile ? 1 : 2}  bgcolor={'#171A24'} display={'flex'} justifyContent={"space-between"}  alignItems={'center'} padding={1.5}>
       <HeaderProgress />
       {/* {layout === 'bubble' && ( */}
-        <>
-          <img className="ml-2" src={searchEnabled ? './image2.png' : './image.png'} alt="Brand Image" style={{ height: 40 , cursor:"pointer"}} onClick={()=>{setLayout("bubble")}}  />
+        <>{}
+
+         <Box  width={searchEnabled ? "11%":"fit-content" } overflow={searchEnabled && "hidden"}>
+         <img className="ml-2" src={ './image.png'} alt="Brand Image" style={{  height: 40 , cursor:"pointer"}} onClick={()=>{setLayout("bubble")}}  />
+         </Box>
 
           <ClickAwayListener onClickAway={() => handleClose()}>
             <Box width={isMobile && searchEnabled ?"60%":"40%"} position="relative">

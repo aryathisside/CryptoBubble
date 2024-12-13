@@ -239,7 +239,25 @@ class Helper {
       window.removeEventListener("resize", resizeHandler);
     };
   }
+
+  static isTablet(callback) {
+    const tabletHandler = () => {
+      const isTabletDevice =
+        /iPad|Android/i.test(navigator.userAgent) && window.innerWidth > 767 && window.innerWidth <= 1224;
+      callback(isTabletDevice);
+    };
   
+    tabletHandler(); // Trigger the check immediately on load
+    window.addEventListener("resize", tabletHandler);
+  
+    return () => {
+      window.removeEventListener("resize", tabletHandler);
+    };
+  }
+  
+  
+
+
 }
 
 export default Helper;

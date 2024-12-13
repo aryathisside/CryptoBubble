@@ -39,9 +39,10 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    console.log("rendering...")
     // Initialize wishlist state
     initializeWishlist();
-  }, [initializeWishlist]);
+  }, [initializeWishlist, isAuthenticated]);
 
   useEffect(() => {
     // Check if token exists in localStorage
