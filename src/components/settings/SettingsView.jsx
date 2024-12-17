@@ -208,7 +208,7 @@ const SettingsView = () => {
             </SvgIcon>{' '}
             Join Discord
           </StyledButton> */}
-          <StyledButton sx={{ width: isMobile?'50%':"20%", fontSize:"12px", gap:1 }} onClick={() => window.open('https://www.aicerts.io/contact-us/', '_blank')}><SvgIcon>
+          <StyledButton sx={{ width: isMobile?'50%':"20%", fontSize:"12px", gap:1 }} onClick={() => window.open(`${process.env.CONTACT_US}`, '_blank')}><SvgIcon>
           <SupportAgentIcon />
             </SvgIcon> Contact Us</StyledButton>
         </Box>

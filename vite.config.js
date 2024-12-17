@@ -20,7 +20,11 @@ export default defineConfig(({ mode }) => {
       'process.env.GET_WISHLIST': JSON.stringify(env.GET_WISHLIST),
       'process.env.GOOGLE_LOGIN': JSON.stringify(env.GOOGLE_LOGIN),
       'process.env.LINKEDIN_LOGIN': JSON.stringify(env.LINKEDIN_LOGIN),
-      'process.env.CHANGE_PASSWORD': JSON.stringify(env.CHANGE_PASSWORD)
+      'process.env.CHANGE_PASSWORD': JSON.stringify(env.CHANGE_PASSWORD),
+      'process.env.LOGOUT': JSON.stringify(env.LOGOUT),
+      'process.env.CONTACT_US': JSON.stringify(env.CONTACT_US),
+      'process.env.DISCORD': JSON.stringify(env.DISCORD)
+    
 
 
 
