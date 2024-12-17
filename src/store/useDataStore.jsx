@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import useConfigStore from './useConfigStore';
+import axios from 'axios';
 
 const useDataStore = create((set) => ({
   currencies: [],
@@ -13,7 +14,16 @@ const useDataStore = create((set) => ({
    // New authentication state
    isAuthenticated: !!localStorage.getItem('token'), // Initialize from localStorage
    setAuthenticated: (status) => set({ isAuthenticated: status }),
-   logout: () => {
+   logout: async() => {
+    try {
+      const res = await axios.get("http://localhost:3001/v1/crypto/logout")
+      console.log(res.data)
+      console.log("logout successfully...")
+      
+    } catch (error) {
+      console.log(error.message)
+      
+    }
     localStorage.removeItem("config")
      localStorage.removeItem('token');
      localStorage.removeItem('userEmail');

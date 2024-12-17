@@ -93,7 +93,7 @@ const MobileFooter = () => {
             bgcolor:"#171A24"
           }
         }}>
-        <DialogContent sx={{ bgcolor: '#171A24' }}>
+        <DialogContent sx={{ bgcolor: '#171A24' , px:2,py:1 }}>
           {dialogView === 'period' ? (
             <>
               <Typography variant='h5' mb={2} color={"white"}>
@@ -123,7 +123,7 @@ const MobileFooter = () => {
             // Render SettingView component if dialogView is 'settings'
             <SettingsView />
           )}
-        </DialogContent>
+        </DialogContent>    
       </Dialog>
 
       {/* Footer Navigation */}
