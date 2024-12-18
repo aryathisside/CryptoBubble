@@ -15,6 +15,7 @@ import FooterTabs from './FooterTabs';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useLocation } from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
+import Scrollbar from 'react-scrollbars-custom';
 
 const HeaderTabs = () => {
   const config = useConfigStore((state) => state.configuration);
@@ -112,7 +113,7 @@ const HeaderTabs = () => {
   
 
   return (
-    <Stack direction="row" gap={isMobile ? 1 : 2}  bgcolor={'#171A24'} display={'flex'} justifyContent={"space-between"}  alignItems={'center'} padding={1.5}>
+    <Stack direction="row" height={isMobile ?"60px":"90px"} gap={isMobile ? 1 : 2}  bgcolor={'#171A24'} display={'flex'} justifyContent={"space-between"}  alignItems={'center'} padding={1.5}>
       <HeaderProgress />
       {/* {layout === 'bubble' && ( */}
         <>{}
@@ -276,17 +277,55 @@ const HeaderTabs = () => {
             </Box>
           </ClickAwayListener>
 
-        {layout === "bubble" &&  (!isMobile) && (  <StyledTabs
+          {layout === "bubble" &&  (!isMobile) && (
+            <Scrollbar
+            style={{ width: '60%', height: '100%' ,display:"flex", justifyContent:"center", alignItems:"center" , marginTop:"20px"}} // Ensure it spans horizontally
+            noScrollY // Disable vertical scrolling
+            thumbXProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return (
+                  <div
+                    {...restProps}
+                    ref={elementRef}
+                    style={{
+                      backgroundColor: '#CFA935', // Thumb color
+                      borderRadius: '8px', // Rounded corners
+                      height: '5px', // Thumb height
+                     cursor:"grab"
+                    }}
+                  />
+                );
+              },
+            }}
+          >
+            <div style={{ display: 'flex', width: 'max-content', height:"100%", justifyContent:"center" , alignItems:"center" }}> {/* Ensure content is wider than container */}
+              <StyledTabs
+                sx={{
+                  width: isMobile ? '90%' : '100%',
+                  
+                  whiteSpace: 'nowrap', // Prevent wrapping
+                }}
+                variant="scrollable"
+                value={config.id}
+                onChange={(e, val) => updateConfig(allConfigs.find((item) => val === item.id))}
+                scrollButtons={false}
+              >
+                {allConfigs.map((item) => (
+                  <StyledTab
+                    key={item.id}
+                    variant={calculateVarient(item)}
+                    label={item.name || Constant.renderLabel(item)}
+                    value={item.id}
+                  />
+                ))}
+              </StyledTabs>
+            </div>
+          </Scrollbar>
           
-          sx={{ width:isMobile?"90%":"60%"}}
-              variant="scrollable"
-              value={config.id}
-              onChange={(e, val) => updateConfig(allConfigs.find((item) => val === item.id))}
-              scrollButtons={false}>
-              {allConfigs.map((item) => {
-                return <StyledTab key={item.id} variant={calculateVarient(item)} label={item.name || Constant.renderLabel(item)} value={item.id} />;
-              })}
-            </StyledTabs>)}
+          
+          
+        )}
         </>
       
     {

@@ -121,7 +121,7 @@ const ConfigurationDialog = () => {
                   <StyledButton
                     onClick={() => updatePeriod(item.value)}
                     key={item.value}
-                    sx={{ mr: 1, mb: 1, px: 2, background: config.period === item.value ? '#2A2E36 !important' : null }}>
+                    sx={{ mr: 1, mb: 1, px: 2, background: config.period === item.value ? '#0477DD !important' : null }}>
                     <Typography color="white" textTransform="none">
                       {item.label}
                     </Typography>
@@ -137,7 +137,7 @@ const ConfigurationDialog = () => {
                   <StyledButton
                     onClick={() => updateSize(item.value)}
                     key={item.value}
-                    sx={{ mr: 1, mb: 1, px: 2, background: config.size === item.value ? '#2A2E36 !important' : null }}>
+                    sx={{ mr: 1, mb: 1, px: 2, background: config.size === item.value ? '#0477DD !important' : null }}>
                     <Typography color="white" textTransform="none">
                       {item.label}
                     </Typography>
@@ -153,7 +153,7 @@ const ConfigurationDialog = () => {
                   <StyledButton
                     onClick={() => updateContent(item.value)}
                     key={item.value}
-                    sx={{ mr: 1, mb: 1, px: 2, background: config.content === item.value ? '#2A2E36 !important' : null }}>
+                    sx={{ mr: 1, mb: 1, px: 2, background: config.content === item.value ? '#0477DD !important' : null }}>
                     <Typography color="white" textTransform="none">
                       {item.label}
                     </Typography>
@@ -169,7 +169,7 @@ const ConfigurationDialog = () => {
                   <StyledButton
                     onClick={() => updateColor(item.value)}
                     key={item.value}
-                    sx={{ mr: 1, mb: 1, px: 2, background: config.color === item.value ? '#2A2E36 !important' : null }}>
+                    sx={{ mr: 1, mb: 1, px: 2, background: config.color === item.value ? '#0477DD !important' : null  }}>
                     <Typography color="white" textTransform="none">
                       {item.label}
                     </Typography>

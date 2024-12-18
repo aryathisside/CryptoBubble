@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BottomNavigation, BottomNavigationAction, Paper, Box, Button, Typography, Slide } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
@@ -30,6 +30,7 @@ const MobileFooter = () => {
   const setEditConfig = useConfigStore((state) => state.setEditConfig);
   const updateAllConfig = useConfigStore((state) => state.updateAllConfigs);
   const setConfig = useConfigStore((state) => state.setConfig);
+  const [selectedTab, setSelectedTab] = useState(null);
  
   const [dialogView, setDialogView] = useState('period'); // State to track the view in the dialog
 
@@ -71,6 +72,11 @@ const MobileFooter = () => {
     setEditConfig(true);
   };
 
+   // Set the first item as selected on initial render
+   useEffect(() => {
+   setSelectedTab(config.id)
+  }, [config]); // Ensure it runs when `allConfigs` is available
+
   return (
     <>
       {/* Dialog for Period Selection */}
@@ -100,15 +106,27 @@ const MobileFooter = () => {
                 Period
               </Typography>
               <WrappedTabsContainer>
-                {allConfigs.map((item) => (
-                  <WrappedTab
-                    key={item.id}
-                    variant={calculateVarient(item)}
-                    label={item.name || Constant.renderLabel(item)}
-                    value={item.id}
-                    onClick={() => updateConfig(allConfigs.find((configItem) => item.id === configItem.id))}
-                  />
-                ))}
+              {allConfigs.map((item) => {
+                const variant = calculateVarient(item)
+                return <WrappedTab
+                key={item.id}
+                variant={calculateVarient(item)}
+                label={item.name || Constant.renderLabel(item)}
+                value={item.id}
+                onClick={() => {
+                  setSelectedTab(item.id); // Update selected tab
+                  updateConfig(allConfigs.find((configItem) => item.id === configItem.id));
+                }}
+                style={{
+                  background: selectedTab === item.id
+                    ? (variant === 'neutral' ? '#07d' : `${Helper.getSecondaryColor(variant === 'sell' ? -1 : 1, useConfigStore.getState().colorScheme)}`)
+                    : '', // Default background for unselected tabs
+                }}
+              />
+
+              }
+        
+      )}
                 <Box display={"flex"} gap={1} p={1}>
                   <StyledIconButton sx={{ height: "100%" }} onClick={() => setEditConfig(true)}>
                     <Edit />

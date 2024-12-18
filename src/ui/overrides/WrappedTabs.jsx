@@ -36,7 +36,7 @@ export const WrappedTab = styled((props) => <Tab disableRipple {...props} />, { 
     background: '#ffffff1f',
     color: '#fff',
     minWidth: '50px', // Minimum width for small screens
-    maxWidth: '150px', // Maximum width to prevent overflow
+    maxWidth: 'fit-content', // Maximum width to prevent overflow
     flex: '1 1 auto', // Allows flexible sizing for wrapping
     margin: '0', // Adds spacing around each tab
     transition: 'background-color 0.4s, transform 0.4s, opacity 0.4s, border-color 0.4s',
