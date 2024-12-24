@@ -16,6 +16,7 @@ const useDataStore = create((set) => ({
    setAuthenticated: (status) => set({ isAuthenticated: status }),
    logout: async() => {
     try {
+      
       const res = await axios.get(process.env.LOGOUT)
       console.log(res.data)
       console.log("logout successfully...")
