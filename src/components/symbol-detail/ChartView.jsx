@@ -12,6 +12,7 @@ import { Scrollbar } from 'react-scrollbars-custom';
 import NewsSection from '../NewsSection';
 import WishlistAdd from './WishlistAdd';
 import Helper from '../../utils/Helper';
+import useConfigStore from '../../store/useConfigStore';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -23,13 +24,29 @@ const ChartView = () => {
   const isCurrencySelected = !!selectedCurrency;
   const [quotes, setQuotes] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [period, setPeriod] = useState('year');
+  const [period, setPeriod] = useState('');
   const [expanded, setExpanded] = useState(true);
   const [fetchError, setFetchError] = useState(false);
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [fetchNews, setFetchNews]=useState(false)
   const [isMobile, setIsMobile]=useState(false)
+  const config = useConfigStore((state) => state.configuration);
+
+
+  useEffect(() => {
+    console.log("config in chart");
+    const p = config.period;
+  
+    // Check the value of `p` and set the period accordingly
+    if (['hour', 'day', 'week', 'month', 'year'].includes(p)) {
+      setPeriod(p);  // Set the period as p if it matches one of the allowed values
+    } else {
+      setPeriod('year');  // Default to 'year' if p doesn't match any of the allowed values
+    }
+  
+  }, [config]);
+  
 
 
   useEffect(() => {

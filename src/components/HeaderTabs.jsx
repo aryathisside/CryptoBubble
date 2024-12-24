@@ -13,9 +13,10 @@ import Constant from '../utils/Constant';
 import ConfigurationDialog from './layout/ConfigurationDialog';
 import FooterTabs from './FooterTabs';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
 import Scrollbar from 'react-scrollbars-custom';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 const HeaderTabs = () => {
   const config = useConfigStore((state) => state.configuration);
@@ -110,6 +111,16 @@ const HeaderTabs = () => {
     setHasToken(false); // Update the state to reflect logout
     logout()
   };
+  const navigate = useNavigate()
+
+  const showProfile  = async ()=>{
+    if(isGuest){
+      await logout()
+    }else{
+      navigate("/user-profile")
+      
+    }
+  }
   
 
   return (
@@ -159,24 +170,14 @@ const HeaderTabs = () => {
     <Search />
   </StyledIconButton>
    {
-    isGuest ? (
-      <StyledIconButton onClick={handleLogout}  sx={{ height: '100%', width:"40px", display:
-        'flex', justifyContent:"center", alignItems:"center",
-        
-        }}>
-        {/* <ExitToAppIcon /> */}
-        <LoginIcon/>
-      </StyledIconButton>
-    ):(
-      <StyledIconButton onClick={handleLogout}  sx={{ height: '100%', width:"40px", display:
-        'flex', justifyContent:"center", alignItems:"center",
-        
-        }}>
-        {/* <ExitToAppIcon /> */}
-        <LogoutIcon/>
-      
-      </StyledIconButton>
-    )
+ isAuthenticated &&    <StyledIconButton onClick={showProfile}  sx={{ height: '100%', width:"40px", display:
+  'flex', justifyContent:"center", alignItems:"center",
+  
+  }}>
+  {/* <ExitToAppIcon /> */}
+  <PermIdentityIcon/>
+  
+</StyledIconButton>
    }
 
     </Box>

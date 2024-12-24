@@ -45,3 +45,10 @@ export const handleLinkedinLogin = () => {
   // Redirect the user to the Google OAuth endpoint on your server
   window.location.href = process.env.LINKEDIN_LOGIN; // Update with your backend URL
 };
+
+
+export function getCookie(name) {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? match[2] : null;
+}
+

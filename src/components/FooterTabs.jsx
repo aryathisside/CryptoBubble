@@ -9,6 +9,7 @@ import StyledIconButton from '../ui/overrides/IconButton';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 const FooterTabs = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -21,6 +22,24 @@ const FooterTabs = () => {
   const location = useLocation();
   const { isAuthenticated, logout } = useDataStore();
   const setAuthenticated = useDataStore((state) => state.setAuthenticated);
+    const [isGuest, setIsGuest] = useState(false);
+    useEffect(() => {
+      const email = localStorage.getItem('userEmail');
+      if (!email) {
+        setIsGuest(true);
+      }
+    }, []);
+
+
+  const showProfile  = async ()=>{
+    if(isGuest){
+      await logout()
+      navigation("/login")
+    }else{
+      navigation("/user-profile")
+      
+    }
+  }
 
   useEffect(()=>{
     setIsFilterOpen(false)
@@ -200,19 +219,15 @@ const FooterTabs = () => {
 
       
            {isAuthenticated ? (
-           <Tooltip title="Logout" arrow>
-             <StyledIconButton onClick={handleLogout} sx={{ height: '100%', width:"90px", display:
-              'flex', justifyContent:"center", alignItems:"center",
-              
-              }}>
-              {/* <ExitToAppIcon /> */}
-              <LogoutIcon/>
-              <Typography color="white"  sx={{ fontSize: '12px', ml: 1 }}
-           >
-           
-                Logout
-              </Typography>
-            </StyledIconButton>
+           <Tooltip title="Profile" arrow>
+             <StyledIconButton onClick={showProfile}  sx={{ height: '100%', width:"40px", display:
+  'flex', justifyContent:"center", alignItems:"center",
+  
+  }}>
+  {/* <ExitToAppIcon /> */}
+  <PermIdentityIcon/>
+  
+</StyledIconButton>
            </Tooltip>
           ) : (
             <StyledIconButton onClick={redirectLogin}  sx={{ height: '100%', width:"90px", display:
