@@ -55,7 +55,7 @@ const SettingsView = () => {
       }
   
       // Make the API call
-      const response = await axios.post(process.env.DEACTIVATE_ACCOUNT, {
+      const response = await axios.post(process.env.DELETE_ACCOUNT, {
         email,
       });
   

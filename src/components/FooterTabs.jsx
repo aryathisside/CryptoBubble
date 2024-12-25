@@ -58,13 +58,13 @@ const FooterTabs = () => {
   const deactivateAccount = async () => {
     if (!deactivateText) {
       return setError({
-        message: 'please type DEACTIVE to deactive your account',
+        message: 'please type DELETE to delete your account',
         severity: 'error'
       });
     }
-    if (deactivateText !== 'DEACTIVATE') {
+    if (deactivateText !== 'DELETE') {
       return setError({
-        message: ' wron text please check DEACTIVE spelling ',
+        message: ' wrong text please check DELETE spelling ',
         severity: 'error'
       });
     }
@@ -72,23 +72,23 @@ const FooterTabs = () => {
       const email = localStorage.getItem('userEmail');
       // Validate email
       if (!email) {
-        console.error('Email is required to deactivate the account.');
+        console.error('Email is required to DELETE the account.');
         return;
       }
 
       // Make the API call
-      const response = await axios.post(process.env.DEACTIVATE_ACCOUNT, {
+      const response = await axios.post(process.env.DELETE_ACCOUNT, {
         email
       });
 
       // Handle success
       if (response.status === 200) {
-        console.log('Account deactivated successfully:', response.data.message);
+        console.log('Account DELETED successfully:', response.data.message);
         setAuthenticated(false);
         localStorage.removeItem('token');
         localStorage.removeItem('userEmail');
         setError({
-          message: 'Your account has been deactivated successfully.',
+          message: 'Your account has been Deleted successfully.',
           severity: 'success'
         });
         navigate('/');
@@ -404,7 +404,7 @@ const FooterTabs = () => {
                   </Typography>
                 </StyledIconButton>
                 <Typography variant="h7" color={'#FF3333'} sx={{ cursor: 'pointer' }} onClick={handelDeactivateAccount}>
-                  Deactivate Account
+                  Delete Account
                 </Typography>
               </Box>
             </Box>
@@ -504,7 +504,7 @@ const FooterTabs = () => {
           <DialogContent>
             <Box display={'flex'} p={2} flexDirection={'column'} gap={2}>
               <Typography variant="subtitle" fontSize={'14px'}>
-                Type “DEACTIVATE” to deactivate your account.
+                Type “DELETE” to deactivate your account.
               </Typography>
               <FormInput
                 id="deactivate"
@@ -520,7 +520,7 @@ const FooterTabs = () => {
                 {/* <ExitToAppIcon /> */}
                 {/* <LogoutIcon/> */}
                 <Typography color="#FF3333" sx={{ fontSize: '15px', ml: 1 }}>
-                  Deactivate my account
+                  Delete my account
                 </Typography>
               </StyledIconButton>
             </Box>

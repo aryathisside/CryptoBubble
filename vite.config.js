@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
       'process.env.CHANGE_PASSWORD': JSON.stringify(env.CHANGE_PASSWORD),
       'process.env.LOGOUT': JSON.stringify(env.LOGOUT),
       'process.env.CONTACT_US': JSON.stringify(env.CONTACT_US),
-      'process.env.DEACTIVATE_ACCOUNT': JSON.stringify(env.DEACTIVATE_ACCOUNT)
+      'process.env.DELETE_ACCOUNT': JSON.stringify(env.DELETE_ACCOUNT)
     
 
 

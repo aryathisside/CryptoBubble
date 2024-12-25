@@ -60,13 +60,13 @@ const DeactivateAccount = () => {
   const deactivateAccount = async ()=>{
     if(!deactivateText){
         return setError({
-            message:"please type DEACTIVE to deactive your account",
+            message:"please type DELETE to deactive your account",
             severity:"error"
         })
     }
-    if(deactivateText !== "DEACTIVATE"){
+    if(deactivateText !== "DELETE"){
         return  setError({
-            message:" wrong text please check DEACTIVE spelling ",
+            message:" wrong text please check DELETE spelling ",
             severity:"error"
         })
     }
@@ -75,23 +75,23 @@ const DeactivateAccount = () => {
         const email = localStorage.getItem("userEmail")
         // Validate email
         if (!email) {
-          console.error("Email is required to deactivate the account.");
+          console.error("Email is required to DELETE the account.");
           return;
         }
     
         // Make the API call
-        const response = await axios.post(process.env.DEACTIVATE_ACCOUNT, {
+        const response = await axios.post(process.env.DELETE_ACCOUNT, {
           email,
         });
     
         // Handle success
         if (response.status === 200) {
-          console.log("Account deactivated successfully:", response.data.message);
+          console.log("Account DELETED successfully:", response.data.message);
           setAuthenticated(false)
           localStorage.removeItem("token")
           localStorage.removeItem("userEmail")
           setError( {
-            message: "Your account has been deactivated successfully.",
+            message: "Your account has been Deleted successfully.",
             severity:"success"
           }  );
           navigate("/")
@@ -116,7 +116,7 @@ const DeactivateAccount = () => {
       sx={{
         display: 'flex',
         p: 0,
-        height: '100vh', // Ensure full viewport height
+        height: '100%', // Ensure full viewport height
         backgroundColor: '#000000'
       }}>
       <Box width={'100%'} height={'100px'} bgcolor={'#171A24'} display={'flex'}>
@@ -125,13 +125,13 @@ const DeactivateAccount = () => {
         </Box>
         <Box height={'100%'} width={isMobile? "75%": '50%'} display={'flex'} alignItems={'center'} >
           <Typography variant="h5" color={'white'}>
-          Deactivate Account
+          Delete Account
           </Typography>
         </Box>
       </Box>
       <Box  display={"flex"}  p={2} flexDirection={"column"} gap={2}>
         <Typography variant='subtitle' fontSize={"14px"}>
-        Type “DEACTIVATE” to deactivate your account.
+        Type “DELETE” to deactivate your account.
         </Typography>
         <FormInput
         
@@ -152,7 +152,7 @@ const DeactivateAccount = () => {
               <Typography color="#FF3333"  sx={{ fontSize: '15px', ml: 1 }}
            >
            
-           Deactivate my account
+           Delete my account
               </Typography>
             </StyledIconButton>
       

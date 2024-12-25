@@ -53,8 +53,9 @@ const UserProfile = () => {
       sx={{
         display: 'flex',
         p: 0,
-        height: '100vh', // Ensure full viewport height
-        backgroundColor: '#000000'
+        height: '100%', // Ensure full viewport height
+        backgroundColor: '#000000',
+        width:"100%"
       }}>
       <Box width={'100%'} height={'100px'} bgcolor={'#171A24'} display={'flex'}>
         <Box sx={{cursor:"pointer"}} height={'100%'} width={'25%'} display={'flex'} justifyContent={'center'} alignItems={'center'} onClick={()=>navigate("/")}>
@@ -91,7 +92,7 @@ const UserProfile = () => {
           </Typography>
         </Box>
        </Box>
-       <Box display={"flex"}  justifyContent={"center"} alignItems={"center"} p={2} flexDirection={"column"} gap={2} mb={6}>
+       <Box display={"flex"}  justifyContent={"center"} alignItems={"center"} p={2} flexDirection={"column"} gap={2} mb={8}>
        <StyledIconButton onClick={() => setOpenDialog(true)} sx={{  width:"100%", display:
               'flex', justifyContent:"center", alignItems:"center", py:4,
               
@@ -105,7 +106,7 @@ const UserProfile = () => {
               </Typography>
             </StyledIconButton>
             <Typography variant='h7' color={"#FF3333"} sx={{cursor:"pointer"}} onClick={()=>navigate("/deactivate-account")}>
-              Deactivate Account
+              Delete Account
             </Typography>
        </Box>
       </Box>
