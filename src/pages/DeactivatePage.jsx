@@ -28,6 +28,19 @@ const DeactivateAccount = () => {
     return cleanup;
   }, []);
 
+    useEffect(() => {
+      if (error) {
+        const timer = setTimeout(() => {
+          setError({
+            message: '',
+            severity: ''
+          });
+        }, 5000);
+  
+        return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
+      }
+    }, [error]);
+
   
   const handleLogout =async() => {
     const queryParams = new URLSearchParams(location.search);
@@ -53,7 +66,7 @@ const DeactivateAccount = () => {
     }
     if(deactivateText !== "DEACTIVATE"){
         return  setError({
-            message:" wron text please check DEACTIVE spelling ",
+            message:" wrong text please check DEACTIVE spelling ",
             severity:"error"
         })
     }

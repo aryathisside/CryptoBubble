@@ -11,6 +11,9 @@ export const Login = async (email,password) => {
       console.log('Login successful:', response.data);
       localStorage.setItem('token', response.data.token); // Store token in localStorage
       localStorage.setItem("userEmail", response.data.userEmail)
+      localStorage.setItem('firstName', response.data.firstName);
+      localStorage.setItem('lastName', response.data.lastName);
+
       return {status:"success", message:"Login successful"}
     } catch (err) {
       // Check for specific backend errors

@@ -18,10 +18,11 @@ const UserProfile = () => {
 
    useEffect(()=>{
     
-    const name = localStorage.getItem("userName")
+    const firstName = localStorage.getItem("firstName")
+    const lastName = localStorage.getItem("lastName")
     const email = localStorage.getItem("userEmail")
     console.log(email)
-    setProfile({name:name, email:email})
+    setProfile({name:`${firstName} ${lastName}`, email:email})
    },[])
 
 
@@ -90,7 +91,7 @@ const UserProfile = () => {
           </Typography>
         </Box>
        </Box>
-       <Box display={"flex"}  justifyContent={"center"} alignItems={"center"} p={2} flexDirection={"column"} gap={2}>
+       <Box display={"flex"}  justifyContent={"center"} alignItems={"center"} p={2} flexDirection={"column"} gap={2} mb={6}>
        <StyledIconButton onClick={() => setOpenDialog(true)} sx={{  width:"100%", display:
               'flex', justifyContent:"center", alignItems:"center", py:4,
               

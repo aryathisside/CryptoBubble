@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Box, Stack, ClickAwayListener, Grow, Typography, TextField } from '@mui/material';
+import { Box, Stack, ClickAwayListener, Grow, Typography, TextField, Slide, Dialog } from '@mui/material';
 import { StyledTab, StyledTabs } from '../ui/overrides/Tabs';
 import HeaderProgress from './HeaderProgress';
 import useConfigStore from '../store/useConfigStore';
 import useDataStore from '../store/useDataStore';
 import Helper from '../utils/Helper';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import StyledIconButton from '../ui/overrides/IconButton';
 import { Add, Edit, Search } from '@mui/icons-material';
 import StyledTextField, { SearchTextField } from '../ui/overrides/TextField';
@@ -39,7 +39,7 @@ const HeaderTabs = () => {
   const setLayout = useConfigStore((state) => state.setLayout);
   const { isAuthenticated, logout } = useDataStore();
   const [isGuest, setIsGuest]=useState(false)
-
+  
   useEffect(()=>{
     const email = localStorage.getItem("userEmail")
     if(!email){
@@ -68,6 +68,7 @@ const HeaderTabs = () => {
       setSelectedCurrency(currency);
     }
   };
+  
   useEffect(() => {
     const cleanup = Helper.handleResize(setIsMobile);
 
@@ -117,7 +118,15 @@ const HeaderTabs = () => {
     if(isGuest){
       await logout()
     }else{
-      navigate("/user-profile")
+      if(isMobile){
+        console.log("kaskay")
+        navigate("/user-profile")
+
+      }else{
+        console.log(UserProfileModel)
+        setUserProfileModel(true)
+      }
+     
       
     }
   }
@@ -343,6 +352,8 @@ const HeaderTabs = () => {
 
       <ConfigurationDialog />
       {isMobile?null:<FooterTabs/>}
+
+     
     </Stack>
   );
 };

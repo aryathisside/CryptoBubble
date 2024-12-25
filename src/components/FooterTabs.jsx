@@ -1,6 +1,6 @@
-import { Box, Grow, Stack, Tooltip, Typography } from '@mui/material';
-import { Block, KeyboardArrowDown, RemoveRedEye, Reorder, SettingsSuggest, Star, Workspaces } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
+import { Alert, Box, Dialog, DialogActions, DialogContent, DialogTitle, Grow, IconButton, Slide, Stack, Tooltip, Typography } from '@mui/material';
+import { Block, Close, KeyboardArrowDown, RemoveRedEye, Reorder, SettingsSuggest, Star, Workspaces } from '@mui/icons-material';
+import React, { useEffect, useState } from 'react';
 import StyledButton from '../ui/overrides/Button';
 import { StyledIconTab, StyledIconTabs } from '../ui/overrides/IconTabs';
 import useConfigStore from '../store/useConfigStore';
@@ -10,6 +10,14 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import { useLocation, useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import Helper from '../utils/Helper';
+import UserProfile from '../pages/UserProfile';
+import axios from 'axios';
+import FormInput from '../ui/overrides/Input';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 const FooterTabs = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -18,45 +26,144 @@ const FooterTabs = () => {
   const layout = useConfigStore((state) => state.layout);
   const setLayout = useConfigStore((state) => state.setLayout);
   const watchlists = useConfigStore((state) => state.watchlists);
-  const navigation = useNavigate()
+  const navigation = useNavigate();
   const location = useLocation();
   const { isAuthenticated, logout } = useDataStore();
   const setAuthenticated = useDataStore((state) => state.setAuthenticated);
-    const [isGuest, setIsGuest] = useState(false);
+  const [UserProfileModel, setUserProfileModel] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [profile, setProfile] = useState({ name: '', email: '' });
+  const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [deactivateModel, setDeactivateModel] = useState(false);
+  const [deactivateText, setDeactivateText] = useState('');
+  const [error, setError] = useState({
+    message: '',
+    severity: ''
+  });
+
     useEffect(() => {
-      const email = localStorage.getItem('userEmail');
-      if (!email) {
-        setIsGuest(true);
+      if (error) {
+        const timer = setTimeout(() => {
+          setError({
+            message: '',
+            severity: ''
+          });
+        }, 5000);
+  
+        return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
       }
-    }, []);
+    }, [error]);
 
-
-  const showProfile  = async ()=>{
-    if(isGuest){
-      await logout()
-      navigation("/login")
-    }else{
-      navigation("/user-profile")
-      
+  const deactivateAccount = async () => {
+    if (!deactivateText) {
+      return setError({
+        message: 'please type DEACTIVE to deactive your account',
+        severity: 'error'
+      });
     }
-  }
+    if (deactivateText !== 'DEACTIVATE') {
+      return setError({
+        message: ' wron text please check DEACTIVE spelling ',
+        severity: 'error'
+      });
+    }
+    try {
+      const email = localStorage.getItem('userEmail');
+      // Validate email
+      if (!email) {
+        console.error('Email is required to deactivate the account.');
+        return;
+      }
 
-  useEffect(()=>{
-    setIsFilterOpen(false)
-  },[layout])
+      // Make the API call
+      const response = await axios.post(process.env.DEACTIVATE_ACCOUNT, {
+        email
+      });
+
+      // Handle success
+      if (response.status === 200) {
+        console.log('Account deactivated successfully:', response.data.message);
+        setAuthenticated(false);
+        localStorage.removeItem('token');
+        localStorage.removeItem('userEmail');
+        setError({
+          message: 'Your account has been deactivated successfully.',
+          severity: 'success'
+        });
+        navigate('/');
+        setDeactivateModel(false);
+      } else {
+        console.error('Unexpected response:', response);
+      }
+    } catch (error) {
+      // Handle errors
+      if (error.response) {
+        console.error('Error from server:', error.response.data.message);
+        alert(`Failed to deactivate account: ${error.response.data.message}`);
+      } else {
+        console.error('Network or other error:', error.message);
+        alert('An error occurred. Please try again later.');
+      }
+    }
+  };
+
+  useEffect(() => {
+    const firstName = localStorage.getItem('firstName');
+    const lastName = localStorage.getItem('lastName');
+    const email = localStorage.getItem('userEmail');
+    console.log(email);
+    setProfile({ name: `${firstName} ${lastName}`, email: email });
+  }, []);
+  useEffect(() => {
+    const cleanup = Helper.handleResize(setIsMobile);
+
+    return cleanup;
+  }, []);
+  const [isGuest, setIsGuest] = useState(false);
+  useEffect(() => {
+    const email = localStorage.getItem('userEmail');
+    if (!email) {
+      setIsGuest(true);
+    }
+  }, []);
+  const logoutConfirmation = () => {
+    setUserProfileModel(false);
+    setOpenDialog(true);
+  };
+
+  const handelDeactivateAccount = () => {
+    setUserProfileModel(false);
+    setDeactivateModel(true);
+  };
+
+  const showProfile = async () => {
+    if (isGuest) {
+      await logout();
+    } else {
+      if (isMobile) {
+        console.log('kaskay');
+        navigate('/user-profile');
+      } else {
+        console.log(UserProfileModel);
+        setUserProfileModel(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setIsFilterOpen(false);
+  }, [layout]);
 
   useEffect(() => {
     console.log('FooterTabs: isAuthenticated:', isAuthenticated);
-    const token = localStorage.getItem("token")
-    setAuthenticated(!!token)
-    
-
+    const token = localStorage.getItem('token');
+    setAuthenticated(!!token);
   }, [isAuthenticated]);
 
-  const redirectLogin = ()=>{
-    navigation("/login")
-
-  }
+  const redirectLogin = () => {
+    navigation('/login');
+  };
 
   const renderName = () => {
     if (filter.type === 'all') {
@@ -85,156 +192,146 @@ const FooterTabs = () => {
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get('token');
     const userEmail = queryParams.get('userEmail');
-  
+
     // Remove query parameters from the URL
     if (token || userEmail) {
       const newUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, newUrl);
     }
-    logout()
+    setOpenDialog(false);
+    logout();
   };
 
   return (
     <Box pb={1 / 2}>
       <Stack direction="row" justifyContent="space-between" gap={1}>
         <Box position="relative" ml={1}>
-        <Tooltip title="Wish list" arrow>
-        <StyledButton onClick={() => setIsFilterOpen(!isFilterOpen)} disabled={!isAuthenticated} sx={{ width:"100px", height:"100%"  }} >
-            <Stack direction="row" display="flex" justifyContent="center"alignItems="center">
-              <Typography color="white" fontWeight="bold" textTransform="none" fontSize={"12px"}>
-                {renderName()}
-              </Typography>
-            {
-              isAuthenticated &&   <KeyboardArrowDown
-              sx={{
-                transition: 'transform 0.4s',
-                transform: isFilterOpen ? 'rotateZ(180deg)' : ''
-              }}
-            />
+          <Tooltip title="Wish list" arrow>
+            <StyledButton onClick={() => setIsFilterOpen(!isFilterOpen)} disabled={!isAuthenticated} sx={{ width: '100px', height: '100%' }}>
+              <Stack direction="row" display="flex" justifyContent="center" alignItems="center">
+                <Typography color="white" fontWeight="bold" textTransform="none" fontSize={'12px'}>
+                  {renderName()}
+                </Typography>
+                {isAuthenticated && (
+                  <KeyboardArrowDown
+                    sx={{
+                      transition: 'transform 0.4s',
+                      transform: isFilterOpen ? 'rotateZ(180deg)' : ''
+                    }}
+                  />
+                )}
+              </Stack>
+            </StyledButton>
+          </Tooltip>
 
-            }
-            </Stack>
-          </StyledButton>
+          {isAuthenticated && (
+            <Grow in={isFilterOpen}>
+              <Box
+                position="absolute"
+                sx={{
+                  display: isFilterOpen ? 'block' : 'none',
+                  background: '#171A24',
+                  backdropFilter: 'blur(8px)',
+                  width: 600,
+                  maxWidth: '90vw',
+                  right: 0,
+                  top: 70,
+                  zIndex: 1000,
 
-        </Tooltip>
-          
-        {
-          isAuthenticated &&   <Grow in={isFilterOpen}>
-          <Box
-            position="absolute"
-            sx={{
-              display: isFilterOpen ? 'block' : 'none',
-              background: '#171A24',
-              backdropFilter: 'blur(8px)',
-              width: 600,
-              maxWidth: '90vw',
-              right:0,
-              top:70,
-              zIndex:1000,
-             
-              borderRadius: 1,
-              boxShadow: '0px 0px 7px 7px #00000027',
-              px: 2,
-              py: 1
-            }}>
-            <Stack>
-
-              <Box>
-                
-              <StyledButton
-                    onClick={() => updateFilterHandle({ type: 'all', id: null })}
-                    sx={{ mr: 1, mb: 1, px: 2, background: filter.type === 'all' ? '#0477DD !important' : null }}>
-                    <Typography color="white" textTransform="none">
-                      1-100
-                    </Typography>
-                  </StyledButton>
-                <StyledButton
-                  onClick={() => updateFilterHandle({ type: 'favorite', id: null })}
-                  sx={{ mr: 1, mb: 1, px: 1, background: filter.type === 'favorite' ? '#0477DD !important' : null }}>
-                  <Star />
-                  <Typography color="white" textTransform="none" ml={1 / 2}>
-                    Favorites
-                  </Typography>
-                </StyledButton>
-                {watchlists.map((item, index) => {
-                  return (
+                  borderRadius: 1,
+                  boxShadow: '0px 0px 7px 7px #00000027',
+                  px: 2,
+                  py: 1
+                }}>
+                <Stack>
+                  <Box>
                     <StyledButton
-                      onClick={() => updateFilterHandle({ type: 'watchlist', id: item.id })}
-                      key={item.id}
-                      sx={{ mr: 1, mb: 1, px: 1, background: filter.type === 'watchlist' && filter.id === item.id ? '#0477DD !important' : null }}>
-                      <RemoveRedEye />
-                      <Typography color="white" textTransform="none" ml={1 / 2}>
-                        {item.name || `Watchlist ${index + 1}`}
+                      onClick={() => updateFilterHandle({ type: 'all', id: null })}
+                      sx={{ mr: 1, mb: 1, px: 2, background: filter.type === 'all' ? '#0477DD !important' : null }}>
+                      <Typography color="white" textTransform="none">
+                        1-100
                       </Typography>
                     </StyledButton>
-                  );
-                })}
-                <StyledButton
-                  onClick={() => updateFilterHandle({ type: 'blocklist', id: null })}
-                  sx={{ mr: 1, mb: 1, px: 1, background: filter.type === 'blocklist' ? '#0477DD !important' : null }}>
-                  <Block />
-                  <Typography color="white" textTransform="none" ml={1 / 2}>
-                    Blocklist
-                  </Typography>
-                </StyledButton>
+                    <StyledButton
+                      onClick={() => updateFilterHandle({ type: 'favorite', id: null })}
+                      sx={{ mr: 1, mb: 1, px: 1, background: filter.type === 'favorite' ? '#0477DD !important' : null }}>
+                      <Star />
+                      <Typography color="white" textTransform="none" ml={1 / 2}>
+                        Favorites
+                      </Typography>
+                    </StyledButton>
+                    {watchlists.map((item, index) => {
+                      return (
+                        <StyledButton
+                          onClick={() => updateFilterHandle({ type: 'watchlist', id: item.id })}
+                          key={item.id}
+                          sx={{
+                            mr: 1,
+                            mb: 1,
+                            px: 1,
+                            background: filter.type === 'watchlist' && filter.id === item.id ? '#0477DD !important' : null
+                          }}>
+                          <RemoveRedEye />
+                          <Typography color="white" textTransform="none" ml={1 / 2}>
+                            {item.name || `Watchlist ${index + 1}`}
+                          </Typography>
+                        </StyledButton>
+                      );
+                    })}
+                    <StyledButton
+                      onClick={() => updateFilterHandle({ type: 'blocklist', id: null })}
+                      sx={{ mr: 1, mb: 1, px: 1, background: filter.type === 'blocklist' ? '#0477DD !important' : null }}>
+                      <Block />
+                      <Typography color="white" textTransform="none" ml={1 / 2}>
+                        Blocklist
+                      </Typography>
+                    </StyledButton>
+                  </Box>
+                </Stack>
               </Box>
-          
-             
-            </Stack>
-          </Box>
-        </Grow>
-        }
+            </Grow>
+          )}
         </Box>
 
-        <Box mr={1} display={"flex"} gap={1}>
-        <Tooltip title="Bubble view" arrow>
-        <StyledIconButton
-            sx={{ height: '100%' }}
-            onClick={() => setLayout('bubble')} // Update this to handle the layout changes as needed
-          >
-            <Workspaces /> {/* or whichever icon you want to show */}
-          </StyledIconButton>
+        <Box mr={1} display={'flex'} gap={1}>
+          <Tooltip title="Bubble view" arrow>
+            <StyledIconButton
+              sx={{ height: '100%' }}
+              onClick={() => setLayout('bubble')} // Update this to handle the layout changes as needed
+            >
+              <Workspaces /> {/* or whichever icon you want to show */}
+            </StyledIconButton>
+          </Tooltip>
+          <Tooltip title="List view" arrow>
+            <StyledIconButton
+              sx={{ height: '100%' }}
+              onClick={() => setLayout('list')} // Update this to handle the layout changes as needed
+            >
+              <Reorder /> {/* or whichever icon you want to show */}
+            </StyledIconButton>
+          </Tooltip>
+          <Tooltip title="setting" arrow>
+            <StyledIconButton
+              sx={{ height: '100%' }}
+              onClick={() => setLayout('settings')} // Update this to handle the layout changes as needed
+            >
+              <SettingsSuggest /> {/* or whichever icon you want to show */}
+            </StyledIconButton>
+          </Tooltip>
 
-        </Tooltip>
-        <Tooltip title="List view" arrow>
-        <StyledIconButton
-            sx={{ height: '100%' }}
-            onClick={() => setLayout('list')} // Update this to handle the layout changes as needed
-          >
-            <Reorder /> {/* or whichever icon you want to show */}
-          </StyledIconButton>
-
-        </Tooltip>
-        <Tooltip title="setting" arrow>
-        <StyledIconButton
-            sx={{ height: '100%' }}
-            onClick={() => setLayout('settings')} // Update this to handle the layout changes as needed
-          >
-            <SettingsSuggest /> {/* or whichever icon you want to show */}
-          </StyledIconButton>
-
-        </Tooltip>
-        
-        
-
-      
-           {isAuthenticated ? (
-           <Tooltip title="Profile" arrow>
-             <StyledIconButton onClick={showProfile}  sx={{ height: '100%', width:"40px", display:
-  'flex', justifyContent:"center", alignItems:"center",
-  
-  }}>
-  {/* <ExitToAppIcon /> */}
-  <PermIdentityIcon/>
-  
-</StyledIconButton>
-           </Tooltip>
+          {isAuthenticated ? (
+            <Tooltip title="Profile" arrow>
+              <StyledButton
+                onClick={showProfile}
+                sx={{ height: '100%', width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                {/* <ExitToAppIcon /> */}
+                <PermIdentityIcon />
+              </StyledButton>
+            </Tooltip>
           ) : (
-            <StyledIconButton onClick={redirectLogin}  sx={{ height: '100%', width:"90px", display:
-              'flex', justifyContent:"center", alignItems:"center",
-              
-              }}
-           >
+            <StyledIconButton
+              onClick={redirectLogin}
+              sx={{ height: '100%', width: '90px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <PersonOutlineOutlinedIcon />
               <Typography color="white" sx={{ fontSize: '12px', ml: 1 }}>
                 Login
@@ -248,6 +345,193 @@ const FooterTabs = () => {
             <StyledIconTab value="settings" icon={<SettingsSuggest />} />
           </StyledIconTabs> */}
         </Box>
+
+        <Dialog
+          fullWidth
+          open={UserProfileModel}
+          maxWidth="md"
+          scroll="paper"
+          TransitionComponent={Transition}
+          sx={{ '& .MuiDialog-container': { alignItems: 'start' } }}
+          PaperProps={{
+            sx: {
+              background: '#171A24',
+              backdropFilter: 'blur(8px)',
+              marginTop: 'min(10%, 100px)',
+              marginX: 2,
+              width: 'calc(30% - 32px)'
+            }
+          }}>
+          <DialogTitle typography="body1" display="flex" justifyContent="flex-end" color="white" sx={{ padding: 1 }}>
+            <StyledIconButton onClick={() => setUserProfileModel(!UserProfileModel)}>
+              <Close />
+            </StyledIconButton>
+          </DialogTitle>
+          <DialogContent>
+            <Box height={'100%'} display={'flex'} flexDirection={'column'} justifyContent={'space-between'}>
+              <Box>
+                <Box width={'100%'} p={2}>
+                  <Box display={'flex'}>
+                    <PermIdentityIcon />
+                    <Typography variant="subtitle" color={'#A9A9A9'}>
+                      Name
+                    </Typography>
+                  </Box>
+                  <Typography variant="h6" color={'white'}>
+                    {profile.name}
+                  </Typography>
+                </Box>
+                <Box width={'100%'} p={2}>
+                  <Box display={'flex'}>
+                    <PermIdentityIcon />
+                    <Typography variant="subtitle" color={'#A9A9A9'}>
+                      Email
+                    </Typography>
+                  </Box>
+                  <Typography variant="h6" color={'white'}>
+                    {profile.email}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box display={'flex'} justifyContent={'center'} alignItems={'center'} p={2} flexDirection={'column'} gap={2}>
+                <StyledIconButton
+                  onClick={logoutConfirmation}
+                  sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', py: 4 }}>
+                  {/* <ExitToAppIcon /> */}
+                  <LogoutIcon />
+                  <Typography color="white" sx={{ fontSize: '20px', ml: 1 }}>
+                    Logout
+                  </Typography>
+                </StyledIconButton>
+                <Typography variant="h7" color={'#FF3333'} sx={{ cursor: 'pointer' }} onClick={handelDeactivateAccount}>
+                  Deactivate Account
+                </Typography>
+              </Box>
+            </Box>
+          </DialogContent>
+        </Dialog>
+
+        {/* Confirmation Dialog */}
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          PaperProps={{
+            sx: {
+              backgroundColor: '#171A24', // Match your popup background color
+              boxShadow: 'none', // Remove shadow
+              border: 'none', // Remove any border
+              widthL: '30%',
+              py: 2
+            }
+          }}
+          open={openDialog}
+          onClose={() => setOpenDialog(false)}>
+          <DialogContent
+            sx={{
+              textAlign: 'center',
+              backgroundColor: '#171A24',
+              color: 'white',
+              p: 3,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column'
+            }}>
+            <Box bgcolor={'#FF3333'} width={'fit-content'} p={1} borderRadius={1} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+              <LogoutIcon sx={{ fontSize: 40, color: 'white' }} />
+            </Box>
+            <Typography variant="h6" sx={{ mt: 2 }}>
+              Are you logging out?
+            </Typography>
+          </DialogContent>
+          <DialogActions
+            sx={{
+              justifyContent: 'center',
+              backgroundColor: '#171A24',
+              px: 2
+            }}>
+            <StyledIconButton
+              onClick={() => setOpenDialog(false)}
+              variant="contained"
+              sx={{
+                backgroundColor: '#2A2E36',
+                height: '50px',
+
+                color: 'white',
+                fontSize: '15px',
+                width: '50%',
+                '&:hover': { backgroundColor: '#555' }
+              }}>
+              No, stay
+            </StyledIconButton>
+            <StyledIconButton
+              onClick={handleLogout}
+              variant="contained"
+              sx={{
+                backgroundColor: '#FF3333',
+                height: '50px',
+                fontSize: '15px',
+                color: 'white',
+                width: '50%',
+                '&:hover': { backgroundColor: '#FF5555' }
+              }}>
+              Yes, logout
+            </StyledIconButton>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          fullWidth
+          open={deactivateModel}
+          maxWidth="md"
+          scroll="paper"
+          TransitionComponent={Transition}
+          sx={{ '& .MuiDialog-container': { alignItems: 'start' } }}
+          PaperProps={{
+            sx: {
+              background: '#171A24',
+              backdropFilter: 'blur(8px)',
+              marginTop: 'min(10%, 100px)',
+              marginX: 2,
+              width: 'calc(30% - 32px)'
+            }
+          }}>
+          <DialogTitle typography="body1" display="flex" justifyContent="flex-end" color="white" sx={{ padding: 1 }}>
+            <StyledIconButton onClick={() => setDeactivateModel(false)}>
+              <Close />
+            </StyledIconButton>
+          </DialogTitle>
+          <DialogContent>
+            <Box display={'flex'} p={2} flexDirection={'column'} gap={2}>
+              <Typography variant="subtitle" fontSize={'14px'}>
+                Type “DEACTIVATE” to deactivate your account.
+              </Typography>
+              <FormInput
+                id="deactivate"
+                label="Type here"
+                value={deactivateText}
+                onChange={(e) => setDeactivateText(e.target.value)}
+
+                // icon={<PersonIcon sx={{ color: '#A9A9A9' }} />}
+              />
+              <StyledIconButton
+                onClick={deactivateAccount}
+                sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', py: 3, border: '2px solid #FF3333' }}>
+                {/* <ExitToAppIcon /> */}
+                {/* <LogoutIcon/> */}
+                <Typography color="#FF3333" sx={{ fontSize: '15px', ml: 1 }}>
+                  Deactivate my account
+                </Typography>
+              </StyledIconButton>
+            </Box>
+          </DialogContent>
+        </Dialog>
+
+        {error && (
+          <Alert style={{ position: 'absolute', right: 55, top: 5, zIndex: 1000 }} variant="filled" severity={error.severity} sx={{ mt: 2 }}>
+            {error.message}
+          </Alert>
+        )}
       </Stack>
     </Box>
   );

@@ -84,6 +84,8 @@ const MobileSignup = ({ showSignup }) => {
       });
       localStorage.setItem('token', response.data.token); // Store token if needed
       localStorage.setItem('userEmail', response.data.userEmail);
+      localStorage.setItem('firstName', response.data.firstName);
+      localStorage.setItem('lastName', response.data.lastName);
       console.log('Signup successful:', response.data);
      
 
