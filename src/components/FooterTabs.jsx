@@ -99,11 +99,17 @@ const FooterTabs = () => {
     } catch (error) {
       // Handle errors
       if (error.response) {
-        console.error('Error from server:', error.response.data.message);
-        alert(`Failed to deactivate account: ${error.response.data.message}`);
+        setError({
+          message: `Failed to deactivate account: ${error.response.data.message}`,
+          severity: 'error'
+        });
+        
       } else {
-        console.error('Network or other error:', error.message);
-        alert('An error occurred. Please try again later.');
+        setError({
+          message: 'An error occurred. Please try again later.',
+          severity: 'error'
+        });
+       
       }
     }
   };
@@ -203,11 +209,11 @@ const FooterTabs = () => {
   };
 
   return (
-    <Box pb={1 / 2}>
-      <Stack direction="row" justifyContent="space-between" gap={1}>
+    <Box pb={1 / 2} width={"40%"}>
+      <Stack direction="row" justifyContent="flex-end" gap={1}>
         <Box position="relative" ml={1}>
           <Tooltip title="Wish list" arrow>
-            <StyledButton onClick={() => setIsFilterOpen(!isFilterOpen)} disabled={!isAuthenticated} sx={{ width: '100px', height: '100%' }}>
+            <StyledButton onClick={() => setIsFilterOpen(!isFilterOpen)} disabled={!isAuthenticated} sx={{  height: '100%' }}>
               <Stack direction="row" display="flex" justifyContent="center" alignItems="center">
                 <Typography color="white" fontWeight="bold" textTransform="none" fontSize={'12px'}>
                   {renderName()}
@@ -323,7 +329,7 @@ const FooterTabs = () => {
             <Tooltip title="Profile" arrow>
               <StyledButton
                 onClick={showProfile}
-                sx={{ height: '100%', width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                sx={{ height: '100%'  }}>
                 {/* <ExitToAppIcon /> */}
                 <PermIdentityIcon />
               </StyledButton>

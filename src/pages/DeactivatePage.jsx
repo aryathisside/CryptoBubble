@@ -103,11 +103,17 @@ const DeactivateAccount = () => {
       } catch (error) {
         // Handle errors
         if (error.response) {
-          console.error("Error from server:", error.response.data.message);
-          alert(`Failed to deactivate account: ${error.response.data.message}`);
+          setError({
+            message: `Failed to deactivate account: ${error.response.data.message}`,
+            severity: 'error'
+          });
+          
         } else {
-          console.error("Network or other error:", error.message);
-          alert("An error occurred. Please try again later.");
+          setError({
+            message: 'An error occurred. Please try again later.',
+            severity: 'error'
+          });
+         
         }
       }
   }

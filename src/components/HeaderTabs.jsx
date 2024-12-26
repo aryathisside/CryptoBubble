@@ -138,12 +138,12 @@ const HeaderTabs = () => {
       {/* {layout === 'bubble' && ( */}
         <>{}
 
-         <Box  width={searchEnabled ? "11%":"fit-content" } overflow={searchEnabled && "hidden"}>
-         <img className="ml-2" src={ './image.png'} alt="Brand Image" style={{  height: 40 , cursor:"pointer"}} onClick={()=>{setLayout("bubble")}}  />
+         <Box  width={searchEnabled ? "30px":"fit-content" } overflow={searchEnabled && "hidden"}>
+         <img className="ml-2" src={ './image.png'} alt="Brand Image" style={{  height: 30 , cursor:"pointer"}} onClick={()=>{setLayout("bubble")}}  />
          </Box>
 
           <ClickAwayListener onClickAway={() => handleClose()}>
-            <Box width={isMobile && searchEnabled ?"60%":"40%"} position="relative">
+            <Box width={isMobile && searchEnabled ?"80%":"30%"} position="relative">
             {(isMobile && searchEnabled) || !isMobile ? (
                 <SearchTextField
                 value={searchTerm}
@@ -289,7 +289,7 @@ const HeaderTabs = () => {
 
           {layout === "bubble" &&  (!isMobile) && (
             <Scrollbar
-            style={{ width: '60%', height: '100%' ,display:"flex", justifyContent:"center", alignItems:"center" , marginTop:"20px"}} // Ensure it spans horizontally
+            style={{ width: '50%', height: '100%' ,display:"flex", justifyContent:"center", alignItems:"center" , marginTop:"20px"}} // Ensure it spans horizontally
             noScrollY // Disable vertical scrolling
             thumbXProps={{
               renderer: (props) => {
