@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Helper from '../../utils/Helper';
+import useDataStore from '../../store/useDataStore';
 
 // Create a Context for Auth and Device state
 const AppContext = createContext();
@@ -7,15 +8,8 @@ const AppContext = createContext();
 export const useAppContext = () => useContext(AppContext);
 
 export const AppProvider = ({ children }) => {
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useDataStore((state) => state.isMobile);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-   
-    // Handle window resize for mobile detection
-    const cleanup = Helper.handleResize(setIsMobile);
-    return cleanup;
-  }, []);
 
   // Check authentication status
   useEffect(() => {

@@ -19,7 +19,7 @@ const SettingsView = () => {
   const updateAllWatchlist = useConfigStore((state) => state.updateAllWatchlist);
   const updateFilter = useDataStore((state) => state.updateFilter);
   const filter = useDataStore((state) => state.filter);
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useDataStore((state) => state.isMobile);
   const { isAuthenticated, logout } = useDataStore();
    const [error, setError] = useState({
       message: '',
@@ -94,11 +94,6 @@ const SettingsView = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const cleanup = Helper.handleResize(setIsMobile);
-
-    return cleanup;
-  }, []);
 
   const updateName = (id, value) => {
     const index = watchlists.findIndex((item) => item.id === id);
@@ -107,6 +102,23 @@ const SettingsView = () => {
   };
 
   const addWatchList = () => {
+    if(isGuest){
+      setError({
+        message:"Please Login first to add watchlist",
+        severity:"warning"
+      })
+      return
+
+    }
+
+
+    if(!isAuthenticated){
+      setError({
+        message:"Please Login first to add watchlist",
+        severity:"warning"
+      })
+      return
+    }
     const item = {
       id: Date.now(),
       name: '',
@@ -294,7 +306,16 @@ const SettingsView = () => {
       </Stack>
 
       {error && (
-              <Alert style={{ position: 'absolute', right: 55, top: 5, zIndex: 1000 }} variant="filled" severity={error.severity} sx={{ mt: 2 }}>
+              <Alert  style={{
+                position: 'absolute',
+                top: 5, // Keep this as required
+                left: isMobile? '50%':null,
+                transform: isMobile && 'translateX(-50%)',
+                zIndex: 1000,
+                width: isMobile? "90%": null,
+                right: !isMobile && 55
+              }} variant="filled" severity={error.severity} sx={{ mt: 2 }}>
+               
                 {error.message}
               </Alert>
             )}

@@ -31,7 +31,7 @@ const FooterTabs = () => {
   const { isAuthenticated, logout } = useDataStore();
   const setAuthenticated = useDataStore((state) => state.setAuthenticated);
   const [UserProfileModel, setUserProfileModel] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useDataStore((state) => state.isMobile);
   const [profile, setProfile] = useState({ name: '', email: '' });
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
@@ -56,63 +56,62 @@ const FooterTabs = () => {
     }, [error]);
 
   const deactivateAccount = async () => {
-    if (!deactivateText) {
-      return setError({
-        message: 'please type DELETE to delete your account',
-        severity: 'error'
-      });
+    const trimmedText = deactivateText.trim(); // Trim spaces from input
+
+    if (!trimmedText) {
+        return setError({
+            message: "Please type DELETE to deactivate your account",
+            severity: "error",
+        });
     }
-    if (deactivateText !== 'DELETE') {
-      return setError({
-        message: ' wrong text please check DELETE spelling ',
-        severity: 'error'
-      });
+
+    if (trimmedText !== "DELETE") {
+        return setError({
+            message: "Wrong text, please check DELETE spelling",
+            severity: "error",
+        });
     }
+
     try {
-      const email = localStorage.getItem('userEmail');
-      // Validate email
-      if (!email) {
-        console.error('Email is required to DELETE the account.');
-        return;
-      }
+        const email = localStorage.getItem("userEmail");
 
-      // Make the API call
-      const response = await axios.post(process.env.DELETE_ACCOUNT, {
-        email
-      });
+        if (!email) {
+            console.error("Email is required to DELETE the account.");
+            return;
+        }
 
-      // Handle success
-      if (response.status === 200) {
-        console.log('Account DELETED successfully:', response.data.message);
-        setAuthenticated(false);
-        localStorage.removeItem('token');
-        localStorage.removeItem('userEmail');
-        setError({
-          message: 'Your account has been Deleted successfully.',
-          severity: 'success'
-        });
-        navigate('/');
-        setDeactivateModel(false);
-      } else {
-        console.error('Unexpected response:', response);
-      }
+        const response = await axios.post(process.env.DELETE_ACCOUNT, { email });
+
+        if (response.status === 200) {
+            console.log("Account DELETED successfully:", response.data.message);
+            setAuthenticated(false);
+            localStorage.removeItem("token");
+            localStorage.removeItem("userEmail");
+            setError({
+                message: "Your account has been deleted successfully.",
+                severity: "success",
+            });
+            setDeactivateModel(false)
+            setTimeout(() => {
+              navigate("/");
+          }, 2000); // 2000 ms = 2 seconds
+        } else {
+            console.error("Unexpected response:", response);
+        }
     } catch (error) {
-      // Handle errors
-      if (error.response) {
-        setError({
-          message: `Failed to deactivate account: ${error.response.data.message}`,
-          severity: 'error'
-        });
-        
-      } else {
-        setError({
-          message: 'An error occurred. Please try again later.',
-          severity: 'error'
-        });
-       
-      }
+        if (error.response) {
+            setError({
+                message: `Failed to deactivate account: ${error.response.data.message}`,
+                severity: "error",
+            });
+        } else {
+            setError({
+                message: "An error occurred. Please try again later.",
+                severity: "error",
+            });
+        }
     }
-  };
+};
 
   useEffect(() => {
     const firstName = localStorage.getItem('firstName');
@@ -120,11 +119,6 @@ const FooterTabs = () => {
     const email = localStorage.getItem('userEmail');
     console.log(email);
     setProfile({ name: `${firstName} ${lastName}`, email: email });
-  }, []);
-  useEffect(() => {
-    const cleanup = Helper.handleResize(setIsMobile);
-
-    return cleanup;
   }, []);
   const [isGuest, setIsGuest] = useState(false);
   useEffect(() => {
@@ -243,7 +237,6 @@ const FooterTabs = () => {
                   right: 0,
                   top: 70,
                   zIndex: 1000,
-
                   borderRadius: 1,
                   boxShadow: '0px 0px 7px 7px #00000027',
                   px: 2,

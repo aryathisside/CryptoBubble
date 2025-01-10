@@ -9,18 +9,12 @@ import SettingsView from '../components/settings/SettingsView';
 import { useEffect, useState } from 'react';
 import Helper from '../utils/Helper';
 import MobileFooter from '../components/mobile/MobileFooter';
+import useDataStore from '../store/useDataStore';
 
 const BubbleView = () => {
   
-  const [isMobile, setIsMobile]=useState(false)
+  const isMobile = useDataStore((state) => state.isMobile);
  
-
-
-  useEffect(() => {
-    const cleanup = Helper.handleResize(setIsMobile);
-
-    return cleanup;
-  }, []);
   
   const layout = useConfigStore((state) => state.layout);
   return (

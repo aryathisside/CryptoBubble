@@ -5,6 +5,7 @@ const FormInput = ({ icon, ...props }) => {
     <TextField
       {...props}
       sx={{
+        
         backgroundColor: '#2A2E36',
         borderRadius: '8px',
         '& .MuiOutlinedInput-root': {
@@ -23,9 +24,14 @@ const FormInput = ({ icon, ...props }) => {
         },
         '& .MuiInputLabel-root.Mui-focused': {
           color: 'white',
+          display:"none"
         },
         '& .MuiInputLabel-root': {
           color: 'white',
+        },
+        '& .MuiInputLabel-shrink': {
+          transform: 'translate(0, -16px)', // Ensures label stays above when content is present
+          display:"none"
         },
       }}
       InputProps={{

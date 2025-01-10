@@ -8,6 +8,7 @@ import Helper from '../utils/Helper';
 import { Email, Lock } from '@mui/icons-material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import useDataStore from '../store/useDataStore';
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -26,13 +27,8 @@ const ChangePassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useDataStore((state) => state.isMobile);
 
-  useEffect(() => {
-    // Handle window resize for mobile detection
-    const cleanup = Helper.handleResize(setIsMobile);
-    return cleanup;
-  }, []);
 
   const handlePasswordChange = async () => {
     setLoading(true);

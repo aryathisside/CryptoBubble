@@ -2,17 +2,13 @@ import { Box, Grid, Typography } from '@mui/material';
 import Helper from '../../utils/Helper';
 import useConfigStore from '../../store/useConfigStore';
 import { useEffect, useState } from 'react';
+import useDataStore from '../../store/useDataStore';
 
 const BoxItem = ({ children, onClick, selected }) => {
 
-  const [isMobile, setIsMobile]=useState(false)
+  const isMobile = useDataStore((state) => state.isMobile);
 
 
-  useEffect(() => {
-    const cleanup = Helper.handleResize(setIsMobile);
-
-    return cleanup;
-  }, []);
   return (
     <Box
       display="flex"

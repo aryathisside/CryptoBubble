@@ -13,7 +13,9 @@ import DeactivateAccount from './pages/DeactivatePage';
 
 const App = () => {
   const initializeWishlist = useConfigStore((state) => state.initializeWishlist);
-  const [isMobile, setIsMobile] = useState(false);
+  
+  const setIsMobile = useDataStore((state) => state.setIsMobile);
+  const isMobile = useDataStore((state) => state.isMobile);
 
   const { isAuthenticated, logout } = useDataStore();
   

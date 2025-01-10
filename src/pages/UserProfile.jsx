@@ -10,7 +10,7 @@ import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useDataStore((state) => state.isMobile);
   const { isAuthenticated, logout } = useDataStore();
   const [openDialog, setOpenDialog] = useState(false);
   const [profile, setProfile]=useState({name:"", email:""})
@@ -27,11 +27,7 @@ const UserProfile = () => {
 
 
 
-  useEffect(() => {
-    // Handle window resize for mobile detection
-    const cleanup = Helper.handleResize(setIsMobile);
-    return cleanup;
-  }, []);
+
 
   
   const handleLogout =async() => {
@@ -45,7 +41,7 @@ const UserProfile = () => {
       window.history.replaceState({}, document.title, newUrl);
     }
    await logout()
-      window.location.href = '/';
+  window.location.href = '/';
   
   };
   return (

@@ -32,6 +32,9 @@ const useDataStore = create((set) => ({
      useConfigStore.getState().updateAllWatchlist([]); // Reset watchlists to an empty array
     //  window.location.href = '/';
    },
+   // Add isMobile state
+  isMobile: false,
+  setIsMobile: (isMobile) => set({ isMobile }),
 }));
 
 export default useDataStore;

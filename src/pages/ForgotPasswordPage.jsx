@@ -9,6 +9,7 @@ import Helper from '../utils/Helper'
 import { useNavigate } from 'react-router-dom'
 import StyledIconButton from '../ui/overrides/IconButton'
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import useDataStore from '../store/useDataStore'
 
 const ForgotPasswordPage = () => {
     const [email,setEmail]=useState("")
@@ -17,14 +18,10 @@ const ForgotPasswordPage = () => {
       severity:""
     })
 
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useDataStore((state) => state.isMobile);
     const navigate = useNavigate()
   
-    useEffect(() => {
-      // Handle window resize for mobile detection
-      const cleanup = Helper.handleResize(setIsMobile);
-      return cleanup;
-    }, []);
+ 
 
     useEffect(() => {
       if (error) {

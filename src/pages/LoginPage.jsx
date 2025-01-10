@@ -16,7 +16,7 @@ import useDataStore from '../store/useDataStore';
 const LoginPage = () => {
   const [isLogin, setIslogin] = useState(true);
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useDataStore((state) => state.isMobile);
   const handleMobileToggle = (val) => {
     setIslogin(val);
   };
@@ -31,11 +31,6 @@ const LoginPage = () => {
     setIsSignup(val);
   };
 
-  useEffect(() => {
-    // Handle window resize for mobile detection
-    const cleanup = Helper.handleResize(setIsMobile);
-    return cleanup;
-  }, []);
 
   return isMobile ? (
     <Stack

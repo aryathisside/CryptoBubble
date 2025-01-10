@@ -148,7 +148,14 @@ const handleSkip=async ()=>{
         </Box>
 
         {error && (
-  <Alert style={{position:"absolute" , right:5 ,top:5}} variant="filled" severity={error.severity} sx={{ mt: 2 }}>
+  <Alert  style={{
+    position: 'absolute',
+    top: 5, // Keep this as required
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: 1000,
+    width:"90%"
+  }} variant="filled" severity={error.severity} sx={{ mt: 2 }}>
     {error.message}
   </Alert>
 )}

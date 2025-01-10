@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const DeactivateAccount = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useDataStore((state) => state.isMobile);
   const { isAuthenticated, logout } = useDataStore();
   const [openDialog, setOpenDialog] = useState(false);
   const [deactivateText, setDeactivateText] = useState("")
@@ -22,11 +22,7 @@ const DeactivateAccount = () => {
     message: '',
     severity: ''
   });
-  useEffect(() => {
-    // Handle window resize for mobile detection
-    const cleanup = Helper.handleResize(setIsMobile);
-    return cleanup;
-  }, []);
+
 
     useEffect(() => {
       if (error) {
@@ -57,66 +53,63 @@ const DeactivateAccount = () => {
   
   };
 
-  const deactivateAccount = async ()=>{
-    if(!deactivateText){
-        return setError({
-            message:"please type DELETE to deactive your account",
-            severity:"error"
-        })
-    }
-    if(deactivateText !== "DELETE"){
-        return  setError({
-            message:" wrong text please check DELETE spelling ",
-            severity:"error"
-        })
-    }
-    try {
+  const deactivateAccount = async () => {
+    const trimmedText = deactivateText.trim(); // Trim spaces from input
 
-        const email = localStorage.getItem("userEmail")
-        // Validate email
-        if (!email) {
-          console.error("Email is required to DELETE the account.");
-          return;
-        }
-    
-        // Make the API call
-        const response = await axios.post(process.env.DELETE_ACCOUNT, {
-          email,
+    if (!trimmedText) {
+        return setError({
+            message: "Please type DELETE to deactivate your account",
+            severity: "error",
         });
-    
-        // Handle success
+    }
+
+    if (trimmedText !== "DELETE") {
+        return setError({
+            message: "Wrong text, please check DELETE spelling",
+            severity: "error",
+        });
+    }
+
+    try {
+        const email = localStorage.getItem("userEmail");
+
+        if (!email) {
+            console.error("Email is required to DELETE the account.");
+            return;
+        }
+
+        const response = await axios.post(process.env.DELETE_ACCOUNT, { email });
+
         if (response.status === 200) {
-          console.log("Account DELETED successfully:", response.data.message);
-          setAuthenticated(false)
-          localStorage.removeItem("token")
-          localStorage.removeItem("userEmail")
-          setError( {
-            message: "Your account has been Deleted successfully.",
-            severity:"success"
-          }  );
-          navigate("/")
-  
-         
+            console.log("Account DELETED successfully:", response.data.message);
+            setAuthenticated(false);
+            localStorage.removeItem("token");
+            localStorage.removeItem("userEmail");
+            setError({
+                message: "Your account has been deleted successfully.",
+                severity: "success",
+            });
+            setTimeout(() => {
+              navigate("/");
+          }, 2000); // 2000 ms = 2 seconds
         } else {
-          console.error("Unexpected response:", response);
+            console.error("Unexpected response:", response);
         }
-      } catch (error) {
-        // Handle errors
+    } catch (error) {
         if (error.response) {
-          setError({
-            message: `Failed to deactivate account: ${error.response.data.message}`,
-            severity: 'error'
-          });
-          
+            setError({
+                message: `Failed to deactivate account: ${error.response.data.message}`,
+                severity: "error",
+            });
         } else {
-          setError({
-            message: 'An error occurred. Please try again later.',
-            severity: 'error'
-          });
-         
+            setError({
+                message: "An error occurred. Please try again later.",
+                severity: "error",
+            });
         }
-      }
-  }
+    }
+};
+
   return (
     <Stack
       sx={{
@@ -164,11 +157,24 @@ const DeactivateAccount = () => {
       
       </Box>
 
-        {error && (
-                    <Alert style={{ position: 'absolute', right: 55, top: 5, zIndex: 1000 }} variant="filled" severity={error.severity} sx={{ mt: 2 }}>
-                      {error.message}
-                    </Alert>
-                  )}
+      {error && (
+  <Alert
+    style={{
+      position: 'absolute',
+      top: 5, // Keep this as required
+      left: '50%',
+      transform: 'translateX(-50%)',
+      zIndex: 1000,
+      width:"90%"
+    }}
+    variant="filled"
+    severity={error.severity}
+    sx={{ mt: 2 }}
+  >
+    {error.message}
+  </Alert>
+)}
+
       
 
     </Stack>

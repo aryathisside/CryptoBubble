@@ -5,6 +5,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import FormInput from '../ui/overrides/Input';
 import FormButton from '../ui/overrides/FormButton';
 import Helper from '../utils/Helper';
+import useDataStore from '../store/useDataStore';
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState('');
@@ -12,7 +13,7 @@ const ResetPasswordPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useDataStore((state) => state.isMobile);
 
   const [error, setError]=useState({
     message:"",
@@ -34,11 +35,6 @@ const ResetPasswordPage = () => {
 
  
   
-  useEffect(() => {
-    // Handle window resize for mobile detection
-    const cleanup = Helper.handleResize(setIsMobile);
-    return cleanup;
-  }, []);
 
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get('token');
