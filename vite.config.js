@@ -32,5 +32,9 @@ export default defineConfig(({ mode }) => {
 
     },
     plugins: [react()],
+    css: {
+      postcss: './postcss.config.js',  // Make sure this points to your PostCSS config
+    },
+
   }
 })

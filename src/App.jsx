@@ -10,15 +10,19 @@ import ChangePassword from './pages/ChangePassword';
 import useDataStore from './store/useDataStore';
 import UserProfile from './pages/UserProfile';
 import DeactivateAccount from './pages/DeactivatePage';
+import AnimatedRoutes from '../src/cypto-academy/Components/AnimatedRoutes';
+import ScrollToTop from '../src/cypto-academy/Components/ScrollToTop';
+
+import './index.css';
 
 const App = () => {
   const initializeWishlist = useConfigStore((state) => state.initializeWishlist);
-  
+
   const setIsMobile = useDataStore((state) => state.setIsMobile);
   const isMobile = useDataStore((state) => state.isMobile);
 
   const { isAuthenticated, logout } = useDataStore();
-  
+
   // Capture URL query params like token and userEmail
   const location = useLocation();
 
@@ -43,7 +47,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    console.log("rendering...")
+    console.log('rendering...');
     // Initialize wishlist state
     initializeWishlist();
   }, [initializeWishlist, isAuthenticated]);
@@ -51,36 +55,50 @@ const App = () => {
   useEffect(() => {
     // Check if token exists in localStorage
     const token = localStorage.getItem('token');
-    console.log(token)
+    console.log(token);
     setAuthenticated(!!token); // Update auth status based on token presence
   }, []);
 
+  const isAnimatedRoute = location.pathname.includes('/papertrade');
+
   return (
+    <>
+      {isAnimatedRoute ? (
+        <div className="App scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100 bg-black">
+          {/* <Router> */}
+            <ScrollToTop />
+            <AnimatedRoutes />
+          {/* </Router */}
+        </div>
+      ) : (
+      
+        <Routes>
+          {/* / route */}
 
-      <Routes>
-        {/* / route */}
-        <Route
-          path="/"
-          element={
-            isMobile && !isAuthenticated ? (
-              <LoginPage /> // Redirect to login for mobile view if not authenticated
-            ) : (
-              <BubbleView />
-            )
-          }
-        />
+          <Route
+            path="/"
+            element={
+              isMobile && !isAuthenticated ? (
+                <LoginPage /> // Redirect to login for mobile view if not authenticated
+              ) : (
+                <BubbleView />
+              )
+            }
+          />
 
-        {/* Other routes */}
-        <Route path= "/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/user-profile" element={<UserProfile />} />
-        <Route path="/deactivate-account" element={<DeactivateAccount />} />
+          {/* Other routes */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="/deactivate-account" element={<DeactivateAccount />} />
+        </Routes>
+     
+      )}
 
-
-      </Routes>
-
+      {/* </div> */}
+    </>
   );
 };
 

@@ -17,6 +17,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
 import Scrollbar from 'react-scrollbars-custom';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import { Button } from 'react-bootstrap';
 
 const HeaderTabs = () => {
   const config = useConfigStore((state) => state.configuration);
@@ -47,6 +48,11 @@ const HeaderTabs = () => {
     }
   }, []);
 
+  const redirectToLogin = () => {
+    const newTabUrl = '/papertrade';
+    window.open(newTabUrl, '_blank', 'noopener,noreferrer');
+  };
+
   useEffect(() => {
     if (searchTerm && searchTerm !== '') {
       const filter = symbols.filter(
@@ -66,8 +72,6 @@ const HeaderTabs = () => {
       setSelectedCurrency(currency);
     }
   };
-
-
 
   const calculateVarient = (item) => {
     const weight = Helper.calculateConfigurationWeight(item, currencies);
@@ -193,7 +197,6 @@ const HeaderTabs = () => {
               )
             )}
 
-
             <Grow in={isMobile ? searchEnabled : searchTerm !== ''}>
               <Box
                 sx={{
@@ -303,6 +306,18 @@ const HeaderTabs = () => {
           </StyledIconButton>
         </Box>
       )}
+
+      <Box>
+        <StyledIconButton
+          sx={{ height: '100%', width: '90px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          onClick={redirectToLogin}>
+          {/* <PersonOutlineOutlinedIcon /> */}
+          <Typography color="white" sx={{ fontSize: '14px' }}>
+            Check
+          </Typography>
+        </StyledIconButton>
+        {/* <Button onClick={redirectToLogin}>click</Button> */}
+      </Box>
 
       <ConfigurationDialog />
       {isMobile ? null : <FooterTabs />}
