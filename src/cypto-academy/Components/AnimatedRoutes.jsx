@@ -11,7 +11,7 @@ import NotFound404 from "../../cypto-academy/routes/NotFound404";
 // import ForgotPassword from "../../cypto-academy/routes/ForgotPassword";
 // import CoinMarket from "../../cypto-academy/routes/CoinMarket";
 import CoinMarket from "../../cypto-academy/routes/CoinMarket";
-import News from "../../cypto-academy/routes/News";
+// import News from "../../cypto-academy/routes/News";
 import CurrencyDetailsPage from "../../cypto-academy/routes/CurrencyDetailsPage";
 import Watchlist from "../../cypto-academy/routes/Watchlist";
 import Portfolio from "../../cypto-academy/routes/Portfolio";
@@ -27,10 +27,10 @@ import GlobalStats from "../../cypto-academy/routes/GlobalStats";
 import VirtualUsdPage from "../../cypto-academy/routes/VirtualUsdPage";
 import Loader from "./Loader";
 
-const Login = lazy(() => import("../../cypto-academy/routes/Login"));
-const Signup = lazy(() => import("../../cypto-academy/routes/Signup"));
-const ResetPassword = lazy(() => import("../../cypto-academy/routes/ResetPassword"));
-const ForgotPassword = lazy(() => import("../../cypto-academy/routes/ForgotPassword"));
+// const Login = lazy(() => import("../../cypto-academy/routes/Login"));
+// const Signup = lazy(() => import("../../cypto-academy/routes/Signup"));
+// const ResetPassword = lazy(() => import("../../cypto-academy/routes/ResetPassword"));
+// const ForgotPassword = lazy(() => import("../../cypto-academy/routes/ForgotPassword"));
 
 // const CoinMarket = lazy(() => import("../../cypto-academy/routes/CoinMarket"));
 // const News = lazy(() => import("../../cypto-academy/routes/News"));
@@ -54,14 +54,14 @@ const AnimatedRoutes = () => {
     // <div className="App scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100 bg-black">
     <AnimatePresence mode={"wait"}>
       <Routes location={location} key={location.pathname}>
-        <Route
+        {/* <Route
           path="/papertrade"
           element={
             <Suspense fallback={<Loader />}>
               <Login />
             </Suspense>
           }
-        />
+        /> */}
         <Route
           element={
             <ProtectedRoute>
@@ -76,7 +76,7 @@ const AnimatedRoutes = () => {
           {/* <Route path="/app/ai" element={<AiPredections />} /> */}
           <Route path="/papertrade/app/coin/USD" element={<VirtualUsdPage />} />
           <Route path="/papertrade/app/coin/:id" element={<CurrencyDetailsPage />} />
-          <Route path="/papertrade/app/news" element={<News />} />
+          {/* <Route path="/papertrade/app/news" element={<News />} /> */}
           <Route path="/papertrade/app/watchlist" element={<Watchlist />} />
           <Route path="/papertrade/app/portfolio" element={<Portfolio />} />
           <Route path="/papertrade/app/learn" element={<Learn />} />
@@ -205,7 +205,7 @@ const AnimatedRoutes = () => {
             </ProtectedRoute>
           }
         /> */}
-        <Route
+        {/* <Route
           path="/papertrade/signup"
           element={
             <Suspense fallback={<Loader />}>
@@ -228,7 +228,7 @@ const AnimatedRoutes = () => {
               <ForgotPassword />
             </Suspense>
           }
-        />
+        /> */}
         <Route path="*" element={<NotFound404 />} />
       </Routes>
     </AnimatePresence>

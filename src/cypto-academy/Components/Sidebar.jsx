@@ -160,7 +160,7 @@ const Sidebar = ({ openSidebar, active }) => {
             </Link>
           </li>
 
-          <li className="my-px">
+          {/* <li className="my-px">
             <Link
               to="/papertrade/app/news"
               className={`
@@ -172,7 +172,7 @@ const Sidebar = ({ openSidebar, active }) => {
               </span>
               <span className="ml-3">News</span>
             </Link>
-          </li>
+          </li> */}
 
           <li className="my-px">
             <Link

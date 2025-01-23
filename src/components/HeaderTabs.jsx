@@ -49,7 +49,7 @@ const HeaderTabs = () => {
   }, []);
 
   const redirectToLogin = () => {
-    const newTabUrl = '/papertrade';
+    const newTabUrl = '/papertrade/app';
     window.open(newTabUrl, '_blank', 'noopener,noreferrer');
   };
 

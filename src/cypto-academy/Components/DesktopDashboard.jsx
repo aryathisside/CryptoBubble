@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { useGetTrendingCoinDataQuery } from "../services/coinsDataApi";
-import { useGetNewsQuery } from "../services/NewsApi";
+// import { useGetNewsQuery } from "../services/NewsApi";
 import {
   useFetchAvailableCoinsQuery,
   useGetLeaderboardQuery,
@@ -44,13 +44,13 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
     // error: networthError
   } = useGetUserNetworthQuery(currentUser.uid);
 
-  // get news
-  const {
-    data: news,
-    isSuccess: fetchNewsSuccess,
-    // error: fetchNewsError,
-    isLoading: fetchNewsLoading
-  } = useGetNewsQuery();
+  // // get news
+  // const {
+  //   data: news,
+  //   isSuccess: fetchNewsSuccess,
+  //   // error: fetchNewsError,
+  //   isLoading: fetchNewsLoading
+  // } = useGetNewsQuery();
 
   // get available coins
   const {
@@ -73,9 +73,64 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
 
   const location = useLocation();
 
+  
+  const AddInitialBalance = async () => {
+    try{
+    // Check if the user exists in Supabase
+    const { data: existingUser, error: fetchError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("userId",currentUser.uid);
+
+    if (fetchError) {
+      console.error("Error fetching user data:", fetchError);
+      throw new Error("Failed to fetch user data.");
+    }
+
+    if (!existingUser || existingUser.length === 0) {
+      // Add new user to the database
+      const { data: networth, error: userError } = await supabase.from("users").insert([
+        {
+          userId: currentUser.uid,
+          username: currentUser.displayName || "User", // Replace with proper username
+          email: currentUser.email
+        }
+      ]);
+
+      if (userError) {
+        console.error("Error inserting user data:", userError);
+        throw new Error("Failed to add user data.");
+      }
+
+      // Add initial coins
+      const { data: userCoin, error: coinError } = await supabase.from("portfolio").insert([
+        {
+          userId: currentUser.uid,
+          coinId: "USD",
+          coinName: "Virtual USD",
+          image: "https://img.icons8.com/fluency/96/000000/us-dollar-circled.png",
+          amount: 100000,
+          coinSymbol: "vusd"
+        }
+      ]);
+
+      if (coinError) {
+        console.error("Error adding coins:", coinError);
+        throw new Error("Failed to add initial coins.");
+      }
+    }
+    }catch(error){
+      console.log(error)
+    }
+  };
+
   useEffect(() => {
+    const fetchData=async () =>{
+    await AddInitialBalance();
     refetchAvailableCoins();
     refetchUserNetworth();
+  }
+  fetchData()
   }, [location?.state]);
 
   return (
@@ -83,7 +138,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
       {/* loading State */}
       {(isLoading ||
         fetchWatchlistLoading ||
-        fetchNewsLoading ||
+        // fetchNewsLoading ||
         fetchAvailableUsdCoinsLoading ||
         leaderboardIsLoading ||
         userNetworthLoading) && <Loader />}
@@ -289,7 +344,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
         </ul>
       </div>
       {/*News*/}
-      <p className="text-white font-bold text-2xl md:text-3xl font-title my-4 px-4">
+      {/* <p className="text-white font-bold text-2xl md:text-3xl font-title my-4 px-4">
         Today Top Headlines
       </p>
 
@@ -333,7 +388,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
               </dl>
             </a>
           ))}
-      </div>
+      </div> */}
     </>
   );
 };

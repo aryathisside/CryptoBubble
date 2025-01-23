@@ -3,9 +3,9 @@ import { useNavigate } from "react-router";
 
 import ErrorToast from "../ErrorToast";
 import { useAuth } from "../../../Context/AuthContext";
-
+import useDataStore from '../../../store/useDataStore';
 const Logout = () => {
-  const { logout } = useAuth();
+  const { logout } = useDataStore();
   let navigate = useNavigate();
 
   const toastRef = useRef(null);
@@ -15,7 +15,7 @@ const Logout = () => {
     try {
       await logout();
       console.log("logged out user successfully");
-      navigate("/papertrade");
+      navigate("/");
     } catch (error) {
       setErrorMessage(error.message);
       toastRef.current.show();

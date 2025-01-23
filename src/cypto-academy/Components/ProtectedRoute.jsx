@@ -7,7 +7,7 @@ function ProtectedRoute({ children }) {
   // const location = useLocation();
 
   if (!currentUser) {
-    return <Navigate to="/papertrade" />;
+    return <Navigate to="/" />;
   }
 
   return children;

@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 import { coinsDataApi } from "../services/coinsDataApi";
-import { NewsApi } from "../services/NewsApi";
+// import { NewsApi } from "../services/NewsApi";
 import { supabaseApi } from "../services/supabaseApi";
 
 import portfolioDataReducer from "../Features/portfolioDataSlice";
@@ -13,7 +13,7 @@ export const store = configureStore({
   reducer: {
     [coinsDataApi.reducerPath]: coinsDataApi.reducer,
     [supabaseApi.reducerPath]: supabaseApi.reducer,
-    [NewsApi.reducerPath]: NewsApi.reducer,
+    // [NewsApi.reducerPath]: NewsApi.reducer,
     portfolioData: portfolioDataReducer,
     availableCoins: availableCoinsReducer,
     user: userReducer
@@ -22,7 +22,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       coinsDataApi.middleware,
       supabaseApi.middleware,
-      NewsApi.middleware
+      // NewsApi.middleware
     )
 });
 

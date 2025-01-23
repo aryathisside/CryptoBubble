@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { useAuth } from "../Context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 
 import FloatingInput from "../Components/Buttons/FloatingInput";
 import ErrorToast from "../Components/ErrorToast";

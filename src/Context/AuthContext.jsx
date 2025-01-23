@@ -1,90 +1,56 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-  GoogleAuthProvider,
-  signInWithPopup,
-  sendPasswordResetEmail,
-  updateProfile
-} from "firebase/auth";
-
-import { auth } from "../cypto-academy/Utils/init-firebase";
+import {jwtDecode} from "jwt-decode";
 import Loader from "../cypto-academy/Components/Loader";
+import { supabase } from "../cypto-academy/Utils/init-supabase";
 
-// create a context with a placeholder value initially
 const AuthContext = createContext();
 
-// custom hook
 export const useAuth = () => useContext(AuthContext);
 
-// Provider that wraps our app.js
 export default function AuthContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  function signUp(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
-  }
-
-  function login(email, password) {
-    return signInWithEmailAndPassword(auth, email, password);
-  }
-
+  // Logout
   function logout() {
-    return signOut(auth);
+    localStorage.removeItem("token");
+    setCurrentUser(null);
   }
 
-  function deleteUser(user) {
-    return deleteUser(user);
-  }
-
-  function forgotPassword(email) {
-    return sendPasswordResetEmail(auth, email, {
-      url: "https://cryptocademy.netlify.app/"
-    });
-  }
-
-  function updateProfileName(username) {
-    return updateProfile(auth.currentUser, {
-      displayName: username
-    });
-  }
-
-  function signInWithGoogle() {
-    const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
-  }
-
+  // Check Authentication State on Load
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user);
-        setAuthLoading(false);
-      } else {
-        setCurrentUser(null);
-        setAuthLoading(false);
-      }
-    });
+    const checkAuthState = async () => {
+      const token = localStorage.getItem("token");
+      const firstName = localStorage.getItem("firstName");
+      const lastName = localStorage.getItem("lastName");
+      if (token) {
+        try {
+          const decoded = jwtDecode(token);
 
-    return () => {
-      unsubscribe();
+          // Format user data and set as current user
+          const formatted = {
+            uid: decoded.id,
+            email: decoded.email,
+            displayName: firstName+' '+lastName,
+          };
+          setCurrentUser(formatted);
+        } catch (error) {
+          console.error("Error during user check:", error);
+          logout(); // Log out user on token decode failure
+        }
+      }
+      setAuthLoading(false);
     };
+
+    checkAuthState(); // Call the async function
   }, []);
 
   const value = {
     currentUser,
-    signUp,
-    login,
     logout,
-    signInWithGoogle,
-    forgotPassword,
-    updateProfileName,
-    deleteUser
   };
 
-  if (authLoading === true) {
+  if (authLoading) {
     return <Loader message="Checking if you logged in before...." />;
   }
 
