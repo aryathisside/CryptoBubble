@@ -13,6 +13,8 @@ import emptyWatchlistLogo from "../Assets/svg/emptyWatchlist.svg";
 
 import Loader from "../Components/Loader";
 import { useAuth } from "../../Context/AuthContext";
+import digital from '../Assets/svg/digital-economy-logo.svg';
+import saving from '../Assets/svg/saving.svg';
 
 const Portfolio = () => {
   const { currentUser } = useAuth();
@@ -74,27 +76,27 @@ const Portfolio = () => {
   }, []);
 
   return (
-    <section className=" py-2 lg:py-8 mx-auto max-w-[1600px]">
+    <section className=" py-2 lg:py-8 mx-auto  lg:w-full px-4">
       <p className="text-white font-bold text-2xl md:text-3xl font-title mt-4 lg:mt-0  ml-3">
         Portfolio
       </p>
       {(isLoading || fetchPortfolioCoinDataLoading || fetchAvailableUsdCoinsLoading) && <Loader />}
       {error && <p className="text-red-400 text-xl">Something went wrong!</p>}
       {/* available coin and networth */}
-      <div className="no-scrollbar flex overflow-scroll  p-4  rounded-box w-screen max-w-md md:max-w-full lg:flex-wrap  ">
-        <div className="">
-          <div className="  bg-gradient-to-tr from-gray-900 to-gray-700   overflow-hidden shadow rounded-lg w-60 md:w-72 relative mx-3 mt-1 ">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5  ">
+        <div className="w-full flex-1">
+          <div className="  bg-gradient-to-tr from-gray-900 to-gray-700   overflow-hidden shadow rounded-lg w-full relative mx-3 mt-1 ">
             <img
-              src="https://img.icons8.com/clouds/200/000000/bitcoin.png"
+              src={digital}
               alt="btc logo"
-              className="h-24 w-24  absolute opacity-50 -top-6 -right-6 md:-right-4"
+              className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6"
             />
             <div className="px-4 py-5 sm:p-6">
               <dl>
                 <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">
                   Virtual USD
                 </dt>
-                <div className="font-text mt-1 text-xl leading-9 font-semibold text-gray-200">
+                <div className="font-text mt-1 text-3xl leading-9 font-semibold pt-2 text-white">
                   ${fetchAvailableUsdCoinsSuccess && availableUsdCoins[0]?.amount}
                 </div>
               </dl>
@@ -102,19 +104,19 @@ const Portfolio = () => {
           </div>
         </div>
 
-        <div className="">
-          <div className="  bg-gradient-to-tr from-gray-900 to-gray-700   overflow-hidden shadow rounded-lg w-60 md:w-72 relative mx-3 mt-1 ">
+        <div className="w-full flex-1">
+          <div className="  bg-gradient-to-tr from-gray-900 to-gray-700   overflow-hidden shadow rounded-lg w-full relative mx-3 mt-1 ">
             <img
-              src="https://img.icons8.com/fluency/96/000000/bullish.png"
+              src={saving}
               alt="btc logo"
-              className="h-24 w-24  absolute opacity-50 -top-6 -right-6 md:-right-4"
+              className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6"
             />
             <div className="px-4 py-5 sm:p-6">
               <dl>
                 <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">
                   Networth
                 </dt>
-                <dd className="mt-1 font-text text-xl leading-9 font-semibold text-gray-200">
+                <dd className="mt-1 font-text text-3xl leading-9 font-semibold text-white pt-2">
                   ${userNetworthSuccess && userNetworth[0]?.networth}
                 </dd>
               </dl>
@@ -124,12 +126,15 @@ const Portfolio = () => {
       </div>
 
       {/* portfolio Table */}
-      <ul className="md:px-4 font-text flex flex-col space-y-1 pb-12 text-white">
+      <ul className="md:px-4 font-text flex flex-col space-y-1 pb-12 pt-4 text-white">
         {/* Table Head */}
-        <li className="grid grid-cols-3 text-gray-500 py-2 px-1md:px-5 cursor-pointer border-b-2 border-white">
-          <div className="flex justify-start items-center space-x-4">
-            <p className="text-white pl-4">Name</p>
+        <li className="grid grid-cols-4 text-gray-500 py-2 px-1md:px-5 cursor-pointer bg-[#171A24] py-2">
+        <div className="flex justify-start items-center space-x-4">
+            <p className="text-white pl-4">S.no</p>
           </div>
+         <div className="flex justify-start items-center space-x-4">
+            <p className="text-white pl-4">Name</p>
+          </div> 
 
           <div className="flex justify-center md:justify-start items-center space-x-4">
             <p className="text-white ">% Change</p>

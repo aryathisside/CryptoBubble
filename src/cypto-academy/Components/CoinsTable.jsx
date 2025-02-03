@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import  graph  from '../Assets/svg/graph.svg'
+import crypto from "../Assets/svg/cryptocurrency-logo.svg";
+import bar from "../Assets/svg/bar-chart.svg"
 
 import { useGetCoinsDataQuery, useGetGlobalCryptoDataQuery } from "../services/coinsDataApi";
 import ErrorToast from "./ErrorToast";
@@ -58,77 +61,79 @@ const CoinsTable = () => {
   };
 
   return (
-    <div className="z-10">
+    <div className="z-10 w-full">
       {(isLoading || fetchGlobalCryptoLoading) && <Loader />}
       {error && <ErrorToast message="Something Went Wrong!" ref={toastRef} />}
       {fetchGlobalCryptoSuccess && (
-        <div className="no-scrollbar flex  p-4 space-x-4 rounded-box w-screen overflow-scroll max-w-md md:max-w-full lg:flex-wrap">
-          <div className="">
-            <div className="  bg-gradient-to-tr from-gray-900 to-gray-700   overflow-hidden shadow rounded-lg w-60 md:w-72 relative">
-              <img
-                src="https://img.icons8.com/clouds/200/000000/bitcoin.png"
-                alt="btc logo"
-                className="h-24 w-24 rounded-full absolute opacity-50 -top-6 -right-6 md:-right-4"
-              />
-              <div className="px-4 py-5 sm:p-6">
-                <dl>
-                  <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">
-                    Total Market Cap
-                  </dt>
-                  <dd className="font-text mt-1 text-xl leading-9 font-semibold text-gray-200">
-                    ${globalCryptoData.data.total_market_cap.usd.toFixed(4)}
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-
-          <div className="">
-            <div className="  bg-gradient-to-tr from-gray-900 to-gray-700   overflow-hidden shadow rounded-lg w-60 md:w-72 relative">
-              <img
-                src="https://img.clankapp.com/symbol/btc.svg"
-                alt="btc logo"
-                className="h-24 w-24 rounded-full absolute opacity-50 -top-6 -right-6 md:-right-4"
-              />
-              <div className="px-4 py-5 sm:p-6">
-                <dl>
-                  <dt className="font-title  text-sm leading-5 font-medium text-gray-400 truncate">
-                    Active Cryptocurrencies
-                  </dt>
-                  <dd className="font-text mt-1 text-3xl leading-9 font-semibold text-gray-200">
-                    {globalCryptoData.data.active_cryptocurrencies}
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-
-          <div className="">
-            <div className=" bg-gradient-to-tr from-gray-900 to-gray-700   overflow-hidden shadow rounded-lg w-60 md:w-72 relative">
-              <img
-                src="https://img.icons8.com/fluency/96/000000/bullish.png"
-                alt="btc logo"
-                className="h-24 w-24 rounded-full absolute opacity-50 -top-6 -right-6 md:-right-4"
-              />
-              <div className="px-4 py-5 sm:p-6">
-                <dl>
-                  <dt className="font-title  text-sm leading-5 font-medium text-gray-400 truncate">
-                    24h Market Cap Change
-                  </dt>
-                  <dd
-                    className={`font-text mt-1 text-3xl leading-9 font-semibold ${
-                      globalCryptoData.data.market_cap_change_percentage_24h_usd >= 0
-                        ? "text-green-400"
-                        : "text-red-400"
-                    } `}
-                  >
-                    {globalCryptoData.data.market_cap_change_percentage_24h_usd.toFixed(4)}%
-                  </dd>
-                </dl>
-              </div>
-            </div>
+      <div className="no-scrollbar flex flex-wrap p-4 gap-8 rounded-box w-screen w-full overflow-auto max-w-full">
+      <div className="w-full flex-1">
+        <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
+          <img
+            src={bar}
+            alt="btc logo"
+            className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6"
+          />
+          <div className="px-4 py-5">
+            <dl>
+              <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">
+                Total Market Cap
+              </dt>
+              <dd className="font-text mt-1 text-xl leading-9 font-semibold text-gray-200">
+                ${globalCryptoData.data.total_market_cap.usd.toFixed(4)}
+              </dd>
+            </dl>
           </div>
         </div>
+      </div>
+    
+      <div className="w-full flex-1">
+        <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
+          <img
+            src={crypto}
+            alt="btc logo"
+            className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6"
+          />
+          <div className="px-4 py-5">
+            <dl>
+              <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">
+                Active Cryptocurrencies
+              </dt>
+              <dd className="font-text mt-1 text-3xl leading-9 font-semibold text-gray-200">
+                {globalCryptoData.data.active_cryptocurrencies}
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    
+      <div className="w-full flex-1">
+        <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
+          <img
+            src={graph}
+            alt="btc logo"
+            className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6"
+          />
+          <div className="px-4 py-5">
+            <dl>
+              <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">
+                24h Market Cap Change
+              </dt>
+              <dd
+                className={`font-text mt-1 text-3xl leading-9 font-semibold text-gray-200`}
+                //   ${
+                //   globalCryptoData.data.market_cap_change_percentage_24h_usd >= 0
+                //     ? "text-green-400"
+                //     : "text-red-400"
+                // }`}
+              >
+                {globalCryptoData.data.market_cap_change_percentage_24h_usd.toFixed(4)}%
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+    
       )}
       {/* more global stats page */}
       {fetchGlobalCryptoSuccess && (
@@ -143,7 +148,10 @@ const CoinsTable = () => {
 
       <ul className="md:px-4 flex flex-col space-y-1 pb-12 font-text text-white">
         {/* Table Head */}
-        <li className="grid grid-cols-2 md:grid-cols-4 text-gray-500 py-2 px-1md:px-5 cursor-pointer border-b-2 border-white ">
+        <li className="grid grid-cols-2 md:grid-cols-5 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#171A24] rounded-lg">
+          <div className="flex justify-start items-center space-x-4 w-20">
+            <p className="text-white pl-4">S.no</p>
+          </div>
           <div className="flex justify-start items-center space-x-4">
             <p className="text-white pl-4">Name</p>
           </div>
@@ -163,10 +171,13 @@ const CoinsTable = () => {
             <li
               key={index}
               onClick={() => navigate(`/papertrade/app/coin/${coins.id}`)}
-              className="grid grid-cols-2 md:grid-cols-4 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-b-2 border-gray-800 "
+              className="grid grid-cols-2 md:grid-cols-5 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-gray-800 "
             >
+              <div className="w-20 flex items-center">
+              <p className="pl-4 text-white">#{index + 1}</p>
+              </div>
               <div className="flex items-center space-x-2 ">
-                <p className="pl-1">{index + 1}</p>
+                
                 <img
                   className="h-8 w-8 md:h-10 md:w-10 object-contain"
                   src={coins.image}

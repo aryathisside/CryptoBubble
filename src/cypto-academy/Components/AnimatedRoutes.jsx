@@ -65,6 +65,7 @@ const AnimatedRoutes = () => {
         <Route
           element={
             <ProtectedRoute>
+              
               <SidebarLayout />
             </ProtectedRoute>
           }
