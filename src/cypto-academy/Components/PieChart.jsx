@@ -1,15 +1,17 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const PieChart = ({ globalCryptoData }) => {
+
   const data = {
-    labels: Object.keys(globalCryptoData.data.market_cap_percentage),
+    labels: Object.keys(globalCryptoData.data.market_cap_percentage), // Cryptocurrency names
     datasets: [
       {
         label: "Market Dominance in %",
-        data: Object.values(globalCryptoData.data.market_cap_percentage),
+        data: Object.values(globalCryptoData.data.market_cap_percentage), // Market dominance values
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)",
           "rgba(54, 162, 235, 0.6)",
@@ -31,16 +33,48 @@ const PieChart = ({ globalCryptoData }) => {
     ]
   };
 
-  console.log(
-    Object.values(globalCryptoData.data.market_cap_percentage),
-    Object.keys(globalCryptoData.data.market_cap_percentage)
-  );
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false, // Makes the chart fill its container
+    scales: {
+      x: {
+        barPercentage: 0.4, // Controls bar thickness (0.0 to 1.0, lower = thinner)
+        categoryPercentage: 0.6, 
+        grid: {
+          drawOnChartArea: false, // Hide all inner grid lines
+          drawTicks: false, // Hide small tick marks
+        },
+        border: {
+          display: true, // Ensures the main vertical axis line is visible
+          color: "#2A2E36",
+          width: 1, // Makes it bold
+        },
+        ticks: { color: "#ffffff" } // White text on x-axis
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          drawOnChartArea: false, // Hide all inner grid lines
+          drawTicks: false, // Hide small tick marks
+        },
+        border: {
+          display: true, // Ensures the main horizontal axis line is visible
+          color: "#2A2E36",
+          width: 1, // Makes it bold
+        },
+        ticks: { color: "#ffffff" } // White text on y-axis
+      }
+    }
+  };
 
   return (
-    <div className="flex justify-center mt-8 h-1/3 lg:h-3/4 pb-10 overflow-y-hidden">
-      <Pie data={data} />
+    <div className="w-[90%] h-[500px] flex justify-center items-center mx-auto">
+    <div className="w-full h-full">
+      <Bar data={data} options={options} />
     </div>
+  </div>
   );
 };
+
 
 export default PieChart;

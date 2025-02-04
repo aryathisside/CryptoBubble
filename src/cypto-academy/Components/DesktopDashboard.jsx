@@ -1,18 +1,15 @@
-import { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-import { useGetTrendingCoinDataQuery } from "../services/coinsDataApi";
+import { useGetTrendingCoinDataQuery } from '../services/coinsDataApi';
 // import { useGetNewsQuery } from "../services/NewsApi";
-import {
-  useFetchAvailableCoinsQuery,
-  useGetLeaderboardQuery,
-  useGetUserNetworthQuery,
-  useGetWatchlistDataQuery
-} from "../services/supabaseApi";
+import { useFetchAvailableCoinsQuery, useGetLeaderboardQuery, useGetUserNetworthQuery, useGetWatchlistDataQuery } from '../services/supabaseApi';
 
-import Loader from "./Loader";
-import { supabase } from "../Utils/init-supabase";
-import { useAuth } from "../../Context/AuthContext";
+import Loader from './Loader';
+import { supabase } from '../Utils/init-supabase';
+import { useAuth } from '../../Context/AuthContext';
+import { CiEdit } from "react-icons/ci";
+import { LiaCoinsSolid } from "react-icons/lia";
 
 const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
   const { currentUser } = useAuth();
@@ -69,68 +66,66 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
     error: fetchLeaderboardError
   } = useGetLeaderboardQuery();
 
-  const demoImage = "https://source.unsplash.com/fsSGgTBoX9Y";
+  const demoImage = 'https://source.unsplash.com/fsSGgTBoX9Y';
 
   const location = useLocation();
 
-  
+  console.log("data", watchlistData);
+
   const AddInitialBalance = async () => {
-    try{
-    // Check if the user exists in Supabase
-    const { data: existingUser, error: fetchError } = await supabase
-      .from("users")
-      .select("*")
-      .eq("userId",currentUser.uid);
+    try {
+      // Check if the user exists in Supabase
+      const { data: existingUser, error: fetchError } = await supabase.from('users').select('*').eq('userId', currentUser.uid);
 
-    if (fetchError) {
-      console.error("Error fetching user data:", fetchError);
-      throw new Error("Failed to fetch user data.");
-    }
-
-    if (!existingUser || existingUser.length === 0) {
-      // Add new user to the database
-      const { data: networth, error: userError } = await supabase.from("users").insert([
-        {
-          userId: currentUser.uid,
-          username: currentUser.displayName || "User", // Replace with proper username
-          email: currentUser.email
-        }
-      ]);
-
-      if (userError) {
-        console.error("Error inserting user data:", userError);
-        throw new Error("Failed to add user data.");
+      if (fetchError) {
+        console.error('Error fetching user data:', fetchError);
+        throw new Error('Failed to fetch user data.');
       }
 
-      // Add initial coins
-      const { data: userCoin, error: coinError } = await supabase.from("portfolio").insert([
-        {
-          userId: currentUser.uid,
-          coinId: "USD",
-          coinName: "Virtual USD",
-          image: "https://img.icons8.com/fluency/96/000000/us-dollar-circled.png",
-          amount: 100000,
-          coinSymbol: "vusd"
-        }
-      ]);
+      if (!existingUser || existingUser.length === 0) {
+        // Add new user to the database
+        const { data: networth, error: userError } = await supabase.from('users').insert([
+          {
+            userId: currentUser.uid,
+            username: currentUser.displayName || 'User', // Replace with proper username
+            email: currentUser.email
+          }
+        ]);
 
-      if (coinError) {
-        console.error("Error adding coins:", coinError);
-        throw new Error("Failed to add initial coins.");
+        if (userError) {
+          console.error('Error inserting user data:', userError);
+          throw new Error('Failed to add user data.');
+        }
+
+        // Add initial coins
+        const { data: userCoin, error: coinError } = await supabase.from('portfolio').insert([
+          {
+            userId: currentUser.uid,
+            coinId: 'USD',
+            coinName: 'Virtual USD',
+            image: 'https://img.icons8.com/fluency/96/000000/us-dollar-circled.png',
+            amount: 100000,
+            coinSymbol: 'vusd'
+          }
+        ]);
+
+        if (coinError) {
+          console.error('Error adding coins:', coinError);
+          throw new Error('Failed to add initial coins.');
+        }
       }
-    }
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    const fetchData=async () =>{
-    await AddInitialBalance();
-    refetchAvailableCoins();
-    refetchUserNetworth();
-  }
-  fetchData()
+    const fetchData = async () => {
+      await AddInitialBalance();
+      refetchAvailableCoins();
+      refetchUserNetworth();
+    };
+    fetchData();
   }, [location?.state]);
 
   return (
@@ -143,45 +138,21 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
         leaderboardIsLoading ||
         userNetworthLoading) && <Loader />}
       {/* credit card */}
-      <div className="w-80 m-auto md:m-0 md:w-96 h-56 lg:ml-8 bg-gradient-to-tr from-gray-900 to-gray-700  rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-110">
-        <div className="w-full px-8 absolute top-8 font-text">
-          <div className="flex justify-between">
-            <div className="">
-              <h4 className="">Name</h4>
-              <p className="font-semibold tracking-wide">{currentUser.displayName}</p>
-            </div>
-            <img
-              className="w-14 h-14"
-              src="https://img.icons8.com/offices/80/000000/sim-card-chip.png"
-              alt="card chip"
-            />
-          </div>
-          <div className="pt-1">
-            <h4 className="">Account Balance</h4>
-            <p className="font-semibold tracking-more-wider">
-              ${fetchAvailableUsdCoinsSuccess && availableUsdCoins[0]?.amount}
-            </p>
-          </div>
-          <div className="pt-6 pr-6">
-            <div className="flex justify-between">
-              <div className="">
-                <h4 className="font-light text-xs">Networth</h4>
-                <p className="font-semibold tracking-wider text-sm">
-                  {userNetworthSuccess && <span>${userNetworth[0]?.networth}</span>}
-                </p>
+      <div className="w-full  rounded-2xl crypto-bg">
+        <div className="p-6 w-full">
+          <p className="text-[#CFA935] text-[24px]">Welcome,</p>
+          <p className="text-white font-bold text-2xl md:text-3xl font-title pt-6 md:pt-3 mb-4">{currentUser.displayName}</p>
+          <div className="flex gap-6 pt-2">
+            <div className="bg-gradient-to-r from-[#2A2E36] to-[#171A24] border-2 border-white w-[300px] p-4 rounded-xl">
+              <p className="text-[#A9A9A9]">Account Balance</p>
+              <div className="font-text mt-1 text-3xl leading-9 font-semibold text-white">
+                ${fetchAvailableUsdCoinsSuccess && availableUsdCoins[0]?.amount}
               </div>
-              {/* <div className="">
-                            <p className="font-light text-xs ">
-                                Expiry
-                            </p>
-                            <p className="font-medium tracking-wider text-sm">
-                                03/25
-                            </p>
-                        </div> */}
-
-              <div className="">
-                <p className="font-light text-xs">CVV</p>
-                <p className="font-bold tracking-more-wider text-sm">···</p>
+            </div>
+            <div className="bg-gradient-to-r from-[#2A2E36] to-[#171A24] border-2 border-white w-[300px] p-4 rounded-xl">
+              <p className="text-[#A9A9A9]">Networth</p>
+              <div className="font-text mt-1 text-3xl leading-9 font-semibold text-white">
+                {userNetworthSuccess && <span>${userNetworth[0]?.networth}</span>}
               </div>
             </div>
           </div>
@@ -189,100 +160,139 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
       </div>
 
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-2  mt-8">
-        <div className=" shadow-lg mx-auto rounded-2xl bg-black w-[90%]">
-          <p className="font-tile text-white font-bold text-2xl md:text-3xl font-title my-4">
-            Trending Coins
-          </p>
+        <div className=" shadow-lg rounded-2xl bg-black w-full">
+          {/* <p className="font-tile text-white font-bold text-2xl md:text-3xl font-title my-4">Trending Coins</p> */}
 
           {isSuccess && (
-            <div>
-              <ul>
-                {trendingCoins.coins.map((coin, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center text-gray-200 justify-between py-3 border-b-2 border-gray-800 "
-                  >
-                    <div className="flex items-center justify-start text-sm space-x-3">
-                      <img src={coin.item.large} alt={`${coin.item.name}`} className="w-10 h-10" />
-                      <div className="font-text">
-                        <p className="text-white text-xl font-bold ">{coin.item.name}</p>
-                        <p className="text-white text-sm">{coin.item.symbol}/USD</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="font-text text-xl">
-                        <p className="text-white">${coin.item.price_btc.toFixed(9)}</p>
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            <div className="bg-[#000000] rounded-xl w-full">
+              {/* Table Header */}
+              <div className="bg-[#171A24] px-6 py-3 rounded-t-xl border-t-2 border-x-2 border-[#2A2E36]">
+                <h2 className="text-white font-semibold text-[24px]">Trending Coins</h2>
+              </div>
+
+              {/* Table */}
+              <div className="w-full">
+                <table className="w-full border-2 border-[#2A2E36]">
+                  {/* Table Head */}
+                  <thead>
+                    <tr className="text-left text-white text-sm bg-[#171A24]">
+                      <th className="px-6 py-3 font-semibold">S.No.</th>
+                      <th className="px-6 py-3 font-semibold">Name</th>
+                      <th className="px-6 py-3 font-semibold">Amount</th>
+                    </tr>
+                  </thead>
+
+                  {/* Table Body */}
+                  <tbody>
+                    {trendingCoins.coins.map((coin, index) => (
+                      <tr key={index} className=" hover:bg-[#1A1D25] transition">
+                        {/* S.No */}
+                        <td className="px-6 py-4 text-white font-medium">#{index + 1}</td>
+
+                        {/* Coin Name */}
+                        <td className="px-6 py-4 flex items-center space-x-3">
+                          <img src={coin.item.large} alt={`${coin.item.name}`} className="w-10 h-10 rounded-md" />
+                          <div>
+                            <p className="text-white font-semibold">{coin.item.name}</p>
+                            <p className="text-gray-400 text-sm">{coin.item.symbol}/USD</p>
+                          </div>
+                        </td>
+
+                        {/* Amount */}
+                        <td className="px-6 py-4 text-white font-medium">${coin.item.price_btc.toFixed(9)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>
         {/* watchlist data */}
-        <div className=" shadow-lg mx-auto rounded-2xl bg-black w-[90%]">
-          <p className="text-white font-bold text-2xl md:text-3xl font-title my-4">
-            Your Watchlist
-          </p>
+        <div className="shadow-lg rounded-2xl bg-black w-full">
+  {/* Watchlist Header */}
+  <div className="bg-[#171A24] px-6 py-3 rounded-t-xl border-t-2 border-x-2 border-[#2A2E36]">
+    <h2 className="text-white font-semibold text-[24px]">Your Watchlist</h2>
+  </div>
 
-          <ul>
-            {fetchWatchlistErr ? (
-              <div className=" shadow-lg rounded-2xl  px-4 py-4 md:px-4 bg-gray-900 flex flex-col ;lg:justify-center font-text">
-                <p className="text-white text-xl font-bold my-2 lg:text-center">
-                  Your watchlist is empty
-                </p>
-                <p className="text-white lg:text-center mb-5">
-                  Press the button to browse all the coins
-                </p>
-                <Link
-                  to="/papertrade/app/market"
-                  className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                >
-                  View Coins
-                </Link>
-              </div>
-            ) : (
-              fetchWatchlistSuccess &&
-              watchlistData.slice(0, 7).map((coin, index) => (
-                <li
-                  key={index}
-                  className="flex items-center font-text text-gray-200 justify-between py-3 border-b-2 border-gray-800 "
-                >
-                  <div className="flex items-center justify-start text-sm space-x-3">
-                    <img src={coin.image.large} alt={`${coin.name}`} className="w-10 h-10" />
-                    <div className="">
-                      <p className="text-white text-xl font-bold ">{coin.name}</p>
-                      <p className="text-white uppercase text-sm">{coin.symbol}/USD</p>
-                    </div>
+  {/* Show message if watchlist is empty */}
+  {fetchWatchlistErr ? (
+    <div className="shadow-lg px-4 py-4 md:px-4 bg-gray-900 flex flex-col lg:justify-center font-text">
+      <p className="text-white text-xl font-bold my-2 lg:text-center">Your watchlist is empty</p>
+      <p className="text-white lg:text-center mb-5">Press the button to browse all the coins</p>
+      <Link
+        to="/papertrade/app/market"
+        className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      >
+        View Coins
+      </Link>
+    </div>
+  ) : (
+    <div className="overflow-x-auto">
+      <table className="w-full border-2 border-[#2A2E36]">
+        {/* Table Head */}
+        <thead className="bg-[#171A24] text-white">
+          <tr className="border-b border-[#2A2E36] text-left">
+            <th className="px-6 py-3 font-semibold">S.No.</th>
+            <th className="px-6 py-3 font-semibold">Name</th>
+            <th className="px-6 py-3 font-semibold">Amount</th>
+            <th className="px-6 py-3 font-semibold">Change%</th>
+            <th className="px-6 py-3 font-semibold">Action</th>
+          </tr>
+        </thead>
+
+        {/* Table Body */}
+        <tbody>
+          {fetchWatchlistSuccess &&
+            watchlistData.slice(0, 7).map((coin, index) => (
+              <tr key={index} className="border-b border-[#2A2E36] hover:bg-[#1A1D25] transition">
+                {/* S.No */}
+                <td className="px-6 py-4 text-white font-medium">#{index + 1}</td>
+
+                {/* Coin Name */}
+                <td className="px-6 py-4 flex items-center space-x-3">
+                  <img src={coin.image.large} alt={coin.name} className="w-10 h-10 rounded-md" />
+                  <div>
+                    <p className="text-white font-semibold">{coin?.name}</p>
+                    <p className="text-gray-400 text-sm">{coin?.symbol.toUpperCase()}/USD</p>
                   </div>
-                  <div className="">
-                    <p className="text-white font-bold">
-                      ${coin.market_data.current_price.usd}
-                      <br />
-                    </p>
-                    <p
-                      className={`text-right ${
-                        coin?.market_data.price_change_percentage_24h >= 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      } font-semibold`}
-                    >
-                      {coin?.market_data.price_change_percentage_24h >= 0 && "+"}
-                      {coin?.market_data.price_change_percentage_24h?.toFixed(2)}%
-                    </p>
-                  </div>
-                </li>
-              ))
-            )}
-          </ul>
-        </div>
+                </td>
+
+                {/* Amount */}
+                <td className="px-6 py-4 text-white font-medium">
+                  ${coin.market_data.current_price.usd.toLocaleString()}
+                </td>
+
+                {/* 24h Change */}
+                <td
+                  className={`px-6 py-4 font-semibold ${
+                    coin?.market_data.price_change_percentage_24h >= 0 ? "text-green-400" : "text-red-400"
+                  }`}
+                >
+                  {coin?.market_data.price_change_percentage_24h >= 0 && "+"}
+                  {coin?.market_data.price_change_percentage_24h?.toFixed(2)}%
+                </td>
+                <td className='px-6 py-4 flex gap-2'>
+                  <button className='text-white border-2 border-[#2A2E36] rounded-md p-2'>
+                  <CiEdit className='text-[18px]' />
+                  </button>
+                  <button className='text-[#CFA935] border-2 border-[#CFA935] rounded-md p-2 flex items-center gap-2'>
+                  <LiaCoinsSolid className='text-[18px]' /> 
+                  <span>Sell</span>
+                  </button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>
+
       </div>
       {/* leaderboard */}
       <div>
-        <p className="text-white font-bold text-2xl md:text-3xl font-title my-4 px-4 mt-10 md:mt-10">
-          Global Leaderboard
-        </p>
+        <p className="text-white font-bold text-2xl md:text-3xl font-title my-4 px-4 mt-10 md:mt-10">Global Leaderboard</p>
 
         <ul className="px-2 font-text md:px-12 flex flex-col space-y-1 pb-12 text-white">
           {/* Table Head */}
@@ -304,8 +314,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
             leaderboard.slice(0, 5).map((user, index) => (
               <li
                 key={index}
-                className="grid grid-cols-3 text-gray-500 py-2 px-1 md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-b-2 border-gray-800 "
-              >
+                className="grid grid-cols-3 text-gray-500 py-2 px-1 md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-b-2 border-gray-800 ">
                 <div className="flex items-center space-x-2 ">
                   <p className="pl-1">{index + 1}</p>
                   {index + 1 === 1 && (
@@ -334,9 +343,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
                   <p className="w-28 md:w-40 truncate text-white font-medium">{user.username}</p>
                 </div>
                 <div className="flex items-center justify-end ml-auto md:ml-0 ">
-                  <p className="w-28 md:w-40 break-all text-white font-medium text-right">
-                    ${user.networth}
-                  </p>
+                  <p className="w-28 md:w-40 break-all text-white font-medium text-right">${user.networth}</p>
                 </div>
               </li>
             ))

@@ -53,7 +53,7 @@ export const TradingChart = ({ id, data, days }) => {
           }
         }
       },
-      width: window.innerWidth > 1024 ? window.innerWidth - 320 : window.innerWidth - 40,
+      width: window.innerWidth > 1024 ? window.innerWidth - 120 : window.innerWidth - 40,
       height: window.innerWidth >= 768 ? 600 : 400,
       crosshair: {
         mode: CrosshairMode.Normal
@@ -84,7 +84,7 @@ export const TradingChart = ({ id, data, days }) => {
   }, [data]);
 
   return (
-    <div className="flex flex-col justify-center mx-auto mb-8">
+    <div className="flex flex-col justify-center w-full mb-8">
       <div ref={chartContainerRef} />
     </div>
   );
@@ -245,7 +245,7 @@ export const LineChart = ({ id, data, days, name }) => {
   }, [data]);
 
   return (
-    <div className="relative mx-auto mb-8">
+    <div className="relative w-full mb-8">
       <div ref={chartContainerRef}>
         <div ref={toolTipRef}></div>
       </div>

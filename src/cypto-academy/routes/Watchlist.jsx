@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import {
   // LeadingActions,
   SwipeableList,
@@ -6,17 +6,19 @@ import {
   SwipeAction,
   TrailingActions,
   Type as ListType
-} from "react-swipeable-list";
-import "react-swipeable-list/dist/styles.css";
-import { Link } from "react-router-dom";
+} from 'react-swipeable-list';
+import 'react-swipeable-list/dist/styles.css';
+import { Link } from 'react-router-dom';
 
-import emptyWatchlistLogo from "../Assets/svg/emptyWatchlist.svg";
+import emptyWatchlistLogo from '../Assets/svg/emptyWatchlist.svg';
 
-import { useAuth } from "../../Context/AuthContext";
-import { supabase } from "../Utils/init-supabase";
-import { useGetWatchlistDataQuery } from "../services/supabaseApi";
+import { useAuth } from '../../Context/AuthContext';
+import { supabase } from '../Utils/init-supabase';
+import { useGetWatchlistDataQuery } from '../services/supabaseApi';
+import { FaRegTrashAlt } from 'react-icons/fa';
+import { IoEyeOutline } from "react-icons/io5";
 
-import Loader from "../Components/Loader";
+import Loader from '../Components/Loader';
 
 const trailingActions = (coinId, userId, refetch) => {
   async function handleDelete() {
@@ -24,11 +26,7 @@ const trailingActions = (coinId, userId, refetch) => {
       const {
         // data,
         error
-      } = await supabase
-        .from("watchlist")
-        .delete()
-        .eq("coinId", `${coinId}`)
-        .eq("userId", `${userId}`);
+      } = await supabase.from('watchlist').delete().eq('coinId', `${coinId}`).eq('userId', `${userId}`);
       if (error) {
         throw new Error(error);
       }
@@ -38,10 +36,7 @@ const trailingActions = (coinId, userId, refetch) => {
   }
   return (
     <TrailingActions>
-      <SwipeAction
-        className="bg-red-500 py-5 px-3  text-white font-bold cursor-pointer"
-        onClick={() => handleDelete()}
-      >
+      <SwipeAction className="bg-red-500 py-5 px-3  text-white font-bold cursor-pointer" onClick={() => handleDelete()}>
         Delete
       </SwipeAction>
       <SwipeAction>
@@ -91,114 +86,97 @@ const Watchlist = () => {
   };
 
   return (
-    <section className="lg:px-4 py-2 lg:py-8  max-w-[1600px]">
-      <p className="text-white font-bold text-2xl md:text-3xl font-title mt-4 lg:mt-0 mb-4 ml-3">
-        WatchList
-      </p>
-      <p className="text-white font-semibold text-md font-title  ml-3">
-        Swipe left to delete or view the coins.
-      </p>
+    <section className="lg:px-4 py-2 lg:py-8  max-w-[1600px] h-[100vh]">
+      <p className="text-white font-bold text-2xl md:text-3xl font-title mt-4 lg:mt-0 mb-4 ml-3">WatchList</p>
+      <p className="text-white font-semibold text-md font-title  ml-3 mb-4">Swipe left to delete or view the coins.</p>
       {isLoading && <Loader />}
-      {error && watchlistData.length !== 0 && (
-        <p className="text-2xl text-red-400 px-4">Something went wrong</p>
-      )}
+      {error && watchlistData.length !== 0 && <p className="text-2xl text-red-400 px-4">Something went wrong</p>}
       {/* coin table */}
       {watchlistData?.length === 0 && (
         <div className=" shadow-lg rounded-2xl  px-4 py-4 md:px-4 flex flex-col lg:justify-center align-center text-center max-w-xl m-auto">
           <img src={emptyWatchlistLogo} alt="empty watchlist" />
-          <p className="text-white text-xl font-bold my-2 lg:text-center">
-            Your watchlist is empty
-          </p>
-          <p className="text-gray-300 lg:text-center mb-5">
-            Press the button to browse all the coins
-          </p>
+          <p className="text-white text-xl font-bold my-2 lg:text-center">Your watchlist is empty</p>
+          <p className="text-gray-300 lg:text-center mb-5">Press the button to browse all the coins</p>
           <Link
             to="/papertrade/app/market"
-            className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-          >
+            className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
             View Coins
           </Link>
         </div>
       )}
       {isSuccess && watchlistData.length !== 0 && (
-        <SwipeableList
-          fullSwipe={false}
-          type={ListType.IOS}
-          className="md:px-4 flex flex-col space-y-1 pb-12 text-white font-text"
-        >
+        <SwipeableList fullSwipe={false} type={ListType.IOS} className="md:px-4 flex flex-col space-y-1 pb-12 text-white font-text">
           {/* Table Head */}
-          <li className="grid grid-cols-2 md:grid-cols-4 text-gray-500 py-2 px-1md:px-5 cursor-pointer border-b-2 border-white ">
+          <li className="grid grid-cols-2 md:grid-cols-6 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#171A24] rounded-md ">
+            <div className="flex justify-start items-center space-x-4">
+              <p className="text-white pl-4">S.no</p>
+            </div>
             <div className="flex justify-start items-center space-x-4">
               <p className="text-white pl-4">Name</p>
             </div>
-            <div className="flex items-center justify-end ml-auto md:ml-0 ">
+            <div className="flex items-center ml-auto md:ml-0 ">
               <p className="w-28 md:w-40  text-white">Price</p>
             </div>
-            <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
+            <div className="hidden md:flex items-center ml-auto md:ml-0 ">
               <p className="w-24 md:w-40  text-white">24h Change</p>
             </div>
-            <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
+            <div className="hidden md:flex items-center ml-auto md:ml-0 ">
               <p className="w-24 md:w-40  text-white">Market Cap</p>
+            </div>
+            <div className="hidden md:flex items-center  md:ml-0 ">
+              <p className="w-24 md:w-40  text-white">Action</p>
             </div>
           </li>
           {isSuccess &&
             watchlistData.length !== 0 &&
             watchlistData.map((coin, index) => (
-              <SwipeableListItem
-                trailingActions={trailingActions(coin.id, currentUser.uid, refetch)}
-                key={index}
-              >
-                <div className="grid grid-cols-2 md:grid-cols-4 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-b-2 border-gray-800 xl:w-full">
+              <SwipeableListItem trailingActions={trailingActions(coin.id, currentUser.uid, refetch)} key={index}>
+                <div className="grid grid-cols-2 md:grid-cols-6 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer xl:w-full">
                   <div className="flex items-center space-x-2 ">
-                    <p className="pl-1">{index + 1}</p>
-                    <img
-                      className="h-8 w-8 md:h-10 md:w-10 object-contain"
-                      src={coin.image.small}
-                      alt="cryptocurrency"
-                      loading="lazy"
-                    />
+                    <p className="pl-1 text-white">#{index + 1}</p>
+                  </div>
+                  <div className="flex items-center space-x-2 ">
+                    <img className="h-8 w-8 md:h-10 md:w-10 object-contain" src={coin.image.small} alt="cryptocurrency" loading="lazy" />
                     <div>
-                      <p className=" w-64 truncate text-white break-words font-semibold">
-                        {coin.name}
-                      </p>
+                      <p className=" w-64 truncate text-white break-words font-semibold">{coin.name}</p>
                       <div className="flex space-x-1">
                         <p>{`${coin.symbol}/USD`.toUpperCase()}</p>
                         <p
                           className={`md:hidden w-24 md:w-40 ${
-                            coin?.market_data.price_change_percentage_24h >= 0
-                              ? "text-green-400"
-                              : "text-red-400"
-                          } font-semibold`}
-                        >
-                          {coin?.market_data.price_change_percentage_24h >= 0 && "+"}
+                            coin?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
+                          } font-semibold`}>
+                          {coin?.market_data.price_change_percentage_24h >= 0 && '+'}
                           {coin?.market_data.price_change_percentage_24h?.toFixed(2)}%
                         </p>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center justify-end ml-auto md:ml-0 ">
+                  <div className="flex items-center ml-auto md:ml-0 ">
                     <p className="w-28 md:w-40 text-white font-semibold">
                       ${coin?.market_data.current_price.usd}
                       <br />
-                      <span className="md:hidden w-28 md:w-40 text-gray-500">
-                        MCap: {normalizeMarketCap(coin?.market_data.market_cap.usd)}
-                      </span>
+                      <span className="md:hidden w-28 md:w-40 text-gray-500">MCap: {normalizeMarketCap(coin?.market_data.market_cap.usd)}</span>
                     </p>
                   </div>
-                  <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
+                  <div className="hidden md:flex items-center ">
                     <p
                       className={`w-24 md:w-40 ${
-                        coin?.market_data.price_change_percentage_24h >= 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      } font-semibold`}
-                    >
-                      {coin?.market_data.price_change_percentage_24h >= 0 && "+"}
+                        coin?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
+                      } font-semibold`}>
+                      {coin?.market_data.price_change_percentage_24h >= 0 && '+'}
                       {coin?.market_data.price_change_percentage_24h?.toFixed(2)}%
                     </p>
                   </div>
-                  <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
+                  <div className="hidden md:flex items-center  ">
                     <p className="w-24 md:w-40  ">${coin?.market_data.market_cap.usd}</p>
+                  </div>
+                  <div className="hidden md:flex items-center gap-2">
+                  <button className='text-white border-2 border-[#2A2E36] rounded-md p-2'>
+                                      <IoEyeOutline className='text-[18px]' />
+                                      </button>
+                     <button className='text-white border-2 border-[#2A2E36] rounded-md p-2'>
+                                      <FaRegTrashAlt className='text-[18px]' />
+                                      </button>
                   </div>
                 </div>
               </SwipeableListItem>

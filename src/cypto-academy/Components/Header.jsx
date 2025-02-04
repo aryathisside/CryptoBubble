@@ -1,11 +1,15 @@
 import React from 'react';
 import logo from '../../../public/image.png';
-import { IoIosSearch } from "react-icons/io";
-import { IoSettingsOutline } from "react-icons/io5";
-import { FiUser } from "react-icons/fi";
-import { Link } from 'react-router-dom';
+import { IoIosSearch } from 'react-icons/io';
+import { IoSettingsOutline } from 'react-icons/io5';
+import { FiUser } from 'react-icons/fi';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const activeLinkClass = 'text-[#CFA935] border-b-2 border-[#CFA935] pb-4'; // Active color
+  const inactiveLinkClass = 'hover:text-[#CFA935]'; // Hover color
   return (
     <div className="bg-[#171A24] text-white shadow-md w-full">
       <div className=" px-[40px] py-2 flex items-center justify-between w-full h-[90px]">
@@ -15,35 +19,59 @@ const Header = () => {
         </div>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex space-x-10">
-          <a href="/papertrade/app" className="hover:text-gray-300">
+        {/* <nav className="hidden md:flex space-x-10">
+          <a href="/papertrade/app" className="hover:text-gray-300 active:text-blue-500">
             Home
           </a>
-          <a href="/papertrade/app/market" className="hover:text-gray-300">
+          <a href="/papertrade/app/market" className="hover:text-gray-300 active:text-blue-500">
             Market
           </a>
-          <a href="/papertrade/app/portfolio" className="hover:text-gray-300">
+          <a href="/papertrade/app/portfolio" className="hover:text-gray-300 active:text-blue-500">
             Portfolio
           </a>
-          <a href="/papertrade/app/watchlist" className="hover:text-gray-300">
+          <a href="/papertrade/app/watchlist" className="hover:text-gray-300 active:text-blue-500">
             Watchlist
           </a>
-        </nav>
+        </nav> */}
+        <nav className="hidden md:flex space-x-10">
+      <Link
+        to="/papertrade/app"
+        className={`${location.pathname === "/papertrade/app" ? activeLinkClass : inactiveLinkClass}`}
+      >
+        Home
+      </Link>
+      <Link
+        to="/papertrade/app/market"
+        className={`${location.pathname === "/papertrade/app/market" ? activeLinkClass : inactiveLinkClass}`}
+      >
+        Market
+      </Link>
+      <Link
+        to="/papertrade/app/portfolio"
+        className={`${location.pathname === "/papertrade/app/portfolio" ? activeLinkClass : inactiveLinkClass}`}
+      >
+        Portfolio
+      </Link>
+      <Link
+        to="/papertrade/app/watchlist"
+        className={`${location.pathname === "/papertrade/app/watchlist" ? activeLinkClass : inactiveLinkClass}`}
+      >
+        Watchlist
+      </Link>
+    </nav>
 
         {/* Settings and User Profile */}
         <div className="flex items-center space-x-4 ">
-        <button className='p-3 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700'>
-          <IoIosSearch className='text-[20px]' />
+          <button className="p-3 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700" onClick={() => navigate('/papertrade/app/search')}>
+            <IoIosSearch className="text-[20px]" />
           </button>
-          <button className='p-3 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700'>
-            <IoSettingsOutline className='text-[20px]'/>
+          <button className="p-3 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700">
+            <IoSettingsOutline className="text-[20px]" />
           </button>
-          <button className='p-3 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700'>
-            <FiUser className='text-[20px]'/>
+          <button className="p-3 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700">
+            <FiUser className="text-[20px]" />
           </button>
-          <button className='text-[#CFA935] border-2 p-2 border-[#CFA935] rounded-md hover:bg-gray-700'>
-            Crypto Simulator
-          </button>
+          <button className="text-[#CFA935] border-2 p-2 border-[#CFA935] rounded-md hover:bg-gray-700">Crypto Simulator</button>
         </div>
       </div>
     </div>

@@ -38,9 +38,10 @@ const Search = () => {
   useEffect(() => {
     debouncedSearchResult(search);
   }, [search]);
+  console.log("search", searchData);
 
   return (
-    <section className="lg:px-4 py-4 lg:py-8 max-w-[1600px] font-text">
+    <section className="lg:px-4 py-4 lg:py-8 max-w-[1600px] font-text h-[100vh]">
       {/* search Bar */}
       <div className="px-4">
         <label for="table-search" className="sr-only">
@@ -64,7 +65,7 @@ const Search = () => {
           <input
             type="text"
             id="table-search"
-            className=" border w-full   text-sm rounded-lg  block  pl-10 p-2.5  bg-black border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+            className=" border w-full text-sm rounded-lg  block  pl-10 p-2.5  bg-black border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             placeholder="Search for Cryptocurrency..."
             onChange={(e) => {
               setSearch(e.target.value);
@@ -77,23 +78,31 @@ const Search = () => {
       ) : error ? (
         <p className="text-red-500 text-md">Something went wrong!</p>
       ) : (
-        <ul className="mx-8">
+        <ul className="md:px-4 flex flex-col space-y-1 pb-12 font-text text-white">
+          <li className="grid grid-cols-2 md:grid-cols-2 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#171A24] rounded-lg mt-4">
+            <div className="flex justify-start items-center space-x-4 w-20">
+            <p className="text-white pl-4">Name</p>
+            </div>
+            <div className="flex justify-end ml-auto pr-4 items-center space-x-4 w-20">
+            <p className="text-white pl-4">Rank</p>
+            </div>
+          </li>
           {searchData !== undefined &&
             searchData?.coins?.map((coin, index) => (
               <li
                 onClick={() => navigate(`/papertrade/app/coin/${coin.id}`)}
                 key={index}
-                className="flex items-center text-gray-200 justify-between py-3 border-b-2 border-gray-800 cursor-pointer"
+                className="grid grid-cols-2 md:grid-cols-2 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-gray-800 "
               >
-                <div className="flex items-center justify-start text-sm space-x-3">
+                <div className="flex items-center justify-start text-sm space-x-4 w-20 pl-4">
                   <img src={coin.large} alt={`${coin.name}`} className="w-7 h-7" />
                   <div className="">
                     <p className="text-white text-md font-bold ">{coin.name}</p>
                     <p className="text-white text-xs">{coin.symbol}</p>
                   </div>
                 </div>
-                <div className="">
-                  <p className="text-white font-medium">Rank: {coin.market_cap_rank}</p>
+                <div className="pl-4 flex justify-end items-center space-x-4 w-20 ml-auto pr-4">
+                  <p className="text-white font-medium pl-4">{coin.market_cap_rank}</p>
                 </div>
               </li>
             ))}
