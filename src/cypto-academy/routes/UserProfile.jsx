@@ -94,7 +94,7 @@ const UserProfile = () => {
             </div>
             <div className="my-4">
               <Link
-                to="/"
+                to="/change-password"
                 className=" text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-semibold font-text rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Change Your Password
@@ -217,7 +217,7 @@ const UserProfile = () => {
         {/* portfolio Data */}
         <div className=" shadow-lg mx-auto rounded-2xl bg-black w-[90%]">
           <p className="text-white font-bold text-2xl md:text-3xl font-title my-4">
-            Your Portfolio
+            Your Credits
           </p>
 
           <ul>
@@ -261,13 +261,13 @@ const UserProfile = () => {
         </div>
       </div>
       {/* leaderboard */}
-      <div>
+      {/* <div>
         <p className="text-white font-bold text-2xl md:text-3xl font-title my-4 px-4 md:px-6 mt-6 md:mt-16">
           Global Leaderboard
         </p>
 
         <ul className="px-2 md:px-12 flex flex-col space-y-1 pb-12 text-white">
-          {/* Table Head */}
+          Table Head
           <li className="grid grid-cols-3 font-text text-gray-500 py-2 px-1md:px-5 cursor-pointer border-b-2 border-white">
             <div className="">
               <p className="text-white pl-4">Rank</p>
@@ -324,7 +324,7 @@ const UserProfile = () => {
             ))
           )}
         </ul>
-      </div>
+      </div> */}
     </section>
   );
 };

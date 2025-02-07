@@ -18,7 +18,7 @@ const Header = () => {
       <div className="sm:px-[40px] px-[20px] py-2 flex items-center justify-between w-full h-[60px] sm:h-[90px]">
 
         {/* Logo Section - Centered properly */}
-        <div className="flex items-center">
+        <div className="flex items-center" onClick={()=> navigate('/')}>
           {/* Large screen logo */}
           <img src={logo} alt="Logo" className="w-[220px] h-[50px] rounded-full hidden sm:block" />
           {/* Small screen logo */}

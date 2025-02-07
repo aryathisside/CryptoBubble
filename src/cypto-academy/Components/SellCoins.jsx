@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 import { AiOutlineClose } from "react-icons/ai";
-import { BsArrowDownUp } from "react-icons/bs";
+import { BsArrowLeftRight  } from "react-icons/bs";
 
 import usd from "../Assets/svg/USD.svg";
 
@@ -145,11 +145,11 @@ const SellCoins = ({ data, modal, setModal }) => {
       } flex flex-col overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center md:inset-0 h-modal sm:h-full`}
       id="large-modal"
     >
-      <div className="relative px-4 w-full max-w-4xl h-full md:h-auto">
+      <div className="relative px-4 w-full max-w-xl h-full md:h-auto">
         {/* Modal content  */}
-        <div className="relative  rounded-lg shadow bg-gray-700">
+        <div className="relative  rounded-xl shadow bg-[#171A24]">
           {/* Modal header  */}
-          <div className="flex justify-between items-center px-5 py-3 md:p-5 rounded-t border-b border-gray-600">
+          <div className="flex justify-between items-center px-5 py-3 md:p-5 rounded-t-xl border-b border-gray-600 bg-[#2A2E36]">
             <h3 className="text-md md:text-xl font-medium  text-white">
               Sell {data.name} | <span className="uppercase">{data.symbol}</span>
             </h3>
@@ -164,6 +164,8 @@ const SellCoins = ({ data, modal, setModal }) => {
           </div>
           {/* Modal body  */}
           <div className="px-6 py-3 md:p-6">
+          <div className="flex justify-between">
+            <div>
             <p className="text-base leading-relaxed font-semibold text-gray-200">
               1 <span className="uppercase">{data.symbol}</span> ={" "}
               {data.market_data.current_price.usd} USD
@@ -173,11 +175,14 @@ const SellCoins = ({ data, modal, setModal }) => {
               Available Balance ={" "}
               {availableUsdCoins.status === "success" ? availableUsdCoins.data.amount : 0} USD
             </p>
+            </div>
 
             <p className="text-base leading-relaxed font-semibold text-gray-200">
               Available Coin amount = {availabeCoinAmt}
             </p>
+            </div>
 
+            <div className="flex">
             <div className="relative py-4">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <img src={data?.image?.small} alt={data.name} className="h-5 w-5" />
@@ -193,7 +198,7 @@ const SellCoins = ({ data, modal, setModal }) => {
               />
             </div>
 
-            <BsArrowDownUp className="h-4 w-4 text-white m-auto " />
+            <BsArrowLeftRight  className="h-4 w-4 text-white m-auto " />
 
             {/* usd value */}
             <div className="relative py-4">
@@ -210,14 +215,16 @@ const SellCoins = ({ data, modal, setModal }) => {
                 className=" border   text-sm rounded-lg block w-full pl-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
+            </div>
           </div>
           {/* Modal footer  */}
-          <div className="flex justify-center items-center  px-6 py-3 md:p-6 space-x-2 rounded-b border-t  border-gray-600">
+          <div className="flex justify-center items-center  px-6 py-3 md:p-6 space-x-2 rounded-b">
             <button
               data-modal-toggle="large-modal"
               type="button"
               disabled={orderLoading}
-              className="text-white  focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+              // className="text-white  focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+               className="text-white flex items-center gap-2 bg-[#CFA935] hover:bg-[#CFA935] focus:ring-4 focus:ring-blue-800 font-medium rounded-lg px-5 py-2 text-center mb-2 border-2 border-[#CFA935]"
               onClick={onPlaceOrder}
             >
               {orderLoading ? `Selling ${data.name}...` : `Sell ${data.name}`}

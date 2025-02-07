@@ -290,12 +290,12 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
 </div>
 
       </div>
-      {/* leaderboard */}
+{/*   
       <div>
         <p className="text-white font-bold text-2xl md:text-3xl font-title my-4 px-4 mt-10 md:mt-10">Global Leaderboard</p>
 
         <ul className="px-2 font-text md:px-12 flex flex-col space-y-1 pb-12 text-white">
-          {/* Table Head */}
+    
           <li className="grid grid-cols-3 text-gray-500 py-2 px-1md:px-5 cursor-pointer border-b-2 border-white">
             <div className="">
               <p className="text-white pl-4">Rank</p>
@@ -349,7 +349,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
             ))
           )}
         </ul>
-      </div>
+      </div> */}
       {/*News*/}
       {/* <p className="text-white font-bold text-2xl md:text-3xl font-title my-4 px-4">
         Today Top Headlines
