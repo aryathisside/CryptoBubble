@@ -41,6 +41,8 @@ const HeaderTabs = () => {
   const { isAuthenticated, logout } = useDataStore();
   const [isGuest, setIsGuest] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const email = localStorage.getItem('userEmail');
     if (!email) {
@@ -50,7 +52,12 @@ const HeaderTabs = () => {
 
   const redirectToLogin = () => {
     const newTabUrl = '/papertrade/app';
-    window.open(newTabUrl, '_blank', 'noopener,noreferrer');
+    if(isAuthenticated){
+      navigate(newTabUrl);
+    }else{
+      navigate('/login')
+    }
+    // window.open(newTabUrl, '_blank', 'noopener,noreferrer');
   };
 
   useEffect(() => {
@@ -109,7 +116,7 @@ const HeaderTabs = () => {
     setHasToken(false); // Update the state to reflect logout
     logout();
   };
-  const navigate = useNavigate();
+
 
   const showProfile = async () => {
     if (isGuest) {
@@ -307,20 +314,21 @@ const HeaderTabs = () => {
         </Box>
       )}
 
-      <Box>
-        <StyledIconButton
-          sx={{ height: '100%', width: '90px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-          onClick={redirectToLogin}>
-          {/* <PersonOutlineOutlinedIcon /> */}
-          <Typography color="white" sx={{ fontSize: '14px' }}>
-            Check
-          </Typography>
-        </StyledIconButton>
-        {/* <Button onClick={redirectToLogin}>click</Button> */}
-      </Box>
-
+      
       <ConfigurationDialog />
       {isMobile ? null : <FooterTabs />}
+      <Box>
+        <StyledIconButton
+          sx={{ height: '100%', width: '160px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderColor: "#CFA935"}}
+          onClick={redirectToLogin}>
+  
+          <Typography color="#CFA935" sx={{ fontSize: '14px' }}>
+            Crypto Simulator
+          </Typography>
+        </StyledIconButton>
+        
+      </Box>
+
     </Stack>
   );
 };

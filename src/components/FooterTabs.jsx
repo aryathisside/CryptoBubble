@@ -330,11 +330,11 @@ const FooterTabs = () => {
           ) : (
             <StyledIconButton
               onClick={redirectLogin}
-              sx={{ height: '100%', width: '90px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <PersonOutlineOutlinedIcon />
-              <Typography color="white" sx={{ fontSize: '12px', ml: 1 }}>
+              {/* <Typography color="white" sx={{ fontSize: '12px', ml: 1 }}>
                 Login
-              </Typography>
+              </Typography> */}
             </StyledIconButton>
           )}
 
