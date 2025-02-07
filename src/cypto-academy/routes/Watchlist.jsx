@@ -8,7 +8,7 @@ import {
   Type as ListType
 } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import emptyWatchlistLogo from '../Assets/svg/emptyWatchlist.svg';
 
@@ -50,6 +50,21 @@ const trailingActions = (coinId, userId, refetch) => {
 
 const Watchlist = () => {
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  async function handleDelete(coinId, userId) {
+    try {
+      const {
+        // data,
+        error
+      } = await supabase.from('watchlist').delete().eq('coinId', `${coinId}`).eq('userId', `${userId}`);
+      if (error) {
+        throw new Error(error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // fetch watchlist coin data
   const {
@@ -86,7 +101,7 @@ const Watchlist = () => {
   };
 
   return (
-    <section className="lg:px-4 py-2 lg:py-8  max-w-[1600px] h-[100vh]">
+    <section className="lg:px-4 py-2 lg:py-8  max-w-[1600px] h-[100vh] p-2">
       <p className="text-white font-bold text-2xl md:text-3xl font-title mt-4 lg:mt-0 mb-4 ml-3">WatchList</p>
       <p className="text-white font-semibold text-md font-title  ml-3 mb-4">Swipe left to delete or view the coins.</p>
       {isLoading && <Loader />}
@@ -107,7 +122,7 @@ const Watchlist = () => {
       {isSuccess && watchlistData.length !== 0 && (
         <SwipeableList fullSwipe={false} type={ListType.IOS} className="md:px-4 flex flex-col space-y-1 pb-12 text-white font-text">
           {/* Table Head */}
-          <li className="grid grid-cols-2 md:grid-cols-6 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#171A24] rounded-md ">
+          <li className="grid grid-cols-3 md:grid-cols-6 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#171A24] rounded-md ">
             <div className="flex justify-start items-center space-x-4">
               <p className="text-white pl-4">S.no</p>
             </div>
@@ -131,7 +146,7 @@ const Watchlist = () => {
             watchlistData.length !== 0 &&
             watchlistData.map((coin, index) => (
               <SwipeableListItem trailingActions={trailingActions(coin.id, currentUser.uid, refetch)} key={index}>
-                <div className="grid grid-cols-2 md:grid-cols-6 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer xl:w-full">
+                <div className="grid grid-cols-3 md:grid-cols-6 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer xl:w-full">
                   <div className="flex items-center space-x-2 ">
                     <p className="pl-1 text-white">#{index + 1}</p>
                   </div>
@@ -141,13 +156,13 @@ const Watchlist = () => {
                       <p className=" w-64 truncate text-white break-words font-semibold">{coin.name}</p>
                       <div className="flex space-x-1">
                         <p>{`${coin.symbol}/USD`.toUpperCase()}</p>
-                        <p
+                        {/* <p
                           className={`md:hidden w-24 md:w-40 ${
                             coin?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
                           } font-semibold`}>
                           {coin?.market_data.price_change_percentage_24h >= 0 && '+'}
                           {coin?.market_data.price_change_percentage_24h?.toFixed(2)}%
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   </div>
@@ -171,10 +186,10 @@ const Watchlist = () => {
                     <p className="w-24 md:w-40  ">${coin?.market_data.market_cap.usd}</p>
                   </div>
                   <div className="hidden md:flex items-center gap-2">
-                  <button className='text-white border-2 border-[#2A2E36] rounded-md p-2'>
+                  <button className='text-white border-2 border-[#2A2E36] rounded-md p-2' onClick={()=> navigate(`/papertrade/app/coin/${coin.id}`)}>
                                       <IoEyeOutline className='text-[18px]' />
                                       </button>
-                     <button className='text-white border-2 border-[#2A2E36] rounded-md p-2'>
+                     <button className='text-white border-2 border-[#2A2E36] rounded-md p-2'  onClick={() => handleDelete(coin.id, currentUser.uid)}>
                                       <FaRegTrashAlt className='text-[18px]' />
                                       </button>
                   </div>

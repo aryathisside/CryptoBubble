@@ -139,19 +139,19 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
         userNetworthLoading) && <Loader />}
       {/* credit card */}
       <div className="w-full  rounded-2xl crypto-bg">
-        <div className="p-6 w-full">
-          <p className="text-[#CFA935] text-[24px]">Welcome,</p>
-          <p className="text-white font-bold text-2xl md:text-3xl font-title pt-6 md:pt-3 mb-4">{currentUser.displayName}</p>
-          <div className="flex gap-6 pt-2">
-            <div className="bg-gradient-to-r from-[#2A2E36] to-[#171A24] border-2 border-white w-[300px] p-4 rounded-xl">
+        <div className="p-4 sm:p-6 w-full">
+          <p className="text-[#CFA935] text-md sm:text-[24px]">Welcome,</p>
+          <p className="text-white font-bold text-xl sm:text-2xl md:text-3xl font-title pt-2 sm:pt-6 md:pt-3 mb-4">{currentUser.displayName}</p>
+          <div className="flex flex-wrap  gap-4 sm:gap-6 sm:pt-2">
+            <div className="bg-gradient-to-r from-[#2A2E36] to-[#171A24] border-[0.5px] sm:border-2 border-white w-full sm:w-[300px] p-4 rounded-md sm:rounded-xl">
               <p className="text-[#A9A9A9]">Account Balance</p>
-              <div className="font-text mt-1 text-3xl leading-9 font-semibold text-white">
+              <div className="font-text mt-1 text-2xl sm:text-3xl leading-7 sm:leading-9 font-semibold text-white">
                 ${fetchAvailableUsdCoinsSuccess && availableUsdCoins[0]?.amount}
               </div>
             </div>
-            <div className="bg-gradient-to-r from-[#2A2E36] to-[#171A24] border-2 border-white w-[300px] p-4 rounded-xl">
+            <div className="bg-gradient-to-r from-[#2A2E36] to-[#171A24] border-[0.5px] sm:border-2 border-white w-full sm:w-[300px] p-4 rounded-md sm:rounded-xl">
               <p className="text-[#A9A9A9]">Networth</p>
-              <div className="font-text mt-1 text-3xl leading-9 font-semibold text-white">
+              <div className="font-text mt-1 text-2xl sm:text-3xl leading-7 sm:leading-9 font-semibold text-white">
                 {userNetworthSuccess && <span>${userNetworth[0]?.networth}</span>}
               </div>
             </div>
@@ -167,7 +167,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
             <div className="bg-[#000000] rounded-xl w-full">
               {/* Table Header */}
               <div className="bg-[#171A24] px-6 py-3 rounded-t-xl border-t-2 border-x-2 border-[#2A2E36]">
-                <h2 className="text-white font-semibold text-[24px]">Trending Coins</h2>
+                <h2 className="text-white font-semibold text-md sm:text-[24px]">Trending Coins</h2>
               </div>
 
               {/* Table */}
@@ -176,9 +176,9 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
                   {/* Table Head */}
                   <thead>
                     <tr className="text-left text-white text-sm bg-[#171A24]">
-                      <th className="px-6 py-3 font-semibold">S.No.</th>
-                      <th className="px-6 py-3 font-semibold">Name</th>
-                      <th className="px-6 py-3 font-semibold">Amount</th>
+                      <th className="pl-6 py-3 font-semibold">S.No.</th>
+                      <th className="pl-6 py-3 font-semibold">Name</th>
+                      <th className="pl-6 py-3 font-semibold">Amount</th>
                     </tr>
                   </thead>
 
@@ -187,10 +187,10 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
                     {trendingCoins.coins.map((coin, index) => (
                       <tr key={index} className=" hover:bg-[#1A1D25] transition">
                         {/* S.No */}
-                        <td className="px-6 py-4 text-white font-medium">#{index + 1}</td>
+                        <td className="pl-6 py-4 text-white font-medium">#{index + 1}</td>
 
                         {/* Coin Name */}
-                        <td className="px-6 py-4 flex items-center space-x-3">
+                        <td className="pl-6 py-4 flex items-center space-x-3">
                           <img src={coin.item.large} alt={`${coin.item.name}`} className="w-10 h-10 rounded-md" />
                           <div>
                             <p className="text-white font-semibold">{coin.item.name}</p>
@@ -199,7 +199,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
                         </td>
 
                         {/* Amount */}
-                        <td className="px-6 py-4 text-white font-medium">${coin.item.price_btc.toFixed(9)}</td>
+                        <td className="pl-6 py-4 text-white font-medium">${coin.item.price_btc.toFixed(9)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -212,7 +212,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
         <div className="shadow-lg rounded-2xl bg-black w-full">
   {/* Watchlist Header */}
   <div className="bg-[#171A24] px-6 py-3 rounded-t-xl border-t-2 border-x-2 border-[#2A2E36]">
-    <h2 className="text-white font-semibold text-[24px]">Your Watchlist</h2>
+    <h2 className="text-white font-semibold text-md sm:text-[24px]">Your Watchlist</h2>
   </div>
 
   {/* Show message if watchlist is empty */}

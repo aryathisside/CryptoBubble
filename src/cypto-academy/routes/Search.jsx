@@ -41,9 +41,9 @@ const Search = () => {
   console.log("search", searchData);
 
   return (
-    <section className="lg:px-4 py-4 lg:py-8 max-w-[1600px] font-text h-[100vh]">
+    <section className="lg:px-4 py-4 lg:py-8 max-w-[1600px] font-text h-[100vh] p-2">
       {/* search Bar */}
-      <div className="px-4">
+      <div className="md:px-4">
         <label for="table-search" className="sr-only">
           Search
         </label>

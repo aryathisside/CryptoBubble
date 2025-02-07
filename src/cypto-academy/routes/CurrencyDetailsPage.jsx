@@ -13,7 +13,7 @@ import { useAuth } from '../../Context/AuthContext';
 import { IoEyeOutline } from 'react-icons/io5';
 import { FaCartShopping } from 'react-icons/fa6';
 import { LiaCoinsSolid } from 'react-icons/lia';
-import  graph  from '../Assets/svg/graph.svg';
+import graph from '../Assets/svg/graph.svg';
 import product from '../Assets/svg/product-logo.svg';
 import dollor from '../Assets/svg/dollar-logo.svg';
 
@@ -115,7 +115,7 @@ const CurrencyDetailsPage = () => {
   };
 
   return (
-    <section className="lg:px-8 py-2">
+    <section className="lg:px-8 py-2 p-3">
       {isSuccess && <BuyCoins data={data} modal={toggleBuyCoinsModal} setModal={setToggleBuyCoinsModal} />}
       {isSuccess && <SellCoins data={data} modal={toggleSellCoinsModal} setModal={setToggleSellCoinsModal} />}
       {/* prettier-ignore */}
@@ -146,20 +146,20 @@ const CurrencyDetailsPage = () => {
             </svg>
           </Link>
 
-          <div className="flex flex-col md:flex-row md:space-x-8 justify-between border-b border-[#2A2E36] pb-6">
+          <div className="flex  md:space-x-8 justify-between border-b border-[#2A2E36] pb-6">
             {/* coin data */}
             <div className="flex items-center space-x-2">
               <img src={data.image.large} className="w-12" alt={data.name} />
               <div>
-                <p className="text-white font-title text-2xl font-bold">{data.name}</p>
-                <p className="text-gray-300 text-md uppercase font-semibold">{data.symbol}/USD</p>
+                <p className="text-white font-title md:text-2xl font-bold">{data.name}</p>
+                <p className="text-gray-300 md:text-md text-sm uppercase font-semibold">{data.symbol}/USD</p>
               </div>
             </div>
-            <div className="mt-4 mx-2 md:mx-4 flex space-x-2 gap-4">
+            <div className="mt-4 mx-2 md:mx-4 flex space-x-2 md:gap-4 gap-2">
               <button
                 type="button"
                 onClick={watchlistHandler}
-                className="text-white hover:bg-[#2A2E36] focus:ring-4 focus:ring-blue-800 font-medium rounded-lg px-5 py-2 text-center mb-2 border-2 border-[#2A2E36]">
+                className="text-white hover:bg-[#2A2E36] focus:ring-4 focus:ring-blue-800 font-medium rounded-lg md:px-5 px-3 py-2 text-center mb-2 border-2 border-[#2A2E36]">
                 {addToGun ? (
                   <div>
                     <svg
@@ -180,26 +180,26 @@ const CurrencyDetailsPage = () => {
                     <span>Adding to Watchlist...</span>
                   </div>
                 ) : (
-                  <span className="flex items-center gap-2">
-                    <IoEyeOutline /> <span> Watchlist</span>
+                  <span className="md:flex md:items-center md:gap-2">
+                    <IoEyeOutline /> <span className="md:block hidden"> Watchlist</span>
                   </span>
                 )}
               </button>
 
               <button
                 type="button"
-                className="text-white flex items-center gap-2 bg-[#CFA935] hover:bg-[#CFA935] focus:ring-4 focus:ring-blue-800 font-medium rounded-lg px-5 py-2 text-center mb-2 border-2 border-[#CFA935]"
+                className="text-white flex items-center gap-2 bg-[#CFA935] hover:bg-[#CFA935] focus:ring-4 focus:ring-blue-800 font-medium rounded-lg md:px-5 px-3 py-2 text-center mb-2 border-2 border-[#CFA935]"
                 onClick={() => setToggleBuyCoinsModal(true)}>
                 <FaCartShopping />
-                <span>Buy</span>
+                <span className="md:block hidden"> Buy</span>
               </button>
 
               <button
                 type="button"
-                className="text-[#CFA935] flex items-center gap-2 hover:bg-[#CFA935] hover:text-white focus:ring-4 focus:ring-blue-800 font-medium rounded-lg px-5 py-2 text-center mb-2 border-2 border-[#CFA935]"
+                className="text-[#CFA935] flex items-center gap-2 hover:bg-[#CFA935] hover:text-white focus:ring-4 focus:ring-blue-800 font-medium rounded-lg md:px-5 px-3 py-2 text-center mb-2 border-2 border-[#CFA935]"
                 onClick={() => setToggleSellCoinsModal(true)}>
                 <LiaCoinsSolid className="text-[18px]" />
-                <span>Sell</span>
+                <span className="md:block hidden"> Sell</span>
               </button>
             </div>
           </div>
@@ -207,50 +207,49 @@ const CurrencyDetailsPage = () => {
       )}
 
       {isSuccess && (
-     <div className="no-scrollbar flex flex-wrap gap-8 rounded-box w-screen w-full overflow-auto max-w-full pt-8">
-          <div className="w-full flex-1">
+        <div className="no-scrollbar flex flex-wrap md:gap-8 gap-3 justify-between rounded-box w-screen w-full overflow-auto max-w-full pt-8">
+          <div className="w-full md:flex-1">
             <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
               <img src={dollor} alt="btc logo" className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6" />
               <div className="px-4 py-5">
                 <dl>
                   <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">Price</dt>
-                  <dd className="font-text mt-1 text-3xl pt-2 leading-9 font-semibold text-white">
-                  ${data.market_data.current_price.usd}
-                  </dd>
+                  <dd className="font-text mt-1 text-3xl pt-2 leading-9 font-semibold text-white">${data.market_data.current_price.usd}</dd>
                 </dl>
               </div>
             </div>
           </div>
-          <div className="w-full flex-1">
+          <div className="md:w-full md:flex-1 w-[47%]">
             <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
-              <img src={graph} alt="btc logo" className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6" />
+              <img src={graph} alt="btc logo" className="h-12 w-8 rounded-full absolute opacity-100 top-3 md:right-6 right-3" />
               <div className="px-4 py-5">
                 <dl>
                   <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">24h Market Cap Change</dt>
-      
-                  <dd className={`font-text mt-1 leading-9 font-semibold pt-2 text-left text-3xl font-bold ${
-                  data?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
-                } `}>
-                {data?.market_data.price_change_percentage_24h >= 0 && '+'}
-                {data.market_data.price_change_percentage_24h.toFixed(3)}%</dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div className="w-full flex-1">
-            <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
-              <img src={product} alt="btc logo" className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6" />
-              <div className="px-4 py-5">
-                <dl>
-                  <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">Volume</dt>
-                  <dd className="font-text mt-1 text-3xl leading-9 font-semibold text-white pt-2">
-                  {normalizeMarketCap(data.market_data.total_volume.usd)}
+
+                  <dd
+                    className={`font-text mt-1 leading-9 font-semibold pt-2 text-left text-xl md:text-3xl font-bold ${
+                      data?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
+                    } `}>
+                    {data?.market_data.price_change_percentage_24h >= 0 && '+'}
+                    {data.market_data.price_change_percentage_24h.toFixed(3)}%
                   </dd>
                 </dl>
               </div>
             </div>
           </div>
-          
+          <div className="md:w-full md:flex-1 w-[47%]">
+            <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
+              <img src={product} alt="btc logo" className="h-12 w-8 rounded-full absolute opacity-100 top-3 md:right-6 right-3" />
+              <div className="px-4 py-5">
+                <dl>
+                  <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">Volume</dt>
+                  <dd className="font-text mt-1 text-xl md:text-3xl leading-9 font-semibold text-white pt-2">
+                    {normalizeMarketCap(data.market_data.total_volume.usd)}
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
         </div>
       )}
       {/* 
@@ -302,7 +301,7 @@ const CurrencyDetailsPage = () => {
         </button>
       </div> */}
       <div className="p-4 border-2 border-[#2A2E36] rounded-xl mt-6">
-        <div className="flex items-center justify-between">
+        <div className="md:flex items-center justify-between">
           {isSuccess && (
             <p className="text-white font-bold text-xl font-title my-4 ml-2 md:ml-4">
               {data.name} Price Chart <span className="uppercase">{data.symbol}/USD</span>{' '}

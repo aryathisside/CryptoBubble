@@ -65,7 +65,7 @@ const CoinsTable = () => {
       {(isLoading || fetchGlobalCryptoLoading) && <Loader />}
       {error && <ErrorToast message="Something Went Wrong!" ref={toastRef} />}
       {fetchGlobalCryptoSuccess && (
-      <div className="no-scrollbar flex flex-wrap p-4 gap-8 rounded-box w-screen w-full overflow-auto max-w-full">
+      <div className="no-scrollbar flex flex-wrap p-4 gap-3 md:gap-8 rounded-box justify-between w-screen w-full overflow-auto max-w-full">
       <div className="w-full flex-1">
         <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
           <img
@@ -86,19 +86,20 @@ const CoinsTable = () => {
         </div>
       </div>
     
-      <div className="w-full flex-1">
+      <div className="w-[47%] md:w-full md:flex-1">
         <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
           <img
             src={crypto}
             alt="btc logo"
-            className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6"
+            className="h-12 w-8 rounded-full absolute opacity-100 top-3 sm:right-6 right-3"
           />
           <div className="px-4 py-5">
             <dl>
-              <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">
-                Active Cryptocurrencies
+              <dt className="font-title text-sm sm:leading-5 font-medium text-gray-400 truncate">
+               
+                {window.innerWidth < 768 ? "Active Crypto" : "Active Cryptocurrencies"}
               </dt>
-              <dd className="font-text mt-1 text-3xl leading-9 font-semibold text-gray-200">
+              <dd className="font-text mt-1 sm:text-3xl leading-9 font-semibold text-gray-200">
                 {globalCryptoData.data.active_cryptocurrencies}
               </dd>
             </dl>
@@ -106,20 +107,21 @@ const CoinsTable = () => {
         </div>
       </div>
     
-      <div className="w-full flex-1">
+      <div className="w-[47%] md:w-full md:flex-1">
         <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
           <img
             src={graph}
             alt="btc logo"
-            className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6"
+            className="h-12 w-8 rounded-full absolute opacity-100 top-3 sm:right-6 right-3"
           />
           <div className="px-4 py-5">
             <dl>
               <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">
-                24h Market Cap Change
+               
+                {window.innerWidth < 768 ? " 24h Market" : " 24h Market Cap Change"}
               </dt>
               <dd
-                className={`font-text mt-1 text-3xl leading-9 font-semibold text-gray-200`}
+                className={`font-text mt-1 sm:text-3xl leading-9 font-semibold text-gray-200`}
                 //   ${
                 //   globalCryptoData.data.market_cap_change_percentage_24h_usd >= 0
                 //     ? "text-green-400"
@@ -146,9 +148,9 @@ const CoinsTable = () => {
       )}
       {/* coin table */}
 
-      <ul className="md:px-4 flex flex-col space-y-1 pb-12 font-text text-white">
+      <ul className="md:px-4 flex flex-col space-y-1 pb-12 font-text text-white p-2">
         {/* Table Head */}
-        <li className="grid grid-cols-2 md:grid-cols-5 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#171A24] rounded-lg">
+        <li className="grid grid-cols-3 md:grid-cols-5 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#171A24] rounded-lg">
           <div className="flex justify-start items-center space-x-4 w-20">
             <p className="text-white pl-4">S.no</p>
           </div>
@@ -171,7 +173,7 @@ const CoinsTable = () => {
             <li
               key={index}
               onClick={() => navigate(`/papertrade/app/coin/${coins.id}`)}
-              className="grid grid-cols-2 md:grid-cols-5 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-gray-800 "
+              className="grid grid-cols-3 md:grid-cols-5 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-gray-800 "
             >
               <div className="w-20 flex items-center">
               <p className="pl-4 text-white">#{index + 1}</p>
@@ -190,14 +192,14 @@ const CoinsTable = () => {
                   </p>
                   <div className="flex space-x-1">
                     <p>{ `${coins.symbol}/usd`.toUpperCase()}</p>
-                    <p
+                    {/* <p
                       className={`md:hidden w-24 md:w-40 ${
                         coins?.price_change_percentage_24h >= 0 ? "text-green-400" : "text-red-400"
                       } font-semibold`}
                     >
                       {coins?.price_change_percentage_24h >= 0 && "+"}
                       {coins?.price_change_percentage_24h?.toFixed(2)}%
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </div>

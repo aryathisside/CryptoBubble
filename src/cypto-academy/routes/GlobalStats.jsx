@@ -24,7 +24,7 @@ const GlobalStats = () => {
       {/* <p className="text-white font-bold text-2xl md:text-3xl font-title mt-4 mb-4 lg:mt-0 ml-3">Global Metrics</p> */}
       {fetchGlobalCryptoSuccess && (
         <div className="no-scrollbar flex flex-wrap p-4 gap-4 rounded-box w-screen w-full overflow-auto max-w-full">
-          <div className="w-1/3 flex-[2]">
+          <div className="w-full md:w-1/3 md:flex-[2]">
             <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
               <img src={bar} alt="btc logo" className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6" />
               <div className="px-4 py-5">
@@ -38,53 +38,53 @@ const GlobalStats = () => {
             </div>
           </div>
 
-          <div className="w-1/6 flex-[1]">
+          <div className="md:w-1/6 md:flex-[1] w-[47%]">
             <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
               <img src={prodoct} alt="btc logo" className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6" />
               <div className="px-4 py-5">
                 <dl>
                   <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">Volume</dt>
-                  <dd className="font-text mt-1 text-2xl leading-9 font-semibold text-white pt-2">
+                  <dd className="font-text mt-1 md:text-2xl leading-9 font-semibold text-white pt-2">
                   ${globalCryptoData.data.total_volume.usd.toFixed(3)}
                   </dd>
                 </dl>
               </div>
             </div>
           </div>
-          <div className="w-1/6 flex-[1]">
+          <div className="md:w-1/6 md:flex-[1] w-[47%]">
             <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
               <img src={crypto} alt="btc logo" className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6" />
               <div className="px-4 py-5">
                 <dl>
-                  <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">Active Cryptoss</dt>
-                  <dd className="font-text mt-1 text-2xl leading-9 font-semibold text-white pt-2">
+                  <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">Active Cryptos</dt>
+                  <dd className="font-text mt-1 md:text-2xl leading-9 font-semibold text-white pt-2">
                   {globalCryptoData.data.active_cryptocurrencies}
                   </dd>
                 </dl>
               </div>
             </div>
           </div>
-          <div className="w-1/6 flex-[1]">
+          <div className="md:w-1/6 md:flex-[1] w-[47%]">
             <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
               <img src={buy} alt="btc logo" className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6" />
               <div className="px-4 py-5">
                 <dl>
                   <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">Markets</dt>
-                  <dd className="font-text mt-1 text-2xl leading-9 font-semibold text-white pt-2">
+                  <dd className="font-text mt-1 md:text-2xl leading-9 font-semibold text-white pt-2">
                   {globalCryptoData.data.markets}
                   </dd>
                 </dl>
               </div>
             </div>
           </div>
-          <div className="w-1/6 flex-[1]">
+          <div className="md:w-1/6 md:flex-[1] w-[47%]">
             <div className="bg-gradient-to-tr from-gray-900 to-gray-700 overflow-hidden shadow rounded-lg relative">
               <img src={graph} alt="btc logo" className="h-12 w-8 rounded-full absolute opacity-100 top-3 right-6" />
               <div className="px-4 py-5">
                 <dl>
                   <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">Total Market Cap</dt>
                   <dd
-                  className={`mt-1 text-3xl leading-9 font-semibold pt-2 ${
+                  className={`mt-1 md:text-3xl leading-9 font-semibold pt-2 ${
                     globalCryptoData.data.market_cap_change_percentage_24h_usd >= 0 ? 'text-green-400' : 'text-red-400'
                   } `}>
                   {globalCryptoData.data.market_cap_change_percentage_24h_usd.toFixed(4)}%

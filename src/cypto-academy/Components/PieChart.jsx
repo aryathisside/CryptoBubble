@@ -68,7 +68,7 @@ const PieChart = ({ globalCryptoData }) => {
   };
 
   return (
-    <div className="w-[90%] h-[500px] flex justify-center items-center mx-auto">
+    <div className="w-[90%] md:h-[500px] h-[300px] flex justify-center items-center mx-auto">
     <div className="w-full h-full">
       <Bar data={data} options={options} />
     </div>

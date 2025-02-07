@@ -29,7 +29,7 @@ const SidebarLayout = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, x: "-100%" }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="main flex flex-col flex-grow -ml-64 lg:ml-0 transition-all duration-150 ease-in bg-black"
+          className="main flex flex-col flex-grow lg:ml-0 transition-all duration-150 ease-in bg-black"
         >
           <Suspense fallback={<Loader />}>
             <Outlet />

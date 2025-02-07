@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../../../public/image.png';
+import mobilelogo from '../../../public/cryptoBubble-mobile.png';
 import { IoIosSearch } from 'react-icons/io';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { FiUser } from 'react-icons/fi';
@@ -10,69 +11,56 @@ const Header = () => {
   const location = useLocation();
   const activeLinkClass = 'text-[#CFA935] border-b-2 border-[#CFA935] pb-4'; // Active color
   const inactiveLinkClass = 'hover:text-[#CFA935]'; // Hover color
+
   return (
     <div className="bg-[#171A24] text-white shadow-md w-full">
-      <div className=" px-[40px] py-2 flex items-center justify-between w-full h-[90px]">
-        {/* Logo */}
-        <div className="flex items-center space-x-2">
-          <img src={logo} alt="Logo" className="w-[320px] h-[50px] rounded-full" />
+      {/* Main container */}
+      <div className="sm:px-[40px] px-[20px] py-2 flex items-center justify-between w-full h-[60px] sm:h-[90px]">
+
+        {/* Logo Section - Centered properly */}
+        <div className="flex items-center">
+          {/* Large screen logo */}
+          <img src={logo} alt="Logo" className="w-[220px] h-[50px] rounded-full hidden sm:block" />
+          {/* Small screen logo */}
+          <img src={mobilelogo} alt="Mobile Logo" className="h-[30px] rounded-full sm:hidden" />
         </div>
 
-        {/* Navigation Links */}
-        {/* <nav className="hidden md:flex space-x-10">
-          <a href="/papertrade/app" className="hover:text-gray-300 active:text-blue-500">
-            Home
-          </a>
-          <a href="/papertrade/app/market" className="hover:text-gray-300 active:text-blue-500">
-            Market
-          </a>
-          <a href="/papertrade/app/portfolio" className="hover:text-gray-300 active:text-blue-500">
-            Portfolio
-          </a>
-          <a href="/papertrade/app/watchlist" className="hover:text-gray-300 active:text-blue-500">
-            Watchlist
-          </a>
-        </nav> */}
+        {/* Navigation Links - Only for medium & larger screens */}
         <nav className="hidden md:flex space-x-10">
-      <Link
-        to="/papertrade/app"
-        className={`${location.pathname === "/papertrade/app" ? activeLinkClass : inactiveLinkClass}`}
-      >
-        Home
-      </Link>
-      <Link
-        to="/papertrade/app/market"
-        className={`${location.pathname === "/papertrade/app/market" ? activeLinkClass : inactiveLinkClass}`}
-      >
-        Market
-      </Link>
-      <Link
-        to="/papertrade/app/portfolio"
-        className={`${location.pathname === "/papertrade/app/portfolio" ? activeLinkClass : inactiveLinkClass}`}
-      >
-        Portfolio
-      </Link>
-      <Link
-        to="/papertrade/app/watchlist"
-        className={`${location.pathname === "/papertrade/app/watchlist" ? activeLinkClass : inactiveLinkClass}`}
-      >
-        Watchlist
-      </Link>
-    </nav>
+          <Link to="/papertrade/app" className={`${location.pathname === '/papertrade/app' ? activeLinkClass : inactiveLinkClass}`}>
+            Home
+          </Link>
+          <Link to="/papertrade/app/market" className={`${location.pathname === '/papertrade/app/market' ? activeLinkClass : inactiveLinkClass}`}>
+            Market
+          </Link>
+          <Link
+            to="/papertrade/app/portfolio"
+            className={`${location.pathname === '/papertrade/app/portfolio' ? activeLinkClass : inactiveLinkClass}`}>
+            Portfolio
+          </Link>
+          <Link
+            to="/papertrade/app/watchlist"
+            className={`${location.pathname === '/papertrade/app/watchlist' ? activeLinkClass : inactiveLinkClass}`}>
+            Watchlist
+          </Link>
+        </nav>
 
-        {/* Settings and User Profile */}
-        <div className="flex items-center space-x-4 ">
-          <button className="p-3 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700" onClick={() => navigate('/papertrade/app/search')}>
+        {/* Icons Section - Always Visible */}
+        <div className="flex items-center space-x-3">
+          <button className="p-2 sm:border-2 border-[#2A2E36] rounded-md hover:bg-gray-700" onClick={() => navigate('/papertrade/app/search')}>
             <IoIosSearch className="text-[20px]" />
           </button>
-          <button className="p-3 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700">
+          <button className="p-2 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700 hidden sm:block">
             <IoSettingsOutline className="text-[20px]" />
           </button>
-          <button className="p-3 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700">
+          <button className="p-2 sm:border-2 border-[#2A2E36] rounded-md hover:bg-gray-700" onClick={() => navigate('/papertrade/app/profile')}>
             <FiUser className="text-[20px]" />
           </button>
-          <button className="text-[#CFA935] border-2 p-2 border-[#CFA935] rounded-md hover:bg-gray-700">Crypto Simulator</button>
+          <button className="text-[#CFA935] border-2 px-2 py-1 border-[#CFA935] rounded-md hover:bg-gray-700">
+            {window.innerWidth < 768 ? "CS" : "Crypto Simulator"}
+          </button>
         </div>
+
       </div>
     </div>
   );
