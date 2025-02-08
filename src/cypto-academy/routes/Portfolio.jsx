@@ -35,7 +35,7 @@ const Portfolio = () => {
     isLoading: fetchPortfolioCoinDataLoading,
     isSuccess: fetchPortfolioCoinDataSuccess,
     refetch: refetchPortfolioCoinData
-  } = useGetPortfolioCoinDataQuery(currentUser.uid, { pollingInterval: 5000 });
+  } = useGetPortfolioCoinDataQuery(currentUser.uid, { pollingInterval: 10000 });
 
   // get available coins
   const {
