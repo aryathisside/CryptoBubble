@@ -61,7 +61,7 @@ const LoginPage = () => {
       <Box width={'40%'} height={'100%'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
         <Box display={'flex'} flexDirection={'column'} width={'90%'} gap={3} padding={3}>
           <Box display="flex" gap={1} alignItems="center" onClick={() => navigate('/')} sx={{ cursor: 'pointer' }}>
-            <img height={40} src={`./image2.png`} />
+            <img height={40} width={40} src={`./image2.png`} />
             <Typography variant="h5" color="white">
               Crypto+ bubble
             </Typography>
