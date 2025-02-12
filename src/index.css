@@ -124,3 +124,7 @@ body, html {
   background-repeat: no-repeat;  /* Prevents repeating */
   /* width: 100%; */
 }
+
+.ScrollbarsCustom-Scroller{
+  overflow: hidden !important;
+}

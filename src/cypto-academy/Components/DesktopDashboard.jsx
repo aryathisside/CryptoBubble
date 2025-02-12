@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useGetTrendingCoinDataQuery } from '../services/coinsDataApi';
 // import { useGetNewsQuery } from "../services/NewsApi";
@@ -10,6 +10,8 @@ import { supabase } from '../Utils/init-supabase';
 import { useAuth } from '../../Context/AuthContext';
 import { CiEdit } from "react-icons/ci";
 import { LiaCoinsSolid } from "react-icons/lia";
+import { FaRegTrashAlt } from 'react-icons/fa';
+import { IoEyeOutline } from "react-icons/io5";
 
 const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
   const { currentUser } = useAuth();
@@ -66,9 +68,24 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
     error: fetchLeaderboardError
   } = useGetLeaderboardQuery();
 
+  async function handleDelete(coinId, userId) {
+    try {
+      const {
+        // data,
+        error
+      } = await supabase.from('watchlist').delete().eq('coinId', `${coinId}`).eq('userId', `${userId}`);
+      if (error) {
+        throw new Error(error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const demoImage = 'https://source.unsplash.com/fsSGgTBoX9Y';
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   console.log("data", watchlistData);
 
@@ -273,13 +290,20 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
                   {coin?.market_data.price_change_percentage_24h?.toFixed(2)}%
                 </td>
                 <td className='px-6 py-4 flex gap-2'>
-                  <button className='text-white border-2 border-[#2A2E36] rounded-md p-2'>
+                  <button className='text-white border-2 border-[#2A2E36] rounded-md p-2' onClick={()=> navigate(`/papertrade/app/coin/${coin.id}`)}>
+                                                        <IoEyeOutline className='text-[18px]' />
+                                                        </button>
+                                       <button className='text-white border-2 border-[#2A2E36] rounded-md p-2'  onClick={() => handleDelete(coin.id, currentUser.uid)}>
+                                                        <FaRegTrashAlt className='text-[18px]' />
+                                                        </button>
+                                    
+                  {/* <button className='text-white border-2 border-[#2A2E36] rounded-md p-2'>
                   <CiEdit className='text-[18px]' />
                   </button>
                   <button className='text-[#CFA935] border-2 border-[#CFA935] rounded-md p-2 flex items-center gap-2'>
                   <LiaCoinsSolid className='text-[18px]' /> 
                   <span>Sell</span>
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}
