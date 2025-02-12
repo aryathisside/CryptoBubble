@@ -152,7 +152,7 @@ const HeaderTabs = () => {
             className="ml-2"
             src={'./image.png'}
             alt="Brand Image"
-            style={{ height: 30, cursor: 'pointer', width:210 }}
+            style={{ height: isMobile?30:35, cursor: 'pointer',width:isMobile ? undefined :350}}
             onClick={() => {
               setLayout('bubble');
             }}
@@ -319,11 +319,11 @@ const HeaderTabs = () => {
       {isMobile ? null : <FooterTabs />}
       <Box>
         <StyledIconButton
-          sx={{ height: '100%', width: '160px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderColor: "#CFA935"}}
+          sx={{ height: '100%', width: isMobile?"40px": '160px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderColor: "#CFA935"}}
           onClick={redirectToLogin}>
   
           <Typography color="#CFA935" sx={{ fontSize: '14px' }}>
-            Crypto Simulator
+           {isMobile ? "CS": " Crypto Simulator"}
           </Typography>
         </StyledIconButton>
         

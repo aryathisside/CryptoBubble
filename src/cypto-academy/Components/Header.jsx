@@ -20,7 +20,7 @@ const Header = () => {
         {/* Logo Section - Centered properly */}
         <div className="flex items-center" onClick={()=> navigate('/')}>
           {/* Large screen logo */}
-          <img src={logo} alt="Logo" className="w-[220px] h-[50px] rounded-full hidden sm:block" />
+          <img src={logo} alt="Logo" className="w-[220px] h-[35px] rounded-full hidden sm:block" />
           {/* Small screen logo */}
           <img src={mobilelogo} alt="Mobile Logo" className="h-[30px] rounded-full sm:hidden" />
         </div>
