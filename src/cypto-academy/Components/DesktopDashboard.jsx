@@ -31,7 +31,8 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
     data: watchlistData,
     error: fetchWatchlistErr,
     isLoading: fetchWatchlistLoading,
-    isSuccess: fetchWatchlistSuccess
+    isSuccess: fetchWatchlistSuccess,
+    refetch: refetchWatchList
   } = useGetWatchlistDataQuery(currentUser.uid);
 
   // Get user networth
@@ -76,6 +77,8 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
       } = await supabase.from('watchlist').delete().eq('coinId', `${coinId}`).eq('userId', `${userId}`);
       if (error) {
         throw new Error(error);
+      }else{
+        refetchWatchList();
       }
     } catch (error) {
       console.log(error);

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 import { AiOutlineClose } from "react-icons/ai";
-import { BsArrowLeftRight  } from "react-icons/bs";
+import { BsArrowDownUp, BsArrowLeftRight  } from "react-icons/bs";
 
 import usd from "../Assets/svg/USD.svg";
 
@@ -140,10 +140,10 @@ const SellCoins = ({ data, modal, setModal }) => {
   return (
     //  Large Modal
     <div
-      className={`${
-        !modal && "hidden"
-      } flex flex-col overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center md:inset-0 h-modal sm:h-full`}
-      id="large-modal"
+    className={`${
+      !modal && "hidden"
+    } flex flex-col fixed left-0 right-0 top-[200px] md:top-0 z-50 justify-center items-center bg-black bg-opacity-50 h-full md:h-screen`}
+    id="large-modal"
     >
       <div className="relative px-4 w-full max-w-xl h-full md:h-auto">
         {/* Modal content  */}
@@ -164,7 +164,7 @@ const SellCoins = ({ data, modal, setModal }) => {
           </div>
           {/* Modal body  */}
           <div className="px-6 py-3 md:p-6">
-          <div className="flex justify-between">
+          <div className="md:flex justify-between">
             <div>
             <p className="text-base leading-relaxed font-semibold text-gray-200">
               1 <span className="uppercase">{data.symbol}</span> ={" "}
@@ -182,7 +182,7 @@ const SellCoins = ({ data, modal, setModal }) => {
             </p>
             </div>
 
-            <div className="flex">
+            <div className="md:flex">
             <div className="relative py-4">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <img src={data?.image?.small} alt={data.name} className="h-5 w-5" />
@@ -198,7 +198,10 @@ const SellCoins = ({ data, modal, setModal }) => {
               />
             </div>
 
-            <BsArrowLeftRight  className="h-4 w-4 text-white m-auto " />
+              
+            <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" />
+                      
+            <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" />
 
             {/* usd value */}
             <div className="relative py-4">

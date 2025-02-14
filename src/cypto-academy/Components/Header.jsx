@@ -13,7 +13,7 @@ const Header = () => {
   const inactiveLinkClass = 'hover:text-[#CFA935]'; // Hover color
 
   return (
-    <div className="bg-[#171A24] text-white shadow-md w-full">
+    <div className="bg-[#171A24] text-white shadow-md w-full sticky top-0 z-50">
       {/* Main container */}
       <div className="sm:px-[40px] px-[20px] py-2 flex items-center justify-between w-full h-[60px] sm:h-[90px]">
 
