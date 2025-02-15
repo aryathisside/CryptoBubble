@@ -77,7 +77,7 @@ const Watchlist = () => {
   } = useGetWatchlistDataQuery(currentUser.uid);
 
   useEffect(() => {
-    const interval = setInterval(() => refetch(), 10000);
+    const interval = setInterval(() => refetch(), 20000);
 
     return () => {
       clearInterval(interval);

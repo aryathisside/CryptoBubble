@@ -20,7 +20,7 @@ const CoinsTable = () => {
 
   const { data, error, isLoading, isSuccess } = useGetCoinsDataQuery(
     { currency, page },
-    { pollingInterval: 10000 }
+    { pollingInterval: 300000 }
   );
 
   const {

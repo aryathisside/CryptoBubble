@@ -2,6 +2,7 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { supabase } from "../Utils/init-supabase";
 
+const simbaseURL=process.env.SIMULATOR_API
 export const supabaseApi = createApi({
   reducerPath: "supabaseApi",
   baseQuery: fakeBaseQuery(),
@@ -48,7 +49,7 @@ export const supabaseApi = createApi({
             let watchlistPromise = [];
             watchlistId.forEach((coinId) => {
               // create a promise for each api call
-              const request = fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
+              const request = fetch(`${simbaseURL}/coins/${coinId}`);
               watchlistPromise.push(request);
             });
             const res = await Promise.allSettled(watchlistPromise);
@@ -86,7 +87,7 @@ export const supabaseApi = createApi({
             let portfolioPromise = [];
             portfolioId.forEach((coinId) => {
               // create a promise for each api call
-              const request = fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
+              const request = fetch(`${simbaseURL}/coins/${coinId}`);
               portfolioPromise.push(request);
             });
             const res = await Promise.allSettled(portfolioPromise);

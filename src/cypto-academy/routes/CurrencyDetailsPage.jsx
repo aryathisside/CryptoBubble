@@ -41,7 +41,7 @@ const CurrencyDetailsPage = () => {
   const [toggleBuyCoinsModal, setToggleBuyCoinsModal] = useState(false);
   const [toggleSellCoinsModal, setToggleSellCoinsModal] = useState(false);
 
-  const { data, error, isLoading, isSuccess } = useGetCoinDataQuery(id, { pollingInterval: 10000 });
+  const { data, error, isLoading, isSuccess } = useGetCoinDataQuery(id, { pollingInterval: 20000 });
 
   const {
     data: chartData,
@@ -149,10 +149,10 @@ const CurrencyDetailsPage = () => {
           <div className="flex  md:space-x-8 justify-between border-b border-[#2A2E36] pb-6">
             {/* coin data */}
             <div className="flex items-center space-x-2">
-              <img src={data.image.large} className="w-12" alt={data.name} />
+              <img src={data?.image?.large} className="w-12" alt={data?.name} />
               <div>
-                <p className="text-white font-title md:text-2xl font-bold">{data.name}</p>
-                <p className="text-gray-300 md:text-md text-sm uppercase font-semibold">{data.symbol}/USD</p>
+                <p className="text-white font-title md:text-2xl font-bold">{data?.name}</p>
+                <p className="text-gray-300 md:text-md text-sm uppercase font-semibold">{data?.symbol}/USD</p>
               </div>
             </div>
             <div className="mt-4 mx-2 md:mx-4 flex space-x-2 md:gap-4 gap-2">
@@ -214,7 +214,7 @@ const CurrencyDetailsPage = () => {
               <div className="px-4 py-5">
                 <dl>
                   <dt className="font-title text-sm leading-5 font-medium text-gray-400 truncate">Price</dt>
-                  <dd className="font-text mt-1 text-3xl pt-2 leading-9 font-semibold text-white">${data.market_data.current_price.usd}</dd>
+                  <dd className="font-text mt-1 text-3xl pt-2 leading-9 font-semibold text-white">${data?.market_data?.current_price?.usd}</dd>
                 </dl>
               </div>
             </div>

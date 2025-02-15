@@ -1,69 +1,66 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseUrl = "https://api.coingecko.com/api/v3/coins";
+// ✅ Our Backend API
+const baseUrl =process.env.SIMULATOR_API;
+
+// ✅ CoinGecko API (only for /coins/:id and /ohlc)
 
 export const coinsDataApi = createApi({
   reducerPath: "coinsData",
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
+    // ✅ Fetch Coins Market Data from our backend
     getCoinsData: builder.query({
       query: ({ currency, page }) =>
-        `/markets?vs_currency=${currency}&order=market_cap_desc&per_page=250&page=${page}&sparkline=false`
+        `/coins/markets`,
     }),
-    getCoinData: builder.query({
-      query: (id) => `/${id}`
-    }),
+
+    // ✅ Fetch Trending Coins Data from our backend
     getTrendingCoinData: builder.query({
       queryFn: async () => {
         try {
-          const res = await fetch(`https://api.coingecko.com/api/v3/search/trending`);
+          const res = await fetch(`${baseUrl}/trending`);
 
           if (!res.ok) {
             throw new Error("Something went wrong! Please try again");
           }
 
           const data = await res.json();
-
           return { data };
         } catch (error) {
           return { error: error };
         }
-      }
+      },
     }),
-    getHistoricalData: builder.query({
-      query: (options) => `/${options.id}/ohlc?vs_currency=usd&days=${options.chartDays}`
-    }),
+
+    // ✅ Fetch Global Crypto Data from our backend
     getGlobalCryptoData: builder.query({
       queryFn: async () => {
         try {
-          const res = await fetch(`https://api.coingecko.com/api/v3/global`);
+          const res = await fetch(`${baseUrl}/global`);
 
           if (!res.ok) {
             throw new Error("Something went wrong! Please try again");
           }
 
           const data = await res.json();
-
           return { data };
         } catch (error) {
           return { error: error };
         }
-      }
-    })
-    // getWatchlistData: builder.query({
-    //     query: async (WatchlistIds, _queryApi, _extraOptions, baseQuery) => {
-    //         const results = await Promise.all(WatchlistIds.map(WatchlistId => baseQuery(`/${WatchlistId}`)));
+      },
+    }),
 
-    //         const merged = [].concat(...results.map(result => result.data));
-    //         const errors = [].concat(...results.filter(result => result.error != null).map(result => result.error));
+    // 🔴 **Keep CoinGecko APIs Unchanged**
+    getCoinData: builder.query({
+      query: (id) => `${baseUrl}/coins/${id}`,
+    }),
 
-    //         if (errors.length > 0)
-    //             return { error: errors };
-
-    //         return { data: merged };
-    //     }
-    // })
-  })
+    getHistoricalData: builder.query({
+      query: (options) =>
+        `${baseUrl}/coins/${options.id}/ohlc?vs_currency=usd&days=${options.chartDays}`,
+    }),
+  }),
 });
 
 export const {
@@ -71,5 +68,6 @@ export const {
   useGetCoinDataQuery,
   useGetHistoricalDataQuery,
   useGetTrendingCoinDataQuery,
-  useGetGlobalCryptoDataQuery
+  useGetGlobalCryptoDataQuery,
 } = coinsDataApi;
+

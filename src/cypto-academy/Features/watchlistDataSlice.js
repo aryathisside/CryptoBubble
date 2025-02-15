@@ -13,7 +13,7 @@ export const fetchWatchlistData = createAsyncThunk(
 
     watchlistId.forEach((id) => {
       // create a promise for each api call
-      const request = axios.get(`https://api.coingecko.com/api/v3/coins/${id}`);
+      const request = axios.get(`${process.env.SIMULATOR_API}/coins/${id}`);
       watchlistPromise.push(request);
       return 1;
     });

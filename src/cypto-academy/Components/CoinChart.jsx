@@ -95,7 +95,7 @@ export const LineChart = ({ id, data, days, name }) => {
   const toolTipRef = useRef();
 
   useEffect(() => {
-    const localChartData = data.map((price) => {
+    const localChartData = data?.map((price) => {
       return {
         time: price[0] / 1000,
         value: price[4]
