@@ -97,9 +97,9 @@ const LoginPage = () => {
             <Typography variant="subtitle" color="#A9A9A9">
               Or log in with your email.
             </Typography>
-            <Typography onClick={handleForgotPasswordClick} variant="subtitle" color="#A9A9A9">
+           {!isSignup &&  <Typography onClick={handleForgotPasswordClick} variant="subtitle" color="#A9A9A9">
               Forgot Password?
-            </Typography>
+            </Typography>}
           </Box>
           <LoginForm isSignupPage={handleIsSignupPage} />
         </Box>
