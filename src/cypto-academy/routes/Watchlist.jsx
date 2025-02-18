@@ -76,6 +76,8 @@ const Watchlist = () => {
     refetch
   } = useGetWatchlistDataQuery(currentUser.uid);
 
+
+
   useEffect(() => {
     const interval = setInterval(() => refetch(), 20000);
 
@@ -105,7 +107,7 @@ const Watchlist = () => {
       <p className="text-white font-bold text-2xl md:text-3xl font-title mt-4 lg:mt-0 mb-4 ml-3">WatchList</p>
       <p className="text-white font-semibold text-md font-title  ml-3 mb-4">Swipe left to delete or view the coins.</p>
       {isLoading && <Loader />}
-      {error && watchlistData.length !== 0 && <p className="text-2xl text-red-400 px-4">Something went wrong</p>}
+      {error && watchlistData?.length !== 0 && <p className="text-2xl text-red-400 px-4">Something went wrong</p>}
       {/* coin table */}
       {watchlistData?.length === 0 && (
         <div className=" shadow-lg rounded-2xl  px-4 py-4 md:px-4 flex flex-col lg:justify-center align-center text-center max-w-xl m-auto">
@@ -119,7 +121,7 @@ const Watchlist = () => {
           </Link>
         </div>
       )}
-      {isSuccess && watchlistData.length !== 0 && (
+      {isSuccess && watchlistData?.length !== 0 && (
         <SwipeableList fullSwipe={false} type={ListType.IOS} className="md:px-4 flex flex-col space-y-1 pb-12 text-white font-text">
           {/* Table Head */}
           <li className="grid grid-cols-3 md:grid-cols-6 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#171A24] rounded-md ">
@@ -143,7 +145,7 @@ const Watchlist = () => {
             </div>
           </li>
           {isSuccess &&
-            watchlistData.length !== 0 &&
+            watchlistData?.length !== 0 &&
             watchlistData.map((coin, index) => (
               <SwipeableListItem trailingActions={trailingActions(coin.id, currentUser.uid, refetch)} key={index}>
                 <div className="grid grid-cols-3 md:grid-cols-6 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer xl:w-full">

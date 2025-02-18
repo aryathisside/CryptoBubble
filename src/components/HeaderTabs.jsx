@@ -152,7 +152,7 @@ const HeaderTabs = () => {
             className="ml-2"
             src={'./image.png'}
             alt="Brand Image"
-            style={{ height: isMobile?30:35, cursor: 'pointer',width:isMobile ? undefined :350}}
+            style={{ height: isMobile?30:35, cursor: 'pointer',width:isMobile ? undefined :327}}
             onClick={() => {
               setLayout('bubble');
             }}

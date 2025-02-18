@@ -20,13 +20,13 @@ const Header = () => {
         {/* Logo Section - Centered properly */}
         <div className="flex items-center" onClick={()=> navigate('/')}>
           {/* Large screen logo */}
-          <img src={logo} alt="Logo" className="w-[220px] h-[35px] rounded-full hidden sm:block" />
+          <img src={logo} alt="Logo" className="w-[190px] h-[35px] rounded-full hidden sm:block" />
           {/* Small screen logo */}
           <img src={mobilelogo} alt="Mobile Logo" className="h-[30px] rounded-full sm:hidden" />
         </div>
 
         {/* Navigation Links - Only for medium & larger screens */}
-        <nav className="hidden md:flex space-x-10">
+        <nav className="hidden lg:flex space-x-10">
           <Link to="/papertrade/app" className={`${location.pathname === '/papertrade/app' ? activeLinkClass : inactiveLinkClass}`}>
             Home
           </Link>
@@ -56,8 +56,8 @@ const Header = () => {
           <button className="p-2 sm:border-2 border-[#2A2E36] rounded-md hover:bg-gray-700" onClick={() => navigate('/papertrade/app/profile')}>
             <FiUser className="text-[20px]" />
           </button>
-          <button className="text-[#CFA935] border-2 px-2 py-1 border-[#CFA935] rounded-md hover:bg-gray-700">
-            {window.innerWidth < 768 ? "CS" : "Crypto Simulator"}
+          <button className="text-[#CFA935] border-2 px-2 py-1 border-[#CFA935] rounded-md hover:bg-gray-700" onClick={()=> navigate('/')}>
+            {window.innerWidth < 768 ? "CB" : "Crypto Bubble"}
           </button>
         </div>
 

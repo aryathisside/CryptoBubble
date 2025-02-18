@@ -16,6 +16,7 @@ import { LiaCoinsSolid } from 'react-icons/lia';
 import graph from '../Assets/svg/graph.svg';
 import product from '../Assets/svg/product-logo.svg';
 import dollor from '../Assets/svg/dollar-logo.svg';
+import { useGetWatchlistDataQuery } from '../services/supabaseApi';
 
 // import BuyCoins from "../Components/BuyCoins";
 // import SellCoins from "../Components/SellCoins";
@@ -53,6 +54,10 @@ const CurrencyDetailsPage = () => {
     chartDays
   });
 
+   const {
+      refetch
+    } = useGetWatchlistDataQuery(currentUser.uid);
+
   useEffect(() => {
     if (error || fetchChartDataError) {
       toastRef.current?.show();
@@ -75,6 +80,7 @@ const CurrencyDetailsPage = () => {
       const { data: updateWatchlistData, error } = await supabase.from('watchlist').upsert([{ coinId: data.id, userId: currentUser.uid }]);
 
       console.log('added to db/watchlist successfully');
+      refetch();
       navigate('/papertrade/app/watchlist');
       setAddToGun(false);
     } else {

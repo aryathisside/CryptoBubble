@@ -77,7 +77,7 @@ const Portfolio = () => {
 
   return (
     <section className="py-2 lg:py-8 mx-auto  lg:w-full px-4 h-[100vh]">
-      <p className="text-white font-bold text-2xl md:text-3xl font-title mt-4 lg:mt-0 ">Portfolio</p>
+      <p className="text-white font-bold text-2xl md:text-3xl font-title mt-4 lg:mt-0 md:px-4">Portfolio</p>
       {(isLoading || fetchPortfolioCoinDataLoading || fetchAvailableUsdCoinsLoading) && <Loader />}
       {error && <p className="text-red-400 text-xl">Something went wrong!</p>}
       {/* available coin and networth */}
