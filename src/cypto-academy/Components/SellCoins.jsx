@@ -53,6 +53,31 @@ const SellCoins = ({ data, modal, setModal }) => {
     setCoinValue(e.target.value / data.market_data.current_price.usd);
   };
 
+  async function addTransactionToHistory(transaction) {
+    // Fetch current history and append new transaction
+    let { data: userData, error: fetchUserError } = await supabase
+      .from('users')
+      .select('history')
+      .eq('userId', `${currentUser.uid}`)
+      .single();
+  
+    if (fetchUserError) {
+      throw new Error('Failed to fetch user history.');
+    }
+  
+    const updatedHistory = userData?.history ? [...userData.history, transaction] : [transaction];
+  
+    // Update user's history
+    const { error: updateHistoryError } = await supabase
+      .from('users')
+      .update({ history: updatedHistory })
+      .eq('userId', `${currentUser.uid}`);
+  
+    if (updateHistoryError) {
+      throw new Error('Failed to update transaction history.');
+    }
+  }
+
   async function onPlaceOrder() {
     try {
       setOrderLoading(true);
@@ -111,6 +136,18 @@ const SellCoins = ({ data, modal, setModal }) => {
           .eq("userId", `${currentUser.uid}`)
           .eq("coinId", `${data.id}`);
       }
+
+         // Add transaction to history
+         const transaction = {
+          type: 'sell',
+          coinId: `${data.id}`,
+          symbol: `${data.symbol}`,
+          coinValue: `${coinValue}`,
+          coinUsdPrice: `${coinUsdPrice}`,
+          timestamp: new Date().toISOString()
+        };
+  
+        await addTransactionToHistory(transaction);  // Added here
 
       // calculate networth
       let { data: portfolioData } = await supabase

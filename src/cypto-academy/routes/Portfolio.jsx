@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { supabase } from "../Utils/init-supabase";
 
 import {
   useFetchAvailableCoinsQuery,
@@ -36,6 +37,25 @@ const Portfolio = () => {
     isSuccess: fetchPortfolioCoinDataSuccess,
     refetch: refetchPortfolioCoinData
   } = useGetPortfolioCoinDataQuery(currentUser.uid, { pollingInterval: 20000 });
+
+  async function getUserTradeHistory(userId) {
+    try {
+        const { data, error } = await supabase
+            .from("users")
+            .select("history")
+            .eq("userId", userId)
+
+        if (error) {
+            throw new Error(error.message);
+        }
+        console.log(data[0]);
+        return data; // Returns the trade history array
+    } catch (error) {
+        console.error("Error fetching trade history:", error.message);
+        return [];
+    }
+}
+
 
   // get available coins
   const {
