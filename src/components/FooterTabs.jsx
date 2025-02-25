@@ -56,7 +56,8 @@ const FooterTabs = () => {
     }, [error]);
 
   const deactivateAccount = async () => {
-    const trimmedText = deactivateText.trim(); // Trim spaces from input
+    const trimmedText = deactivateText?.trim().toUpperCase();
+
 
     if (!trimmedText) {
         return setError({

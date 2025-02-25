@@ -54,7 +54,7 @@ const DeactivateAccount = () => {
   };
 
   const deactivateAccount = async () => {
-    const trimmedText = deactivateText.trim(); // Trim spaces from input
+    const trimmedText = deactivateText?.trim().toUpperCase(); // Trim spaces from input
 
     if (!trimmedText) {
         return setError({
