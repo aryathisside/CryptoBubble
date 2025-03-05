@@ -42,77 +42,76 @@ const FooterTabs = () => {
     severity: ''
   });
 
-    useEffect(() => {
-      if (error) {
-        const timer = setTimeout(() => {
-          setError({
-            message: '',
-            severity: ''
-          });
-        }, 5000);
-  
-        return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
-      }
-    }, [error]);
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError({
+          message: '',
+          severity: ''
+        });
+      }, 5000);
+
+      return () => clearTimeout(timer); // Cleanup the timeout on unmount or error change
+    }
+  }, [error]);
 
   const deactivateAccount = async () => {
     const trimmedText = deactivateText?.trim().toUpperCase();
 
-
     if (!trimmedText) {
-        return setError({
-            message: "Please type DELETE to deactivate your account",
-            severity: "error",
-        });
+      return setError({
+        message: 'Please type DELETE to deactivate your account',
+        severity: 'error'
+      });
     }
 
-    if (trimmedText !== "DELETE") {
-        return setError({
-            message: "Wrong text, please check DELETE spelling",
-            severity: "error",
-        });
+    if (trimmedText !== 'DELETE') {
+      return setError({
+        message: 'Wrong text, please check DELETE spelling',
+        severity: 'error'
+      });
     }
 
     try {
-        const email = localStorage.getItem("userEmail");
+      const email = localStorage.getItem('userEmail');
 
-        if (!email) {
-            console.error("Email is required to DELETE the account.");
-            return;
-        }
+      if (!email) {
+        console.error('Email is required to DELETE the account.');
+        return;
+      }
 
-        const response = await axios.post(process.env.DELETE_ACCOUNT, { email });
+      const response = await axios.post(process.env.DELETE_ACCOUNT, { email });
 
-        if (response.status === 200) {
-            console.log("Account DELETED successfully:", response.data.message);
-            setAuthenticated(false);
-            localStorage.removeItem("token");
-            localStorage.removeItem("userEmail");
-            setError({
-                message: "Your account has been deleted successfully.",
-                severity: "success",
-            });
-            setDeactivateModel(false)
-            setTimeout(() => {
-              navigate("/");
-          }, 2000); // 2000 ms = 2 seconds
-        } else {
-            console.error("Unexpected response:", response);
-        }
+      if (response.status === 200) {
+        console.log('Account DELETED successfully:', response.data.message);
+        setAuthenticated(false);
+        localStorage.removeItem('token');
+        localStorage.removeItem('userEmail');
+        setError({
+          message: 'Your account has been deleted successfully.',
+          severity: 'success'
+        });
+        setDeactivateModel(false);
+        setTimeout(() => {
+          navigate('/');
+        }, 2000); // 2000 ms = 2 seconds
+      } else {
+        console.error('Unexpected response:', response);
+      }
     } catch (error) {
-        if (error.response) {
-            setError({
-                message: `Failed to deactivate account: ${error.response.data.message}`,
-                severity: "error",
-            });
-        } else {
-            setError({
-                message: "An error occurred. Please try again later.",
-                severity: "error",
-            });
-        }
+      if (error.response) {
+        setError({
+          message: `Failed to deactivate account: ${error.response.data.message}`,
+          severity: 'error'
+        });
+      } else {
+        setError({
+          message: 'An error occurred. Please try again later.',
+          severity: 'error'
+        });
+      }
     }
-};
+  };
 
   useEffect(() => {
     const firstName = localStorage.getItem('firstName');
@@ -204,11 +203,11 @@ const FooterTabs = () => {
   };
 
   return (
-    <Box pb={1 / 2} width={"40%"}>
+    <Box pb={1 / 2} width={'40%'}>
       <Stack direction="row" justifyContent="flex-end" gap={1}>
         <Box position="relative" ml={1}>
           <Tooltip title="Wish list" arrow>
-            <StyledButton onClick={() => setIsFilterOpen(!isFilterOpen)} disabled={!isAuthenticated} sx={{  height: '100%' }}>
+            <StyledButton onClick={() => setIsFilterOpen(!isFilterOpen)} disabled={!isAuthenticated} sx={{ height: '100%' }}>
               <Stack direction="row" display="flex" justifyContent="center" alignItems="center">
                 <Typography color="white" fontWeight="bold" textTransform="none" fontSize={'12px'}>
                   {renderName()}
@@ -321,17 +320,13 @@ const FooterTabs = () => {
 
           {isAuthenticated ? (
             <Tooltip title="Profile" arrow>
-              <StyledButton
-                onClick={showProfile}
-                sx={{ height: '100%'  }}>
+              <StyledButton onClick={showProfile} sx={{ height: '100%' }}>
                 {/* <ExitToAppIcon /> */}
                 <PermIdentityIcon />
               </StyledButton>
             </Tooltip>
           ) : (
-            <StyledIconButton
-              onClick={redirectLogin}
-              sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <StyledIconButton onClick={redirectLogin} sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <PersonOutlineOutlinedIcon />
               {/* <Typography color="white" sx={{ fontSize: '12px', ml: 1 }}>
                 Login
@@ -352,10 +347,10 @@ const FooterTabs = () => {
           maxWidth="md"
           scroll="paper"
           TransitionComponent={Transition}
-          sx={{ '& .MuiDialog-container': { alignItems: 'start' } }}
+          sx={{ '& .MuiDialog-container': { alignItems: 'center', justifyContent:"center" } }}
           PaperProps={{
             sx: {
-              background: '#171A24',
+              background: 'black',
               backdropFilter: 'blur(8px)',
               marginTop: 'min(10%, 100px)',
               marginX: 2,
@@ -367,13 +362,35 @@ const FooterTabs = () => {
               <Close />
             </StyledIconButton>
           </DialogTitle>
-          <DialogContent>
-            <Box height={'100%'} display={'flex'} flexDirection={'column'} justifyContent={'space-between'}>
+          <DialogContent sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center', // Centers content horizontally
+      justifyContent: 'center', // Centers content vertically
+      width: '100%', // Ensure it takes full width
+      textAlign: 'center' // Centers text content
+    }}>
+            <Box height={'100%'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
               <Box>
                 <Box width={'100%'} p={2}>
-                  <Box display={'flex'}>
-                    <PermIdentityIcon />
-                    <Typography variant="subtitle" color={'#A9A9A9'}>
+                  <Box>
+                    <Typography>
+                      <Box
+                        sx={{
+                          width: 100, // Circle size
+                          height: 100,
+                          backgroundColor: '#171A24',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          margin: '0 auto' 
+                        }}>
+                        <PermIdentityIcon sx={{ color: 'white', fontSize:"70px" }} /> {/* White icon */}
+                      </Box>
+                    </Typography>
+
+                    <Typography variant="subtitle" color={'#A9A9A9'} sx={{fontSize:"12px"}}>
                       Name
                     </Typography>
                   </Box>
@@ -381,13 +398,12 @@ const FooterTabs = () => {
                     {profile.name}
                   </Typography>
                 </Box>
-                <Box width={'100%'} p={2}>
-                  <Box display={'flex'}>
-                    <PermIdentityIcon />
-                    <Typography variant="subtitle" color={'#A9A9A9'}>
+                <Box width={'100%'}>
+                  {/* <Box display={'flex'}> */}
+                    <Typography variant="subtitle" color={'#A9A9A9'}  sx={{fontSize:"12px"}}>
                       Email
                     </Typography>
-                  </Box>
+                  {/* </Box> */}
                   <Typography variant="h6" color={'white'}>
                     {profile.email}
                   </Typography>
@@ -396,15 +412,24 @@ const FooterTabs = () => {
               <Box display={'flex'} justifyContent={'center'} alignItems={'center'} p={2} flexDirection={'column'} gap={2}>
                 <StyledIconButton
                   onClick={logoutConfirmation}
-                  sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', py: 4 }}>
+                  sx={{
+                    width: '260px',  // Set width to 60% of the modal
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#171A24',
+                    py: 3,  // Adjust padding for better size
+                    mx: 'auto', // Centers the button horizontally
+                    my: 2
+                  }}>
                   {/* <ExitToAppIcon /> */}
                   <LogoutIcon />
-                  <Typography color="white" sx={{ fontSize: '20px', ml: 1 }}>
-                    Logout
+                  <Typography color="white" sx={{ fontSize: '18px', ml: 1 }}>
+                    Log Out
                   </Typography>
                 </StyledIconButton>
-                <Typography variant="h7" color={'#FF3333'} sx={{ cursor: 'pointer' }} onClick={handelDeactivateAccount}>
-                  Delete Account
+                <Typography variant="h7" color={'#FF3333'} sx={{ cursor: 'pointer' }} onClick={handelDeactivateAccount} mt={2}>
+                Deactivate Account
                 </Typography>
               </Box>
             </Box>

@@ -1,5 +1,5 @@
-import { lazy, useState } from "react";
-import { Link } from "react-router-dom";
+import { lazy, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   useFetchAvailableCoinsQuery,
@@ -7,13 +7,14 @@ import {
   useGetPortfolioDataQuery,
   useGetUserNetworthQuery,
   useGetWatchlistDataQuery
-} from "../services/supabaseApi";
-import { useAuth } from "../../Context/AuthContext";
+} from '../services/supabaseApi';
+import { useAuth } from '../../Context/AuthContext';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 // import Logout from "../Components/Buttons/Logout";
 // import ResetVirtualBalance from "../Components/ResetVirtualBalance";
-const Logout = lazy(() => import("../Components/Buttons/Logout"));
-const ResetVirtualBalance = lazy(() => import("../Components/ResetVirtualBalance"));
+const Logout = lazy(() => import('../Components/Buttons/Logout'));
+const ResetVirtualBalance = lazy(() => import('../Components/ResetVirtualBalance'));
 
 const UserProfile = () => {
   const { currentUser } = useAuth();
@@ -62,58 +63,42 @@ const UserProfile = () => {
   } = useGetPortfolioDataQuery(currentUser.uid);
 
   return (
-    <section className="lg:px-4 py-2 lg:py-8  max-w-[1600px]">
-      <p className="text-white font-bold text-2xl md:text-3xl font-title mt-4 mb-4 lg:mt-0 ml-3">
-        Your Profile
-      </p>
-
-      <div className="flex flex-wrap md:space-x-4  justify-center md:justify-start ">
-        <div className="  bg-gradient-to-tr from-gray-900 to-gray-700  overflow-hidden shadow rounded-lg w-[100%] md:w-72 xl:w-80 relative mx-4">
-          <img
-            src="https://img.icons8.com/officel/80/000000/anime-emoji.png"
-            alt="btc logo"
-            className="h-24 w-24 rounded-full absolute opacity-50 -top-6 -right-6 md:-right-4"
-          />
-          <div className="px-4 py-5 sm:p-6 ">
-            <div className="flex items-center p-2  space-x-4 justify-self-end cursor-pointer">
-              <img
-                src={`https://avatars.dicebear.com/api/initials/${currentUser.displayName}.svg`}
-                alt=""
-                className="w-12 h-12 rounded-full dark:bg-gray-500"
-              />
+    <section className="lg:px-4 py-2 lg:py-8 max-w-[1600px]">
+      <div className="flex md:space-x-4 justify-center items-center">
+        <div className="text-center overflow-hidden shadow rounded-lg relative md:mt-12 border border-[#2A2E36] md:px-12 py-4">
+          <div className="px-4 py-5 sm:p-6 flex flex-col items-center">
+            <div className="p-2 flex flex-col items-center space-y-4 cursor-pointer">
+              <div className="bg-[#171A24] rounded-full w-24 h-24 flex items-center justify-center">
+                <PermIdentityIcon sx={{ color: 'white', fontSize: '70px' }} />
+              </div>
               <div>
-                <h2 className="text-lg font-semibold text-white font-title">
-                  {currentUser.displayName}
-                </h2>
-                <span className="flex items-center space-x-1">
-                  <p className="text-xs hover:underline dark:text-gray-400 font-title">
-                    {currentUser.email}
-                  </p>
-                </span>
+                <div className="text-[#A9A9A9] text-sm">Name</div>
+                <h2 className="text-lg font-semibold text-white font-title">{currentUser.displayName}</h2>
+              </div>
+              <div className="pt-4">
+                <div className="text-[#A9A9A9] text-sm">Email</div>
+                <h2 className="text-lg font-semibold text-white font-title">{currentUser.email}</h2>
               </div>
             </div>
-            <div className="my-4">
-              <Link
-                to="/change-password"
-                className=" text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-semibold font-text rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                Change Your Password
-              </Link>
+            <div className="flex gap-4 my-4">
+              <div className=" bg-[#171A24] py-3 px-12 rounded-[12px] border border-gray-500">
+                <Link to="/change-password" className="text-white">
+                  Change Your Password
+                </Link>
+              </div>
+
+              <div className=" bg-[#171A24] py-3 px-12 rounded-[12px] border border-gray-500">
+                <button onClick={() => setResetModal(!resetModal)} className=" text-white">
+                  Reset Virtual USD Balance
+                </button>
+              </div>
             </div>
             <Logout />
-            <div className="my-4">
-              <button
-                onClick={() => setResetModal(!resetModal)}
-                className=" text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-semibold font-text rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                Reset Virtual USD Balance
-              </button>
-            </div>
             <ResetVirtualBalance modal={resetModal} setModal={setResetModal} />
           </div>
         </div>
         {/* account balance information */}
-        <div className="mt-8 md:mt-0 w-80 m-auto md:m-0 md:w-96 h-56 lg:ml-8 bg-gradient-to-tr from-gray-900 to-gray-700  rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-110">
+        {/* <div className="mt-8 md:mt-0 w-80 m-auto md:m-0 md:w-96 h-56 lg:ml-8 bg-gradient-to-tr from-gray-900 to-gray-700  rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-110">
           <div className="w-full px-8 absolute top-8">
             <div className="flex justify-between">
               <div className="">
@@ -140,14 +125,7 @@ const UserProfile = () => {
                     {userNetworthSuccess && <span>${userNetworth[0]?.networth}</span>}
                   </p>
                 </div>
-                {/* <div className="">
-                                  <p className="font-light text-xs ">
-                                      Expiry
-                                  </p>
-                                  <p className="font-medium tracking-wider text-sm">
-                                      03/25
-                                  </p>
-                              </div> */}
+           
 
                 <div className="">
                   <p className="font-light text-xs">CVV</p>
@@ -156,29 +134,22 @@ const UserProfile = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       {/* user watchlist & portfolio */}
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-2  mt-8">
         {/* watchlist data */}
         <div className=" shadow-lg mx-auto rounded-2xl bg-black w-[90%]">
-          <p className="text-white font-bold text-2xl md:text-3xl font-title my-4">
-            Your Watchlist
-          </p>
+          <p className="text-white font-bold text-2xl md:text-3xl font-title my-4">Your Watchlist</p>
 
           <ul>
             {fetchWatchlistErr ? (
               <div className=" shadow-lg rounded-2xl  px-4 py-4 md:px-4 bg-gray-900 flex flex-col ;lg:justify-center ">
-                <p className="text-white text-xl font-bold my-2 lg:text-center">
-                  Your watchlist is empty
-                </p>
-                <p className="text-white lg:text-center mb-5">
-                  Press the button to browse all the coins
-                </p>
+                <p className="text-white text-xl font-bold my-2 lg:text-center">Your watchlist is empty</p>
+                <p className="text-white lg:text-center mb-5">Press the button to browse all the coins</p>
                 <Link
                   to="/papertrade/app/market"
-                  className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                >
+                  className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
                   View Coins
                 </Link>
               </div>
@@ -200,12 +171,9 @@ const UserProfile = () => {
                     </p>
                     <p
                       className={`text-right ${
-                        coin?.market_data.price_change_percentage_24h >= 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      } font-semibold`}
-                    >
-                      {coin?.market_data.price_change_percentage_24h >= 0 && "+"}
+                        coin?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
+                      } font-semibold`}>
+                      {coin?.market_data.price_change_percentage_24h >= 0 && '+'}
                       {coin?.market_data.price_change_percentage_24h?.toFixed(2)}%
                     </p>
                   </div>
@@ -216,23 +184,16 @@ const UserProfile = () => {
         </div>
         {/* portfolio Data */}
         <div className=" shadow-lg mx-auto rounded-2xl bg-black w-[90%]">
-          <p className="text-white font-bold text-2xl md:text-3xl font-title my-4">
-            Your Credits
-          </p>
+          <p className="text-white font-bold text-2xl md:text-3xl font-title my-4">Your Credits</p>
 
           <ul>
             {error ? (
               <div className=" shadow-lg rounded-2xl  px-4 py-4 md:px-4 bg-gray-900 flex flex-col ;lg:justify-center ">
-                <p className="text-white text-xl font-bold my-2 lg:text-center">
-                  Your portfolio is empty
-                </p>
-                <p className="text-white lg:text-center mb-5">
-                  Press the button to browse all the coins
-                </p>
+                <p className="text-white text-xl font-bold my-2 lg:text-center">Your portfolio is empty</p>
+                <p className="text-white lg:text-center mb-5">Press the button to browse all the coins</p>
                 <Link
                   to="/papertrade/app/market"
-                  className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                >
+                  className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
                   View Coins
                 </Link>
               </div>
