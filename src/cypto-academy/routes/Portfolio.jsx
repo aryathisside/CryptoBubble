@@ -38,23 +38,52 @@ const Portfolio = () => {
     refetch: refetchPortfolioCoinData
   } = useGetPortfolioCoinDataQuery(currentUser.uid, { pollingInterval: 20000 });
 
-  async function getUserTradeHistory(userId) {
-    try {
-        const { data, error } = await supabase
-            .from("users")
-            .select("history")
-            .eq("userId", userId)
+//   async function getUserTradeHistory(userId) {
+//     try {
+//         const { data, error } = await supabase
+//             .from("users")
+//             .select("history")
+//             .eq("userId", userId)
 
-        if (error) {
-            throw new Error(error.message);
-        }
-        console.log(data[0]);
-        return data; // Returns the trade history array
-    } catch (error) {
-        console.error("Error fetching trade history:", error.message);
-        return [];
-    }
+//         if (error) {
+//             throw new Error(error.message);
+//         }
+//         console.log(data[0]);
+//         return data; // Returns the trade history array
+//     } catch (error) {
+//         console.error("Error fetching trade history:", error.message);
+//         return [];
+//     }
+// }
+
+async function getUserTradeHistory(userId) {
+  try {
+      const response = await fetch(`${process.env.SIMULATOR_API}/get-trade-history`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              userId: userId
+          })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+          throw new Error(result.error || 'Failed to fetch trade history.');
+      }
+
+      console.log('Trade history:', result.history);
+      return result.history; // Returns the trade history array
+  
+  } catch (error) {
+      console.error('Error fetching trade history:', error.message);
+      return [];
+  }
 }
+getUserTradeHistory(currentUser.uid);
+
 
 
   // get available coins

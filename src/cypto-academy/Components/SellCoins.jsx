@@ -53,30 +53,55 @@ const SellCoins = ({ data, modal, setModal }) => {
     setCoinValue(e.target.value / data.market_data.current_price.usd);
   };
 
+  // async function addTransactionToHistory(transaction) {
+  //   // Fetch current history and append new transaction
+  //   let { data: userData, error: fetchUserError } = await supabase
+  //     .from('users')
+  //     .select('history')
+  //     .eq('userId', `${currentUser.uid}`)
+  //     .single();
+  
+  //   if (fetchUserError) {
+  //     throw new Error('Failed to fetch user history.');
+  //   }
+  
+  //   const updatedHistory = userData?.history ? [...userData.history, transaction] : [transaction];
+  
+  //   // Update user's history
+  //   const { error: updateHistoryError } = await supabase
+  //     .from('users')
+  //     .update({ history: updatedHistory })
+  //     .eq('userId', `${currentUser.uid}`);
+  
+  //   if (updateHistoryError) {
+  //     throw new Error('Failed to update transaction history.');
+  //   }
+  // }
+
   async function addTransactionToHistory(transaction) {
-    // Fetch current history and append new transaction
-    let { data: userData, error: fetchUserError } = await supabase
-      .from('users')
-      .select('history')
-      .eq('userId', `${currentUser.uid}`)
-      .single();
-  
-    if (fetchUserError) {
-      throw new Error('Failed to fetch user history.');
+    try {
+        const response = await fetch(`${process.env.SIMULATOR_API}/save-trade-history`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: currentUser.uid, // Ensure `currentUser.uid` is available
+                transaction: transaction
+            })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || 'Failed to update transaction history.');
+        }
+
+        console.log('Transaction added successfully:', result.message);
+    } catch (error) {
+        console.error('Error:', error.message);
     }
-  
-    const updatedHistory = userData?.history ? [...userData.history, transaction] : [transaction];
-  
-    // Update user's history
-    const { error: updateHistoryError } = await supabase
-      .from('users')
-      .update({ history: updatedHistory })
-      .eq('userId', `${currentUser.uid}`);
-  
-    if (updateHistoryError) {
-      throw new Error('Failed to update transaction history.');
-    }
-  }
+}
 
   async function onPlaceOrder() {
     try {

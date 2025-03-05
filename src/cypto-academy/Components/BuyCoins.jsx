@@ -19,7 +19,8 @@ const BuyCoins = ({ data, modal, setModal }) => {
 
   const availableUsdCoins = useSelector((state) => state.availableCoins);
   const dispatch = useDispatch();
-
+  const [maxPrice,setmaxPrice] = useState(null);
+  const [minPrice,setminPrice] = useState(null);  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,30 +37,62 @@ const BuyCoins = ({ data, modal, setModal }) => {
     setCoinValue(e.target.value / data.market_data.current_price.usd);
   };
 
+  const changemaxPrice=(e) => {
+    setmaxPrice(e.target.value);
+  };
+  const changeminPrice=(e) => {
+    setminPrice(e.target.value);
+  };
+
+  // async function addTransactionToHistory(transaction) {
+  //   // Fetch current history and append new transaction
+  //   let { data: userData, error: fetchUserError } = await supabase
+  //     .from('users')
+  //     .select('history')
+  //     .eq('userId', `${currentUser.uid}`)
+  //     .single();
+  
+  //   if (fetchUserError) {
+  //     throw new Error('Failed to fetch user history.');
+  //   }
+  
+  //   const updatedHistory = userData?.history ? [...userData.history, transaction] : [transaction];
+  
+  //   // Update user's history
+  //   const { error: updateHistoryError } = await supabase
+  //     .from('users')
+  //     .update({ history: updatedHistory })
+  //     .eq('userId', `${currentUser.uid}`);
+  
+  //   if (updateHistoryError) {
+  //     throw new Error('Failed to update transaction history.');
+  //   }
+  // }
   async function addTransactionToHistory(transaction) {
-    // Fetch current history and append new transaction
-    let { data: userData, error: fetchUserError } = await supabase
-      .from('users')
-      .select('history')
-      .eq('userId', `${currentUser.uid}`)
-      .single();
-  
-    if (fetchUserError) {
-      throw new Error('Failed to fetch user history.');
+    try {
+        const response = await fetch(`${process.env.SIMULATOR_API}/save-trade-history`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: currentUser.uid, // Ensure `currentUser.uid` is available
+                transaction: transaction
+            })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || 'Failed to update transaction history.');
+        }
+
+        console.log('Transaction added successfully:', result.message);
+    } catch (error) {
+        console.error('Error:', error.message);
     }
-  
-    const updatedHistory = userData?.history ? [...userData.history, transaction] : [transaction];
-  
-    // Update user's history
-    const { error: updateHistoryError } = await supabase
-      .from('users')
-      .update({ history: updatedHistory })
-      .eq('userId', `${currentUser.uid}`);
-  
-    if (updateHistoryError) {
-      throw new Error('Failed to update transaction history.');
-    }
-  }
+}
+
   async function onPlaceOrder() {
     try {
       setOrderLoading(true);
@@ -99,7 +132,9 @@ const BuyCoins = ({ data, modal, setModal }) => {
           .from("portfolio")
           .update({
             amount: `${Number(existingCoin[0].amount) + Number(coinUsdPrice)}`,
-            coinAmount: `${Number(existingCoin[0].coinAmount) + Number(coinValue)}`
+            coinAmount: `${Number(existingCoin[0].coinAmount) + Number(coinValue)}`,
+            maxPrice: maxPrice ?? existingCoin[0].maxPrice,  // Keep existing value if not provided
+            minPrice: minPrice ?? existingCoin[0].minPrice   // Keep existing value if not provided
           })
           .eq("userId", `${currentUser.uid}`)
           .eq("coinId", `${data.id}`);
@@ -144,7 +179,9 @@ const BuyCoins = ({ data, modal, setModal }) => {
         coinName: `${data.name}`,
         image: `${data.image.large}`,
         amount: `${coinUsdPrice}`,
-        coinAmount: `${coinValue}`
+        coinAmount: `${coinValue}`,
+        maxPrice: maxPrice,  // Store max price if provided
+        minPrice: minPrice   // Store min price if provided
       }]);
 
       if (addToPortfolioError) {
@@ -341,7 +378,6 @@ const BuyCoins = ({ data, modal, setModal }) => {
               </p>
             </div>
             <div className="md:flex">
-
               <div className="relative py-4">
                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <img src={data?.image?.small} alt={data.name} className="h-5 w-5" />
@@ -376,6 +412,56 @@ const BuyCoins = ({ data, modal, setModal }) => {
                   name="coinUsdValue"
                   value={coinUsdPrice}
                   onChange={changeUsdValue}
+                  className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
+
+
+            <div className="md:flex justify-between">
+              <p className="text-base leading-relaxed font-semibold text-gray-200">
+              Max Price
+              </p>
+
+              <p className="text-base leading-relaxed font-semibold text-gray-200">
+             Min Price
+              </p>
+            </div>
+            <div className="md:flex">
+              <div className="relative py-4">
+                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <img src={usd} alt="usd price" className="h-5 w-5" />
+                </div>
+                <input
+                  type="number"
+                  id="maxPrice"
+                  name="maxPrice"
+                  min="0"
+                  value={maxPrice}
+                  onChange={changemaxPrice}
+                  className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+
+
+              <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" />
+
+              <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" />
+
+              {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
+
+              {/* usd value */}
+              <div className="relative py-4">
+                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <img src={usd} alt="usd price" className="h-5 w-5" />
+                </div>
+                <input
+                  type="number"
+                  min="0"
+                  id="minPrice"
+                  name="minPrice"
+                  value={minPrice}
+                  onChange={changeminPrice}
                   className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>

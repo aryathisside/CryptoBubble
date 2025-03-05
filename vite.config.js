@@ -26,8 +26,8 @@ export default defineConfig(({ mode }) => {
       'process.env.DISCORD': JSON.stringify(env.DISCORD),
       'process.env.DELETE_ACCOUNT': JSON.stringify(env.DELETE_ACCOUNT),
       'process.env.WATCHLIST_CHARACTER_LIMIT': JSON.stringify(env.WATCHLIST_CHARACTER_LIMIT),
-      'process.env.SIMULATOR_API': JSON.stringify(env.SIMULATOR_API)
-
+      'process.env.SIMULATOR_API': JSON.stringify(env.SIMULATOR_API),
+      'process.env.COINGECKO_KEY': JSON.stringify(env.COINGECKO_KEY)
 
 
     },

@@ -17,7 +17,11 @@ const Search = () => {
       if (search) {
         try {
           setIsLoading(true);
-          const res = await fetch(`https://api.coingecko.com/api/v3/search?query=${search}`);
+          const res = await fetch(`https://api.coingecko.com/api/v3/search?query=${search}`,{
+            headers: {
+              'x-cg-demo-api-key': process.env.COINGECKO_KEY
+            }
+          });
 
           if (!res.ok) {
             throw new Error("Something went wrong! Please try again");
