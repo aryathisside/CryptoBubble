@@ -128,3 +128,15 @@ body, html {
 .ScrollbarsCustom-Scroller{
   overflow: hidden !important;
 }
+
+.pagination{
+  .page-link{
+    background-color: #171A24 !important;
+    border: none !important;
+    color: white !important;
+  }
+  .page-link:focus{
+    box-shadow: none !important;
+  }
+
+}

@@ -87,11 +87,11 @@ const UserProfile = () => {
                 </Link>
               </div>
 
-              <div className=" bg-[#171A24] py-3 px-12 rounded-[12px] border border-gray-500">
+              {/* <div className=" bg-[#171A24] py-3 px-12 rounded-[12px] border border-gray-500">
                 <button onClick={() => setResetModal(!resetModal)} className=" text-white">
                   Reset Virtual USD Balance
                 </button>
-              </div>
+              </div> */}
             </div>
             <Logout />
             <ResetVirtualBalance modal={resetModal} setModal={setResetModal} />

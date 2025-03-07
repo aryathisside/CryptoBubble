@@ -50,9 +50,9 @@ const Header = () => {
           <button className="p-2 sm:border-2 border-[#2A2E36] rounded-md hover:bg-gray-700" onClick={() => navigate('/papertrade/app/search')}>
             <IoIosSearch className="text-[20px]" />
           </button>
-          <button className="p-2 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700 hidden sm:block">
+          {/* <button className="p-2 border-2 border-[#2A2E36] rounded-md hover:bg-gray-700 hidden sm:block">
             <IoSettingsOutline className="text-[20px]" />
-          </button>
+          </button> */}
           <button className="p-2 sm:border-2 border-[#2A2E36] rounded-md hover:bg-gray-700" onClick={() => navigate('/papertrade/app/profile')}>
             <FiUser className="text-[20px]" />
           </button>

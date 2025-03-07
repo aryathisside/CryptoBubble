@@ -20,14 +20,14 @@ export const TradingChart = ({ id, data, days }) => {
 
     const handleResize = () => {
       chart.applyOptions({
-        width: window.innerWidth > 1024 ? window.innerWidth - 120 : window.innerWidth - 60
+        width: window.innerWidth > 1024 ? window.innerWidth - 550 : window.innerWidth - 60
       });
     };
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
         textColor: "rgba(255, 255, 255, 0.9)",
-        background: { type: "solid", color: "#000000" }
+        background: { type: "solid", color: "#171A24" }
       },
       grid: {
         vertLines: {
@@ -53,7 +53,7 @@ export const TradingChart = ({ id, data, days }) => {
           }
         }
       },
-      width: window.innerWidth > 1024 ? window.innerWidth - 120 : window.innerWidth - 60,
+      width: window.innerWidth > 1024 ? window.innerWidth - 550 : window.innerWidth - 60,
       height: window.innerWidth >= 768 ? 600 : 400,
       crosshair: {
         mode: CrosshairMode.Normal
@@ -104,16 +104,16 @@ export const LineChart = ({ id, data, days, name }) => {
 
     const handleResize = () => {
       chart.applyOptions({
-        width: window.innerWidth > 1024 ? window.innerWidth - 120 : window.innerWidth - 60
+        width: window.innerWidth > 1024 ? window.innerWidth - 550 : window.innerWidth - 60
       });
     };
 
     const chart = createChart(chartContainerRef.current, {
-      width: window.innerWidth > 1024 ? window.innerWidth - 120 : window.innerWidth - 60,
+      width: window.innerWidth > 1024 ? window.innerWidth - 550 : window.innerWidth - 60,
       height: window.innerWidth >= 768 ? 600 : 400,
       layout: {
         textColor: "rgba(255, 255, 255, 0.9)",
-        background: { type: "solid", color: "#000000" }
+        background: { type: "solid", color: "#171A24" }
       },
       rightPriceScale: {
         scaleMargins: {
@@ -211,7 +211,7 @@ export const LineChart = ({ id, data, days, name }) => {
     setLastBarText();
 
     chart.subscribeCrosshairMove(function (param) {
-      let width = window.innerWidth > 1024 ? window.innerWidth - 320 : window.innerWidth;
+      let width = window.innerWidth > 1024 ? window.innerWidth - 320 : window.innerWidth-500;
       if (
         param === undefined ||
         param.time === undefined ||
