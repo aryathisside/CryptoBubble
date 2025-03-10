@@ -6,6 +6,7 @@ import { BsArrowDownUp } from 'react-icons/bs';
 import { FaShoppingCart } from 'react-icons/fa';
 import { IoIosArrowRoundForward } from 'react-icons/io';
 import MiniWatchlist from '../Components/MiniWatchlist';
+import { LuNotebookText } from 'react-icons/lu';
 
 import {
   useFetchAvailableCoinsQuery,
@@ -60,32 +61,7 @@ const Portfolio = () => {
   //     }
   // }
 
-  async function getUserTradeHistory(userId) {
-    try {
-      const response = await fetch(`${process.env.SIMULATOR_API}/get-trade-history`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          userId: userId
-        })
-      });
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to fetch trade history.');
-      }
-
-      console.log('Trade history:', result.history);
-      return result.history; // Returns the trade history array
-    } catch (error) {
-      console.error('Error fetching trade history:', error.message);
-      return [];
-    }
-  }
-  getUserTradeHistory(currentUser.uid);
 
   // get available coins
   const {
@@ -128,17 +104,22 @@ const Portfolio = () => {
   return (
     <section className="lg:px-8 p-3">
       <div className="flex gap-4">
-      <div className="md:w-[1050px] flex-shrink-0">
+        <div className="md:w-[1050px] flex-shrink-0">
           <div className="bg-[#171A24] py-4 px-3 rounded-[12px] m-3 w-full">
-            <p className="text-white font-bold text-xl font-title mt-2 lg:mt-0 md:px-3">Portfolio</p>
-            <p className="text-[#A9A9A9] text-sm font-title lg:mt-0 mb-4 md:ml-3 pb-4 border-b-2 border-[#2A2E36]">
-              Real time market insights and seamless trading simulation
-            </p>
-
+            <div className="md:flex justify-between items-center pb-4 border-b-2 border-[#2A2E36]">
+              <div>
+                <p className="text-white font-bold text-xl font-title mt-2 lg:mt-0 md:px-3">Portfolio</p>
+                <p className="text-[#A9A9A9] text-sm font-title lg:mt-0 md:ml-3 ">Real time market insights and seamless trading simulation</p>
+              </div>
+              <button className="flex bg-[#CFA935] text-white font-semibold border-2 border-[#CFA935] rounded p-2 items-center gap-2"
+             onClick={() => navigate('/papertrade/app/tradeHistory')}>
+                <LuNotebookText /> Trade History
+              </button>
+            </div>
             {(isLoading || fetchPortfolioCoinDataLoading || fetchAvailableUsdCoinsLoading) && <Loader />}
             {error && <p className="text-red-400 text-xl">Something went wrong!</p>}
             {/* available coin and networth */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4  ">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4  pt-4 px-2">
               <div className="w-full md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
                 <div className="flex items-center p-2 gap-3">
                   <img src={saving} alt="btc logo" className="h-8 w-8 rounded-full" />

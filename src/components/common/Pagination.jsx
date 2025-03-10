@@ -7,28 +7,20 @@ const DynamicPagination = ({ currentPage, itemsPerPage, setCurrentPage, totalIte
   const [jumpPage, setJumpPage] = useState("");
 //   const items = itemsPerPage;
 const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+console.log("Pagination Props:", { totalItems, itemsPerPage, currentPage, totalPages });
 
 
-  const generatePageNumbers = () => {
-    if (totalPages <= 1) return [1];
-    const pageNumbers = [];
-    const totalPagesToShow = Math.min(totalPages, 5); // Don't exceed total pages
-  
-    let start = Math.max(1, currentPage - Math.floor(totalPagesToShow / 2));
-    let end = Math.min(start + totalPagesToShow - 1, totalPages);
-  
-    if (start > 1) pageNumbers.push(1); // Ensure page 1 is always included
-  
-    for (let i = start; i <= end; i++) {
-      if (i !== 1 && i !== totalPages) {
-        pageNumbers.push(i);
-      }
-    }
-  
-    if (end < totalPages) pageNumbers.push(totalPages); // Ensure last page is included
-  
-    return pageNumbers;
-  };
+
+const generatePageNumbers = () => {
+  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+  if (totalPages <= 1) return [1];
+
+  let pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i);
+  }
+  return pages;
+};
 
   
   const handlePageClick = (pageNumber) => {
@@ -85,7 +77,7 @@ const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
         <Pagination.Last onClick={() => handlePageClick(totalPages)} />
       </Pagination>
 
-      <div className="flex items-center space-x-2 bg-[#171A24]">
+      <div className="flex items-center space-x-2">
         <span>Jump to:</span>
         <input type="number" className="w-16 px-2 py-1 text-white bg-[#171A24] rounded-md border-2 border-[#2A2E36]" 
           value={jumpPage} 

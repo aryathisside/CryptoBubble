@@ -10,6 +10,8 @@ import { useGetCoinsDataQuery, useGetGlobalCryptoDataQuery } from '../services/c
 import ErrorToast from './ErrorToast';
 import Loader from './Loader';
 import DynamicPagination from '../../components/common/Pagination';
+import BuyCoins from './BuyCoins';
+import MiniWatchlist from './MiniWatchlist';
 
 const CoinsTable = () => {
   const navigate = useNavigate();
@@ -69,6 +71,7 @@ const CoinsTable = () => {
   const slicedData = data?.slice(0, 5) || [];
 
   return (
+    <>
     <div className="z-10 max-w-[1050px]">
       {(isLoading || fetchGlobalCryptoLoading) && <Loader />}
       {error && <ErrorToast message="Something Went Wrong!" ref={toastRef} />}
@@ -185,11 +188,11 @@ const CoinsTable = () => {
         </div>
       )} */}
       {/* more global stats page */}
-      {fetchGlobalCryptoSuccess && (
+      {/* {fetchGlobalCryptoSuccess && (
         <Link to="/papertrade/app/market/globalStats" className="text-md  font-semibold text-green-400 px-4 underline">
           Show more global stats.
         </Link>
-      )}
+      )} */}
       {/* coin table */}
       <div className="bg-[#171A24] py-6 px-4 rounded-[12px] m-3">
         <div className="md:px-4 mb-2">
@@ -280,6 +283,31 @@ const CoinsTable = () => {
       /> */}
       </div>
     </div>
+      <div className="flex-[1] m-3 hidden md:block">
+      <BuyCoins data={data} />
+    <MiniWatchlist />
+    {/* <div className="bg-[#171A24] py-6 px-4 rounded-[12px]">
+          <div className="flex justify-between items-center ">
+            <div className="text-white">
+              News <span className="text-[#A9A9A9]">(for watchlist cryptos)</span>
+            </div>
+            <div className="border-2 border-[#2A2E36] p-2 rounded">
+              <IoIosArrowRoundForward className="text-[#A9A9A9]" />
+            </div>
+           
+          </div>
+          <div className='mt-2 mb-2'>
+              <div className="text-[#A9A9A9] text-sm">5 Days ago</div>
+              <div className='text-white text-sm'>Pi Network’s Open Mainnet is now live, marking a major milestone after ...</div>
+            </div>
+
+            <div className='mt-2 mb-2'>
+              <div className="text-[#A9A9A9] text-sm">5 Days ago</div>
+              <div className='text-white text-sm'>Pi Network’s Open Mainnet is now live, marking a major milestone after ...</div>
+            </div>
+        </div> */}
+  </div>
+  </>
   );
 };
 

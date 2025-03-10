@@ -26,6 +26,8 @@ import FAQ from "../../cypto-academy/routes/FAQ";
 import GlobalStats from "../../cypto-academy/routes/GlobalStats";
 import VirtualUsdPage from "../../cypto-academy/routes/VirtualUsdPage";
 import Loader from "./Loader";
+import NewsPage from "../routes/NewsPage";
+import TradeHistory from "../routes/TradeHistory";
 
 // const Login = lazy(() => import("../../cypto-academy/routes/Login"));
 // const Signup = lazy(() => import("../../cypto-academy/routes/Signup"));
@@ -79,6 +81,8 @@ const AnimatedRoutes = () => {
           <Route path="/papertrade/app/coin/:id" element={<CurrencyDetailsPage />} />
           {/* <Route path="/papertrade/app/news" element={<News />} /> */}
           <Route path="/papertrade/app/watchlist" element={<Watchlist />} />
+          <Route path="/papertrade/app/news" element={<NewsPage />} />
+          <Route path="/papertrade/app/tradeHistory" element={<TradeHistory />} />
           <Route path="/papertrade/app/portfolio" element={<Portfolio />} />
           <Route path="/papertrade/app/learn" element={<Learn />} />
           <Route path="/papertrade/app/profile" element={<UserProfile />} />
