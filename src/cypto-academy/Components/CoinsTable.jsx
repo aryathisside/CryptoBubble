@@ -200,8 +200,8 @@ const CoinsTable = () => {
 
         <ul className="md:px-4 flex flex-col space-y-1 pb-12 font-text text-white p-2">
           {/* Table Head */}
-          <li className="grid grid-cols-3 md:grid-cols-5 text-gray-500 py-3 px-1 md:px-5 cursor-pointer bg-[#2A2E36] rounded-lg">
-            <div className="flex justify-start items-center space-x-4 w-20">
+          <li className="grid grid-cols-2 md:grid-cols-5 text-gray-500 py-3 px-1 md:px-5 cursor-pointer bg-[#2A2E36] rounded-lg">
+            <div className="hidden md:flex justify-start items-center space-x-4 w-20">
               <p className="text-white pl-4">S.no</p>
             </div>
             <div className="flex justify-start items-center space-x-4">
@@ -223,8 +223,8 @@ const CoinsTable = () => {
               <li
                 key={index}
                 onClick={() => navigate(`/papertrade/app/coin/${coins.id}`)}
-                className="grid grid-cols-3 md:grid-cols-5 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-gray-800 ">
-                <div className="w-20 flex items-center">
+                className="grid grid-cols-2 md:grid-cols-5 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-gray-800 ">
+                <div className="w-20 hidden md:flex items-center">
                   <p className="pl-4 text-white">#{(currentPage - 1) * itemsPerPage + index + 1}</p>
                 </div>
                 <div className="flex items-center space-x-2 ">
