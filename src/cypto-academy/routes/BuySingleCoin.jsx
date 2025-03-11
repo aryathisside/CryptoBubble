@@ -94,24 +94,24 @@ const BuySingleCoin = ({ data }) => {
     setIsChecked(!isChecked);
   };
 
-  // useEffect(() => {
-  //   dispatch(fetchAvailableCoins(currentUser.uid));
-  //   // get amount of coin that you have purchased
-  //   async function coinAmount() {
-  //     let {
-  //       data: availableCoinAmount
-  //       // , error
-  //     } = await supabase
-  //       .from("portfolio")
-  //       .select("coinName,coinAmount")
-  //       .eq("userId", `${currentUser.uid}`)
-  //       .eq("coinId", `${data.id}`);
-  //     if (availableCoinAmount.length !== 0) {
-  //       setAvailabeCoinAmt(availableCoinAmount[0].coinAmount);
-  //     }
-  //   }
-  //   coinAmount();
-  // }, [currentUser.uid, data.id, dispatch]);
+  useEffect(() => {
+    dispatch(fetchAvailableCoins(currentUser.uid));
+    // get amount of coin that you have purchased
+    async function coinAmount() {
+      let {
+        data: availableCoinAmount
+        // , error
+      } = await supabase
+        .from("portfolio")
+        .select("coinName,coinAmount")
+        .eq("userId", `${currentUser.uid}`)
+        .eq("coinId", `${data.id}`);
+      if (availableCoinAmount.length !== 0) {
+        setAvailabeCoinAmt(availableCoinAmount[0].coinAmount);
+      }
+    }
+    coinAmount();
+  }, [currentUser.uid, data.id, dispatch]);
 
   // async function addTransactionToHistory(transaction) {
   //   // Fetch current history and append new transaction
