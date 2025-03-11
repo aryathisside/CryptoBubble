@@ -62,7 +62,6 @@ const CoinsTable = () => {
     return marketCap;
   };
 
-  console.log(data);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -81,7 +80,7 @@ const CoinsTable = () => {
             <p className="text-white font-bold text-xl md:text-2xl font-title lg:mt-0 mb-2 ml-3">Market</p>
             <p className="text-[#A9A9A9] text-sm  font-title lg:mt-0 mb-4 ml-3">Real time market insights and seamless trading simulation</p>
           </div>
-          <div className="md:px-4">
+          <div className="md:px-4"  onClick={() => navigate('/papertrade/app/search')}>
             <label for="table-search" className="sr-only">
               Search
             </label>
@@ -107,7 +106,7 @@ const CoinsTable = () => {
           </div>
         </div>
 
-        <div className="no-scrollbar flex gap-3 md:gap-8 rounded-box justify-between w-screen w-full overflow-auto max-w-full mt-4">
+        <div className=" flex gap-3 md:gap-8 rounded-box justify-between w-screen w-full overflow-auto max-w-full mt-4">
           {slicedData.length > 0 ? (
             slicedData.map((coins, index) => (
               <div key={coins.id || index} className="w-full flex-1 bg-[#080808] p-4 rounded-lg">
@@ -284,28 +283,9 @@ const CoinsTable = () => {
       </div>
     </div>
       <div className="flex-[1] m-3 hidden md:block">
-      <BuyCoins data={data} />
+      {/* <BuyCoins data={data} /> */}
     <MiniWatchlist />
-    {/* <div className="bg-[#171A24] py-6 px-4 rounded-[12px]">
-          <div className="flex justify-between items-center ">
-            <div className="text-white">
-              News <span className="text-[#A9A9A9]">(for watchlist cryptos)</span>
-            </div>
-            <div className="border-2 border-[#2A2E36] p-2 rounded">
-              <IoIosArrowRoundForward className="text-[#A9A9A9]" />
-            </div>
-           
-          </div>
-          <div className='mt-2 mb-2'>
-              <div className="text-[#A9A9A9] text-sm">5 Days ago</div>
-              <div className='text-white text-sm'>Pi Network’s Open Mainnet is now live, marking a major milestone after ...</div>
-            </div>
 
-            <div className='mt-2 mb-2'>
-              <div className="text-[#A9A9A9] text-sm">5 Days ago</div>
-              <div className='text-white text-sm'>Pi Network’s Open Mainnet is now live, marking a major milestone after ...</div>
-            </div>
-        </div> */}
   </div>
   </>
   );

@@ -58,6 +58,37 @@ const Watchlist = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+   const [newsData, setNewsData] = useState([]);
+
+  
+    async function getSimulatorNews() {
+      try {
+        const response = await fetch(`http://localhost:3004/v1/simulator/getNews`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+  
+        const result = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(result.error || 'Failed to fetch trade history.');
+        }
+  
+        console.log('news :', result?.data?.results);
+        setNewsData(result?.data?.results);
+ 
+        //   return result.history; // Returns the trade history array
+      } catch (error) {
+          console.error('Error fetching trade history:', error.message);
+        return [];
+      }
+    }
+  
+    useEffect(() => {
+      getSimulatorNews();
+    }, []);
 
   async function handleDelete(coinId, userId) {
     try {
@@ -112,14 +143,14 @@ const Watchlist = () => {
   const currentItems = watchlistData?.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <section className="lg:px-4 py-2 lg:py-8  max-w-[1600px] h-[100vh] p-2 flex">
+    <section className="lg:px-4 py-2 lg:py-8  max-w-[1600px]  p-2 flex">
       <div className="bg-[#171A24] md:max-w-[1050px] py-6 px-4 rounded-[12px] md:m-3 m-2">
         <div className="md:flex justify-between">
           <div>
             <p className="text-white font-bold text-xl md:text-2xl font-title lg:mt-0 mb-2 ml-3">WatchList</p>
             <p className="text-[#A9A9A9] text-sm  font-title lg:mt-0 mb-4 ml-3">Keep track on your favorite crypto in one place.</p>
           </div>
-          <div className="md:px-4">
+          <div className="md:px-4"  onClick={() => navigate('/papertrade/app/search')}>
             <label for="table-search" className="sr-only">
               Search
             </label>
@@ -161,10 +192,10 @@ const Watchlist = () => {
           </div>
         )}
         {isSuccess && watchlistData?.length !== 0 && (
-          <div fullSwipe={false} type={ListType.IOS} className="md:px-4 flex flex-col space-y-1 pb-12 text-white font-text">
+          <div fullSwipe={false} type={ListType.IOS} className="md:px-4 flex flex-col space-y-1 pb-12 mb-4 text-white font-text">
             {/* Table Head */}
-            <li className="grid grid-cols-3 md:grid-cols-6 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#2A2E36] rounded-md ">
-              <div className="flex justify-start items-center space-x-4">
+            <li className="grid grid-cols-2 md:grid-cols-6 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#2A2E36] rounded-md ">
+              <div className="hidden md:flex justify-start items-center space-x-4">
                 <p className="text-white pl-4">S.no</p>
               </div>
               <div className="flex justify-start items-center space-x-4">
@@ -187,14 +218,14 @@ const Watchlist = () => {
               watchlistData?.length !== 0 &&
               currentItems.map((coin, index) => (
                 // <SwipeableListItem trailingActions={trailingActions(coin.id, currentUser.uid, refetch)} key={index}>
-                <div className="grid grid-cols-3 md:grid-cols-6 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer xl:w-full">
-                  <div className="flex items-center space-x-2 ">
+                <div className="grid grid-cols-2 md:grid-cols-6 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer xl:w-full">
+                  <div className="hidden md:flex items-center space-x-2 ">
                     <p className="pl-1 text-white">#{index + 1}</p>
                   </div>
                   <div className="flex items-center space-x-2 ">
                     <img className="h-8 w-8 md:h-10 md:w-10 object-contain" src={coin.image.small} alt="cryptocurrency" loading="lazy" />
                     <div>
-                      <p className=" w-64 truncate text-white break-words font-semibold">{coin.name}</p>
+                      <p className="pr-2 md:w-64 truncate text-white break-words font-semibold">{coin.name}</p>
                       <div className="flex space-x-1">
                         <p>{`${coin.symbol}/USD`.toUpperCase()}</p>
                         {/* <p
@@ -313,19 +344,21 @@ const Watchlist = () => {
             <div className="text-white">
               News <span className="text-[#A9A9A9]">(for watchlist cryptos)</span>
             </div>
-            <div className="border-2 border-[#2A2E36] p-2 rounded">
+            <div className="border-2 border-[#2A2E36] p-2 rounded cursor-pointer"  onClick={() => navigate('/papertrade/app/news')}>
               <IoIosArrowRoundForward className="text-[#A9A9A9]" />
             </div>
           </div>
-          <div className="mt-2 mb-2">
-            <div className="text-[#A9A9A9] text-sm">5 Days ago</div>
-            <div className="text-white text-sm">Pi Network’s Open Mainnet is now live, marking a major milestone after ...</div>
-          </div>
+           {newsData && newsData.slice(0,4).map((news, index)=> {
+                   return (
+                    <Link key={index}  to={news?.url} target="_blank" rel="noopener noreferrer">
+                     <div className="mt-2 mb-2" >
+                   <div className="text-[#A9A9A9] text-sm">{news?.domain}</div>
+                   <div className="text-white text-sm">{news?.title}</div>
+                 </div>
+                    </Link>
+                   )
+                 }) }
 
-          <div className="mt-2 mb-2">
-            <div className="text-[#A9A9A9] text-sm">5 Days ago</div>
-            <div className="text-white text-sm">Pi Network’s Open Mainnet is now live, marking a major milestone after ...</div>
-          </div>
         </div>
       </div>
     </section>

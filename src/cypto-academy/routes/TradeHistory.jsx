@@ -12,6 +12,7 @@ const TradeHistory = () => {
   const [tradeLoading, setTradeLoading] = useState(true);
   const [tradeError, setTradeError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   const itemsPerPage =10;
 
@@ -73,7 +74,7 @@ const TradeHistory = () => {
               <label for="table-search" className="sr-only">
                 Search
               </label>
-              <div className="relative mt-1">
+              <div className="relative mt-1"  onClick={() => navigate('/papertrade/app/search')}>
                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <svg
                     className="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -105,21 +106,21 @@ const TradeHistory = () => {
 
           <ul className=" font-text flex flex-col space-y-1 pb-4 text-white">
             {/* Table Head */}
-            <li className="grid grid-cols-5 text-gray-500 py-2 px-1md:px-5 cursor-pointer bg-[#2A2E36] py-2 rounded-md">
+            <li className="grid grid-cols-2 md:grid-cols-5 text-gray-500 py-2 px-1md:px-5 cursor-pointer bg-[#2A2E36] py-2 rounded-md">
               <div className="flex justify-start items-center space-x-4">
                 <p className="text-white pl-4">Name</p>
               </div>
-              <div className="flex justify-start items-center space-x-4">
+              <div className="hidden md:flex justify-start items-center space-x-4">
                 <p className="text-white pl-4">Buy/Sell</p>
               </div>
 
               <div className="flex justify-center md:justify-start items-center space-x-4">
                 <p className="text-white ">Price</p>
               </div>
-              <div className="flex justify-center md:justify-start items-center space-x-4">
+              <div className="hidden md:flex justify-center md:justify-start items-center space-x-4">
                 <p className="text-white ">Amount</p>
               </div>
-              <div className="flex items-center justify-start  ml-auto md:ml-0 ">
+              <div className="hidden md:flex items-center justify-start  ml-auto md:ml-0 ">
                 <p className="w-28 md:w-40  text-white text-left px-3">Time</p>
               </div>
             </li>
@@ -131,7 +132,7 @@ const TradeHistory = () => {
                     key={index}
                     onClick={() => navigate(`/papertrade/app/coin/${coin.coinId}`)}
                     style={{height:"60px"}}
-                    className="grid grid-cols-5 text-gray-500 py-2 px-2 md:px-5 hover:bg-gray-900 cursor-pointer border-gray-800 ">
+                    className="grid grid-cols-2 md:grid-cols-5 text-gray-500 py-2 px-2 md:px-5 hover:bg-gray-900 cursor-pointer border-gray-800 ">
                     <div className="flex justify-start items-center md:space-x-4">
                       {/* <img className="h-8 w-8 md:h-10 md:w-10 object-contain" src={coin.image} alt="cryptocurrency" loading="lazy" /> */}
                       <div>
@@ -140,7 +141,7 @@ const TradeHistory = () => {
                       </div>
                     </div>
                     
-                    <div className="flex justify-start items-center space-x-4">
+                    <div className="hidden md:flex justify-start items-center space-x-4">
                       <p className="pl-1">{coin?.type}</p>
                     </div>
 
@@ -152,11 +153,11 @@ const TradeHistory = () => {
                        
                       </p>
                     </div>
-                    <div className="flex justify-start items-center space-x-4">
+                    <div className="hidden md:flex justify-start items-center space-x-4">
                      
                     <p className="w-28 md:w-40 text-gray-500 text-left ">{coin.coinValue && <span>${coin.coinUsdPrice}</span>}</p>
                     </div>
-                    <div className="flex justify-start items-center space-x-4">
+                    <div className="hidden md:flex justify-start items-center space-x-4">
                       <p className="pl-1">{formatDate(coin?.timestamp)}</p>
                     </div>
                   </li>

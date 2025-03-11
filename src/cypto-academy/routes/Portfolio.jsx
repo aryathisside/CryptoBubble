@@ -80,6 +80,7 @@ const Portfolio = () => {
       const currentCoinPrice = coinData[0]?.market_data.current_price.usd;
       const oneCoinAmount = amount / coinAmount;
       const coinPercentageChange = ((currentCoinPrice - oneCoinAmount) / currentCoinPrice) * 100;
+      console.log(coinPercentageChange,"iiooo");
 
       return coinPercentageChange;
     }
@@ -103,13 +104,13 @@ const Portfolio = () => {
 
   return (
     <section className="lg:px-8 p-3">
-      <div className="flex gap-4">
+      <div className="md:flex gap-4">
         <div className="md:w-[1050px] flex-shrink-0">
-          <div className="bg-[#171A24] py-4 px-3 rounded-[12px] m-3 w-full">
+          <div className="bg-[#171A24] py-4 px-3 rounded-[12px] md:m-3 mb-3 sm:mb-0 w-full">
             <div className="md:flex justify-between items-center pb-4 border-b-2 border-[#2A2E36]">
               <div>
                 <p className="text-white font-bold text-xl font-title mt-2 lg:mt-0 md:px-3">Portfolio</p>
-                <p className="text-[#A9A9A9] text-sm font-title lg:mt-0 md:ml-3 ">Real time market insights and seamless trading simulation</p>
+               <p className="text-[#A9A9A9] text-sm  font-title lg:mt-0 mb-4 md:ml-3">Real time market insights and seamless trading simulation</p>
               </div>
               <button className="flex bg-[#CFA935] text-white font-semibold border-2 border-[#CFA935] rounded p-2 items-center gap-2"
              onClick={() => navigate('/papertrade/app/tradeHistory')}>
@@ -171,11 +172,11 @@ const Portfolio = () => {
           </div>
 
           {/* portfolio Table */}
-          <div className="bg-[#171A24] py-4 px-3 rounded-[12px] m-3 w-full">
+          <div className="bg-[#171A24] py-4 px-3 rounded-[12px] md:m-3 w-full">
             <ul className="md:px-4 font-text flex flex-col space-y-1 pb-12 pt-4 text-white">
               {/* Table Head */}
-              <li className="grid grid-cols-4 text-gray-500 py-2 px-1md:px-5 cursor-pointer bg-[#2A2E36] py-2 rounded-md">
-                <div className="flex justify-start items-center space-x-4">
+              <li className="grid grid-cols-2 md:grid-cols-4 text-gray-500 py-2 px-1md:px-5 cursor-pointer bg-[#2A2E36] py-2 rounded-md">
+                <div className="hidden md:flex justify-start items-center space-x-4">
                   <p className="text-white pl-4">S.no</p>
                 </div>
                 <div className="flex justify-start items-center space-x-4">
@@ -186,7 +187,7 @@ const Portfolio = () => {
                   <p className="text-white ">% Change</p>
                 </div>
 
-                <div className="flex items-center justify-start  ml-auto md:ml-0 ">
+                <div className="hidden md:flex items-center justify-start  ml-auto md:ml-0 ">
                   <p className="w-28 md:w-40  text-white text-left px-3">Holdings</p>
                 </div>
               </li>
@@ -198,8 +199,8 @@ const Portfolio = () => {
                     <li
                       key={index}
                       onClick={() => navigate(`/papertrade/app/coin/${coin.coinId}`)}
-                      className="grid grid-cols-4 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 cursor-pointer border-gray-800 ">
-                      <div className="flex justify-start items-center space-x-4">
+                      className="grid grid-cols-2 md:grid-cols-4 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 cursor-pointer border-gray-800 ">
+                      <div className="hidden md:flex justify-start items-center space-x-4">
                         <p className="pl-1">{index + 1}</p>
                       </div>
                       <div className="flex justify-start items-center md:space-x-4">
@@ -221,7 +222,7 @@ const Portfolio = () => {
                         )}
                       </div>
 
-                      <div className="flex items-center justify-start ml-auto md:ml-0 ">
+                      <div className="hidden md:flex items-center justify-start ml-auto md:ml-0 ">
                         <p className="w-28 md:w-40 text-white font-semibold text-left break-words">
                           {coin.coinAmount ? coin.coinAmount : <span>${coin.amount}</span>} {coin.coinAmount && coin.coinSymbol.toUpperCase()}
                           <br />

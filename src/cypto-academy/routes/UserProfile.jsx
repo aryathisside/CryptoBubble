@@ -137,8 +137,8 @@ const UserProfile = () => {
         </div> */}
       </div>
       {/* user watchlist & portfolio */}
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-2  mt-8">
-        {/* watchlist data */}
+      {/* <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-2  mt-8">
+     
         <div className=" shadow-lg mx-auto rounded-2xl bg-black w-[90%]">
           <p className="text-white font-bold text-2xl md:text-3xl font-title my-4">Your Watchlist</p>
 
@@ -182,7 +182,7 @@ const UserProfile = () => {
             )}
           </ul>
         </div>
-        {/* portfolio Data */}
+
         <div className=" shadow-lg mx-auto rounded-2xl bg-black w-[90%]">
           <p className="text-white font-bold text-2xl md:text-3xl font-title my-4">Your Credits</p>
 
@@ -220,7 +220,7 @@ const UserProfile = () => {
             )}
           </ul>
         </div>
-      </div>
+      </div> */}
       {/* leaderboard */}
       {/* <div>
         <p className="text-white font-bold text-2xl md:text-3xl font-title my-4 px-4 md:px-6 mt-6 md:mt-16">

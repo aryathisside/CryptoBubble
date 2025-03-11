@@ -45,7 +45,7 @@ const Search = () => {
   console.log("search", searchData);
 
   return (
-    <section className="lg:px-4 py-4 lg:py-8 max-w-[1600px] font-text h-[100vh] p-2">
+    <section className="lg:px-4 py-4 lg:py-8 max-w-[1600px] font-text p-2 bg-black">
       {/* search Bar */}
       <div className="md:px-4">
         <label for="table-search" className="sr-only">
@@ -84,7 +84,7 @@ const Search = () => {
       ) : (
         <ul className="md:px-4 flex flex-col space-y-1 pb-12 font-text text-white">
           <li className="grid grid-cols-2 md:grid-cols-2 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#171A24] rounded-lg mt-4">
-            <div className="flex justify-start items-center space-x-4 w-20">
+            <div className="flex justify-start items-center space-x-4 ">
             <p className="text-white pl-4">Name</p>
             </div>
             <div className="flex justify-end ml-auto pr-4 items-center space-x-4 w-20">
@@ -96,9 +96,10 @@ const Search = () => {
               <li
                 onClick={() => navigate(`/papertrade/app/coin/${coin.id}`)}
                 key={index}
+                style={{height:"60px"}}
                 className="grid grid-cols-2 md:grid-cols-2 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-gray-800 "
               >
-                <div className="flex items-center justify-start text-sm space-x-4 w-20 pl-4">
+                <div className="flex items-center justify-start text-sm space-x-4 pl-4">
                   <img src={coin.large} alt={`${coin.name}`} className="w-7 h-7" />
                   <div className="">
                     <p className="text-white text-md font-bold ">{coin.name}</p>

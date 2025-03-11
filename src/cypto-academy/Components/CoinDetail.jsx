@@ -1,9 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoIosArrowRoundForward } from 'react-icons/io';
+import { Link, useNavigate } from 'react-router-dom';
 
-const CoinDetail = ({ data }) => {
+const CoinDetail = ({ data, coinDetail }) => {
+    const navigate = useNavigate();
+
+    const [newsData, setNewsData] = useState([]);
+  
+    async function getSimulatorNews() {
+      try {
+        const response = await fetch(`${process.env.CRYPTO_NEWS_URL}/${coinDetail}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+  
+        const result = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(result.error || 'Failed to fetch trade history.');
+        }
+  
+        console.log('single news :', result?.data?.results);
+        setNewsData(result?.data?.results);
+    
+        //   return result.history; // Returns the trade history array
+      } catch (error) {
+          console.error('Error fetching trade history:', error.message);
+        return [];
+      }
+    }
+  
+    useEffect(() => {
+      getSimulatorNews();
+    }, []);
   return (
-    <div className="flex">
+<div className="flex flex-col sm:flex-row">
+
       <div className="bg-[#171A24] py-6 px-4 rounded-[12px] m-3 flex-1">
         <div className="text-white">Overview</div>
 
@@ -89,19 +123,21 @@ const CoinDetail = ({ data }) => {
           <div className="text-white">
             News <span className="text-[#A9A9A9]">(for watchlist cryptos)</span>
           </div>
-          <div className="border-2 border-[#2A2E36] p-2 rounded">
+          <div className="border-2 border-[#2A2E36] p-2 rounded cursor-pointer"  onClick={() => navigate('/papertrade/app/news')}>
             <IoIosArrowRoundForward className="text-[#A9A9A9]" />
           </div>
         </div>
-        <div className="mt-2 mb-2">
-          <div className="text-[#A9A9A9] text-sm">5 Days ago</div>
-          <div className="text-white text-sm">Pi Network’s Open Mainnet is now live, marking a major milestone after ...</div>
-        </div>
 
-        <div className="mt-2 mb-2">
-          <div className="text-[#A9A9A9] text-sm">5 Days ago</div>
-          <div className="text-white text-sm">Pi Network’s Open Mainnet is now live, marking a major milestone after ...</div>
+        {newsData && newsData.slice(0,4).map((news, index)=> {
+          return (
+           <Link key={index}  to={news?.url} target="_blank" rel="noopener noreferrer">
+            <div className="mt-2 mb-2" >
+          <div className="text-[#A9A9A9] text-sm">{news?.domain}</div>
+          <div className="text-white text-sm">{news?.title}</div>
         </div>
+           </Link>
+          )
+        }) }
       </div>
     </div>
   );

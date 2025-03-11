@@ -43,7 +43,7 @@ const CryptoNews = () => {
         </div>
       </div>
 
-      <div className="flex w-full gap-4 mt-4">
+      <div className="md:flex w-full gap-4 mt-4">
         {newsData &&
           newsData.slice(0, 5).map((news, index) => (
             <div key={index} className="flex-1 items-center justify-center">

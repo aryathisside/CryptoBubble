@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 
 export const TradingChart = ({ id, data, days }) => {
   const chartContainerRef = useRef();
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     // console.log("days", data);
@@ -19,8 +20,9 @@ export const TradingChart = ({ id, data, days }) => {
     });
 
     const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 768);
       chart.applyOptions({
-        width: window.innerWidth > 1024 ? window.innerWidth - 550 : window.innerWidth - 60
+        width: window.innerWidth > 1024 ? window.innerWidth - 610 : window.innerWidth - 140
       });
     };
 
@@ -53,8 +55,8 @@ export const TradingChart = ({ id, data, days }) => {
           }
         }
       },
-      width: window.innerWidth > 1024 ? window.innerWidth - 550 : window.innerWidth - 60,
-      height: window.innerWidth >= 768 ? 600 : 400,
+      width: window.innerWidth > 1024 ? window.innerWidth - 610 : window.innerWidth - 140,
+      height: window.innerWidth >= 768 ? 610 : 400,
       crosshair: {
         mode: CrosshairMode.Normal
       }
@@ -84,7 +86,7 @@ export const TradingChart = ({ id, data, days }) => {
   }, [data]);
 
   return (
-    <div className="flex flex-col justify-center w-full mb-8">
+    <div className="flex flex-col justify-center w-full mb-8 text-sm">
       <div ref={chartContainerRef} />
     </div>
   );
@@ -104,13 +106,13 @@ export const LineChart = ({ id, data, days, name }) => {
 
     const handleResize = () => {
       chart.applyOptions({
-        width: window.innerWidth > 1024 ? window.innerWidth - 550 : window.innerWidth - 60
+        width: window.innerWidth > 1024 ? window.innerWidth - 610 : window.innerWidth - 140
       });
     };
 
     const chart = createChart(chartContainerRef.current, {
-      width: window.innerWidth > 1024 ? window.innerWidth - 550 : window.innerWidth - 60,
-      height: window.innerWidth >= 768 ? 600 : 400,
+      width: window.innerWidth > 1024 ? window.innerWidth - 610 : window.innerWidth - 140,
+      height: window.innerWidth >= 768 ? 610 : 400,
       layout: {
         textColor: "rgba(255, 255, 255, 0.9)",
         background: { type: "solid", color: "#171A24" }
@@ -198,12 +200,12 @@ export const LineChart = ({ id, data, days, name }) => {
       var dateStr = dayjs(data[data.length - 1]?.time).format("YYYY-MM-DD");
 
       toolTipRef.current.innerHTML =
-        `<div style="font-size: 24px; margin: 4px 0px; color: #ffffff">${name}</div>` +
-        '<div style="font-size: 22px; margin: 4px 0px; color: #ffffff">' +
+        `<div style="font-size: 18px; margin: 4px 0px; color: #ffffff">${name}</div>` +
+        '<div style="font-size: 16px; margin: 4px 0px; color: #ffffff">' +
         "$" +
         localChartData[data.length - 1].value +
         "</div>" +
-        '<div style="font-size: 22px; margin: 4px 0px; color: #ffffff">' +
+        '<div style="font-size: 16px; margin: 4px 0px; color: #ffffff">' +
         dateStr +
         "</div>";
     }
@@ -217,19 +219,19 @@ export const LineChart = ({ id, data, days, name }) => {
         param.time === undefined ||
         param.point.x < 0 ||
         param.point.x > width ||
-        param.point.y > 600
+        param.point.y > 610
       ) {
         setLastBarText();
       } else {
         let dateStr = dayjs.unix(param?.time).format("YYYY-MM-DD");
         var price = param.seriesPrices.get(newSeries);
         toolTipRef.current.innerHTML =
-          `<div style="font-size: 24px; margin: 4px 0px; color: #ffffff">${name}</div>` +
-          '<div style="font-size: 22px; margin: 4px 0px; color: #ffffff">' +
+          `<div style="font-size: 18px; margin: 4px 0px; color: #ffffff">${name}</div>` +
+          '<div style="font-size: 16px; margin: 4px 0px; color: #ffffff">' +
           "$" +
           price +
           "</div>" +
-          '<div style="font-size: 22px; margin: 4px 0px; color: #ffffff">' +
+          '<div style="font-size: 16px; margin: 4px 0px; color: #ffffff">' +
           dateStr +
           "</div>";
       }

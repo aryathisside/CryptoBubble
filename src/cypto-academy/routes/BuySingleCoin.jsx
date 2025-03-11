@@ -13,7 +13,7 @@ import { FaCartShopping } from 'react-icons/fa6';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useGetCoinsDataQuery } from '../services/coinsDataApi';
 
-const BuyCoins = ({data}) => {
+const BuySingleCoin = ({data}) => {
   // const [currency, setCurrency] = useState('usd');
   // const [currentPage, setCurrentPage] = useState(1);
 
@@ -26,8 +26,8 @@ const BuyCoins = ({data}) => {
   const [coinValue, setCoinValue] = useState(1);
   const [coinUsdPrice, setCoinUsdPrice] = useState(data?.market_data?.current_price.usd);
   const [orderLoading, setOrderLoading] = useState(false);
-  const [selectedCoin, setSelectedCoin] = useState(data[0]);
-  const [selectedCrypto, setSelectedCrypto] = useState('');
+//   const [selectedCoin, setSelectedCoin] = useState(data[0]);
+//   const [selectedCrypto, setSelectedCrypto] = useState('');
 
   const availableUsdCoins = useSelector((state) => state.availableCoins);
   const dispatch = useDispatch();
@@ -39,7 +39,6 @@ const BuyCoins = ({data}) => {
   const navigate = useNavigate();
 
   console.log('buy data', data);
-  console.log('selected coin', selectedCoin);
 
   async function getCoinsData() {
     try {
@@ -72,10 +71,6 @@ const BuyCoins = ({data}) => {
     getCoinsData();
   }, [])
 
-  useEffect(() => {
-    const updatedData = selectedCrypto ? data.filter((coin) => coin.id === selectedCrypto) : data;
-    setSelectedCoin(updatedData);
-  }, [selectedCrypto]);
 
   useEffect(() => {
     dispatch(fetchAvailableCoins(currentUser.uid));
@@ -114,13 +109,13 @@ const BuyCoins = ({data}) => {
   //       .from("portfolio")
   //       .select("coinName,coinAmount")
   //       .eq("userId", `${currentUser.uid}`)
-  //       .eq("coinId", `${selectedCoin[0].id}`);
+  //       .eq("coinId", `${data.id}`);
   //     if (availableCoinAmount.length !== 0) {
   //       setAvailabeCoinAmt(availableCoinAmount[0].coinAmount);
   //     }
   //   }
   //   coinAmount();
-  // }, [currentUser.uid, selectedCoin[0].id, dispatch]);
+  // }, [currentUser.uid, data.id, dispatch]);
 
   // async function addTransactionToHistory(transaction) {
   //   // Fetch current history and append new transaction
@@ -227,14 +222,14 @@ const BuyCoins = ({data}) => {
           .from("portfolio")
           .delete()
           .eq("userId", `${currentUser.uid}`)
-          .eq("coinId", `${selectedCoin[0].id}`);
+          .eq("coinId", `${data.id}`);
       }
 
          // Add transaction to history
          const transaction = {
           type: 'sell',
-          coinId: `${selectedCoin[0].id}`,
-          symbol: `${selectedCoin[0].symbol}`,
+          coinId: `${data.id}`,
+          symbol: `${data.symbol}`,
           coinValue: `${coinValue}`,
           coinUsdPrice: `${coinUsdPrice}`,
           timestamp: new Date().toISOString()
@@ -280,8 +275,8 @@ const BuyCoins = ({data}) => {
 
       const transaction = {
         type: 'buy',
-        coinId: `${selectedCoin[0].id}`,
-        symbol: `${selectedCoin[0].symbol}`,
+        coinId: `${data.id}`,
+        symbol: `${data.symbol}`,
         coinValue: `${coinValue}`,
         coinUsdPrice: `${coinUsdPrice}`,
         timestamp: new Date().toISOString()
@@ -308,7 +303,7 @@ const BuyCoins = ({data}) => {
             minPrice: minPrice ?? existingCoin[0].minPrice // Keep existing value if not provided
           })
           .eq('userId', `${currentUser.uid}`)
-          .eq('coinId', `${selectedCoin[0].id}`);
+          .eq('coinId', `${data.id}`);
 
         // deduct the value from virtual usd
         let updatedUsdValue = availableUsdCoin[0].amount - coinUsdPrice;
@@ -346,10 +341,10 @@ const BuyCoins = ({data}) => {
       const { error: addToPortfolioError } = await supabase.from('portfolio').insert([
         {
           userId: `${currentUser.uid}`,
-          coinId: `${selectedCoin[0].id}`,
-          coinSymbol: `${selectedCoin[0].symbol}`,
-          coinName: `${selectedCoin[0].name}`,
-          image: `${selectedCoin[0].image}`,
+          coinId: `${data.id}`,
+          coinSymbol: `${data.symbol}`,
+          coinName: `${data.name}`,
+          image: `${data.image}`,
           amount: `${coinUsdPrice}`,
           coinAmount: `${coinValue}`,
           maxPrice: maxPrice, // Store max price if provided
@@ -544,9 +539,9 @@ const BuyCoins = ({data}) => {
           <div className="flex justify-between text-white mt-4">
             <div>
               <div className="text-sm text-[#A9A9A9]">1 
-                 {`${selectedCoin[0]?.symbol}`.toUpperCase()}
+                 {`${data?.symbol}`.toUpperCase()}
                  </div>
-              <div className="text-md font-bold">$ {selectedCoin[0]?.current_price}</div>
+              <div className="text-md font-bold">$ {data.market_data.current_price.usd}</div>
             </div>
             <div>
               <div className="text-sm text-[#A9A9A9]">Available Balance</div>
@@ -557,7 +552,7 @@ const BuyCoins = ({data}) => {
           <div>
             <div className="relative flex py-2  border-[#2A2E36] border rounded-lg mt-3 mb-2">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <img src={selectedCoin[0]?.image} alt="coin" className="h-5 w-5" />
+                <img src={data?.image?.small} alt="coin" className="h-5 w-5" />
               </div>
               <div className="w-3/4">
                 <input
@@ -570,7 +565,7 @@ const BuyCoins = ({data}) => {
                   className=" text-sm block w-full pl-12 py-2 bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
                 />
               </div>
-              <div className="w-1/4 pr-2">
+              {/* <div className="w-1/4 pr-2">
                 <select
                   className="w-full text-sm bg-transparent border-none text-white focus:ring-0 focus:outline-none cursor-pointer"
                   onChange={(e) => setSelectedCrypto(e.target.value)}
@@ -583,7 +578,7 @@ const BuyCoins = ({data}) => {
                       </option>
                     ))}
                 </select>
-              </div>
+              </div> */}
             </div>
 
             {/* <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" /> */}
@@ -677,9 +672,9 @@ const BuyCoins = ({data}) => {
           <div className="flex justify-between text-white mt-4">
             <div>
               <div className="text-sm text-[#A9A9A9]">1 
-                 {`${selectedCoin[0]?.symbol}`.toUpperCase()}
+                 {`${data?.symbol}`.toUpperCase()}
                  </div>
-              <div className="text-md font-bold">$ {selectedCoin[0]?.current_price}</div>
+              <div className="text-md font-bold">$ {data.market_data.current_price.usd}</div>
             </div>
             <div>
               <div className="text-sm text-[#A9A9A9]">Available Balance</div>
@@ -689,7 +684,7 @@ const BuyCoins = ({data}) => {
           <div>
             <div className="relative flex py-2  border-[#2A2E36] border rounded-lg mt-3 mb-2">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <img src={selectedCoin[0]?.image} alt="coin" className="h-5 w-5" />
+                <img src={data?.image?.small} alt="coin" className="h-5 w-5" />
               </div>
               <div className="w-3/4">
                 <input
@@ -702,7 +697,7 @@ const BuyCoins = ({data}) => {
                   className=" text-sm block w-full pl-12 py-2 bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
                 />
               </div>
-              <div className="w-1/4 pr-2">
+              {/* <div className="w-1/4 pr-2">
                 <select
                   className="w-full text-sm bg-transparent border-none text-white focus:ring-0 focus:outline-none cursor-pointer"
                   onChange={(e) => setSelectedCrypto(e.target.value)}
@@ -715,7 +710,7 @@ const BuyCoins = ({data}) => {
                       </option>
                     ))}
                 </select>
-              </div>
+              </div> */}
             </div>
 
             {/* <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" /> */}
@@ -811,4 +806,4 @@ const BuyCoins = ({data}) => {
   );
 };
 
-export default BuyCoins;
+export default  BuySingleCoin;
