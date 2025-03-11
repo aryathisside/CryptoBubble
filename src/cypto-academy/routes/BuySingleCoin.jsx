@@ -13,7 +13,7 @@ import { FaCartShopping } from 'react-icons/fa6';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useGetCoinsDataQuery } from '../services/coinsDataApi';
 
-const BuySingleCoin = ({data}) => {
+const BuySingleCoin = ({ data }) => {
   // const [currency, setCurrency] = useState('usd');
   // const [currentPage, setCurrentPage] = useState(1);
 
@@ -21,13 +21,12 @@ const BuySingleCoin = ({data}) => {
 
   // const { data, error, isLoading, isSuccess } = useGetCoinsDataQuery({ currency, currentPage }, { pollingInterval: 300000 });
 
-  
   const { currentUser } = useAuth();
   const [coinValue, setCoinValue] = useState(1);
   const [coinUsdPrice, setCoinUsdPrice] = useState(data?.market_data?.current_price.usd);
   const [orderLoading, setOrderLoading] = useState(false);
-//   const [selectedCoin, setSelectedCoin] = useState(data[0]);
-//   const [selectedCrypto, setSelectedCrypto] = useState('');
+  //   const [selectedCoin, setSelectedCoin] = useState(data[0]);
+  //   const [selectedCrypto, setSelectedCrypto] = useState('');
 
   const availableUsdCoins = useSelector((state) => state.availableCoins);
   const dispatch = useDispatch();
@@ -46,8 +45,7 @@ const BuySingleCoin = ({data}) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
-        },
-       
+        }
       });
 
       const result = await response.json();
@@ -67,10 +65,9 @@ const BuySingleCoin = ({data}) => {
     }
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     getCoinsData();
-  }, [])
-
+  }, []);
 
   useEffect(() => {
     dispatch(fetchAvailableCoins(currentUser.uid));
@@ -97,7 +94,6 @@ const BuySingleCoin = ({data}) => {
     setIsChecked(!isChecked);
   };
 
-  
   // useEffect(() => {
   //   dispatch(fetchAvailableCoins(currentUser.uid));
   //   // get amount of coin that you have purchased
@@ -172,7 +168,7 @@ const BuySingleCoin = ({data}) => {
       // get available coins and check if it coin amount is more than what we want to sell
 
       if (coinValue > availabeCoinAmt) {
-        throw new Error("Not enough coins!");
+        throw new Error('Not enough coins!');
       }
 
       // check if the coin is already purchased i.e. add the coin amount  to our existing coin in portfolio db
@@ -185,18 +181,18 @@ const BuySingleCoin = ({data}) => {
         // data: removefromPortfolio,
         error: removefromPortfolioError
       } = await supabase
-        .from("portfolio")
+        .from('portfolio')
         .update([
           {
             amount: `${portfolioUsdAmount.toFixed(3)}`,
             coinAmount: `${updatedCoinAmount.toFixed(3)}`
           }
         ])
-        .eq("userId", `${currentUser.uid}`)
-        .eq("coinId", `${data.id}`);
+        .eq('userId', `${currentUser.uid}`)
+        .eq('coinId', `${data.id}`);
 
       if (removefromPortfolioError) {
-        throw new Error("Something went wrong, Please try again!");
+        throw new Error('Something went wrong, Please try again!');
       }
 
       // add the value to virtual usd
@@ -205,58 +201,44 @@ const BuySingleCoin = ({data}) => {
       let {
         // data: updateUsdCoin,
         error: updateUsdCoinError
-      } = await supabase
-        .from("portfolio")
-        .update({ amount: updatedUsdValue })
-        .eq("userId", `${currentUser.uid}`)
-        .eq("coinId", "USD");
+      } = await supabase.from('portfolio').update({ amount: updatedUsdValue }).eq('userId', `${currentUser.uid}`).eq('coinId', 'USD');
 
       if (updateUsdCoinError) {
-        throw new Error("Something went wrong!");
+        throw new Error('Something went wrong!');
       }
 
       // delete the portfolio from db if the coinValue is 0
       if (updatedCoinAmount === 0) {
         // const {data: deleteRow, error: errorRow } =
-        await supabase
-          .from("portfolio")
-          .delete()
-          .eq("userId", `${currentUser.uid}`)
-          .eq("coinId", `${data.id}`);
+        await supabase.from('portfolio').delete().eq('userId', `${currentUser.uid}`).eq('coinId', `${data.id}`);
       }
 
-         // Add transaction to history
-         const transaction = {
-          type: 'sell',
-          coinId: `${data.id}`,
-          symbol: `${data.symbol}`,
-          coinValue: `${coinValue}`,
-          coinUsdPrice: `${coinUsdPrice}`,
-          timestamp: new Date().toISOString()
-        };
-  
-        await addTransactionToHistory(transaction);  // Added here
+      // Add transaction to history
+      const transaction = {
+        type: 'sell',
+        coinId: `${data.id}`,
+        symbol: `${data.symbol}`,
+        coinValue: `${coinValue}`,
+        coinUsdPrice: `${coinUsdPrice}`,
+        timestamp: new Date().toISOString()
+      };
+
+      await addTransactionToHistory(transaction); // Added here
 
       // calculate networth
-      let { data: portfolioData } = await supabase
-        .from("portfolio")
-        .select("*")
-        .eq("userId", `${currentUser.uid}`);
+      let { data: portfolioData } = await supabase.from('portfolio').select('*').eq('userId', `${currentUser.uid}`);
 
-      const userNetworth = portfolioData.reduce(
-        (previousValue, currentCoin) => previousValue + currentCoin.amount,
-        0
-      );
+      const userNetworth = portfolioData.reduce((previousValue, currentCoin) => previousValue + currentCoin.amount, 0);
 
       const { data: updateNetworth, error: updateErr } = await supabase
-        .from("users")
+        .from('users')
         .update({ networth: parseFloat(userNetworth) })
-        .eq("userId", `${currentUser.uid}`);
+        .eq('userId', `${currentUser.uid}`);
 
       setOrderLoading(false);
       // setModal(false);
-      alert("Coin Sold Successfully");
-      navigate("/papertrade/app/portfolio");
+      alert('Coin Sold Successfully');
+      navigate('/papertrade/app/portfolio');
     } catch (error) {
       setOrderLoading(false);
       alert(error);
@@ -511,41 +493,33 @@ const BuySingleCoin = ({data}) => {
     //  Large Modal
     <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mb-4">
       <div className="flex w-full gap-2 pb-4 border-b-2 border-[#2A2E36]">
-      <button
-        className={`flex-1 py-2 border-2 rounded ${
-          tab === 1
-            ? "bg-[#CFA935] text-white border-[#CFA935]"
-            : "bg-transparent text-white border-[#2A2E36]"
-        }`}
-        onClick={() => setTab(1)}
-      >
-        Buy
-      </button>
+        <button
+          className={`flex-1 py-2 border-2 rounded ${
+            tab === 1 ? 'bg-[#CFA935] text-white border-[#CFA935]' : 'bg-transparent text-white border-[#2A2E36]'
+          }`}
+          onClick={() => setTab(1)}>
+          Buy
+        </button>
 
-      {/* Sell Button */}
-      <button
-        className={`flex-1 py-2 border-2 rounded ${
-          tab === 2
-            ? "bg-[#CFA935] text-white border-[#CFA935]"
-            : "bg-transparent text-white border-[#2A2E36]"
-        }`}
-        onClick={() => setTab(2)}
-      >
-        Sell
-      </button>
+        {/* Sell Button */}
+        <button
+          className={`flex-1 py-2 border-2 rounded ${
+            tab === 2 ? 'bg-[#CFA935] text-white border-[#CFA935]' : 'bg-transparent text-white border-[#2A2E36]'
+          }`}
+          onClick={() => setTab(2)}>
+          Sell
+        </button>
       </div>
-      {(tab === 1) ? (
+      {tab === 1 ? (
         <div>
           <div className="flex justify-between text-white mt-4">
             <div>
-              <div className="text-sm text-[#A9A9A9]">1 
-                 {`${data?.symbol}`.toUpperCase()}
-                 </div>
+              <div className="text-sm text-[#A9A9A9]">1{`${data?.symbol}`.toUpperCase()}</div>
               <div className="text-md font-bold">$ {data.market_data.current_price.usd}</div>
             </div>
             <div>
               <div className="text-sm text-[#A9A9A9]">Available Balance</div>
-              <div className="text-md font-bold"> $ {availableUsdCoins.status === "success" ? availableUsdCoins.data.amount : 0}</div>
+              <div className="text-md font-bold"> $ {availableUsdCoins.status === 'success' ? availableUsdCoins.data.amount : 0}</div>
             </div>
           </div>
 
@@ -586,19 +560,23 @@ const BuySingleCoin = ({data}) => {
             <BsArrowDownUp className="h-4 w-4 text-white m-auto" />
 
             {/* usd value */}
-            <div className="relative py-2 mt-2">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <img src={usd} alt="usd price" className="h-5 w-5" />
+            <div>
+              <div className="relative flex py-2 mt-2 border-[#2A2E36] border rounded-lg mt-3 mb-2">
+                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <img src={usd} alt="usd price" className="h-5 w-5" />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    min="0"
+                    id="coinUsdValue"
+                    name="coinUsdValue"
+                    value={coinUsdPrice}
+                    onChange={changeUsdValue}
+                    className="text-sm block w-full pl-12 py-2  bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
+                  />
+                </div>
               </div>
-              <input
-                type="number"
-                min="0"
-                id="coinUsdValue"
-                name="coinUsdValue"
-                value={coinUsdPrice}
-                onChange={changeUsdValue}
-                className=" border   text-sm rounded-lg block w-full pl-10 p-3  bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              />
             </div>
             <label className="flex items-center space-x-2 my-2">
               <input
@@ -671,14 +649,12 @@ const BuySingleCoin = ({data}) => {
           {' '}
           <div className="flex justify-between text-white mt-4">
             <div>
-              <div className="text-sm text-[#A9A9A9]">1 
-                 {`${data?.symbol}`.toUpperCase()}
-                 </div>
+              <div className="text-sm text-[#A9A9A9]">1{`${data?.symbol}`.toUpperCase()}</div>
               <div className="text-md font-bold">$ {data.market_data.current_price.usd}</div>
             </div>
             <div>
               <div className="text-sm text-[#A9A9A9]">Available Balance</div>
-              <div className="text-md font-bold"> $ {availableUsdCoins.status === "success" ? availableUsdCoins.data.amount : 0}</div>
+              <div className="text-md font-bold"> $ {availableUsdCoins.status === 'success' ? availableUsdCoins.data.amount : 0}</div>
             </div>
           </div>
           <div>
@@ -718,22 +694,40 @@ const BuySingleCoin = ({data}) => {
             <BsArrowDownUp className="h-4 w-4 text-white m-auto" />
 
             {/* usd value */}
-            <div className="relative  py-2 mt-2">
+            <div>
+              <div className="relative flex py-2 mt-2 border-[#2A2E36] border rounded-lg mt-3 mb-2">
+                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <img src={usd} alt="usd price" className="h-5 w-5" />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    min="0"
+                    id="coinUsdValue"
+                    name="coinUsdValue"
+                    value={coinUsdPrice}
+                    onChange={changeUsdValue}
+                    className="text-sm block w-full pl-12 py-2  bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+            {/* <div className="relative  py-2 mt-2">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <img src={usd} alt="usd price" className="h-5 w-5" />
               </div>
               <div>
-              <input
-                type="text"
-                min="0"
-                id="coinUsdValue"
-                name="coinUsdValue"
-                value={coinUsdPrice}
-                onChange={changeUsdValue}
-                className=" border   text-sm rounded-lg block w-full pl-10 p-3  bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              />
+                <input
+                  type="text"
+                  min="0"
+                  id="coinUsdValue"
+                  name="coinUsdValue"
+                  value={coinUsdPrice}
+                  onChange={changeUsdValue}
+                  className=" border   text-sm rounded-lg block w-full pl-10 p-3  bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                />
               </div>
-            </div>
+            </div> */}
             <label className="flex items-center space-x-2 my-2">
               <input
                 type="checkbox"
@@ -802,8 +796,7 @@ const BuySingleCoin = ({data}) => {
         </div>
       )}
     </div>
-    
   );
 };
 
-export default  BuySingleCoin;
+export default BuySingleCoin;
