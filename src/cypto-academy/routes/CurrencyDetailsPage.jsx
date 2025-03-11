@@ -385,10 +385,10 @@ const CurrencyDetailsPage = () => {
           Sell
         </button>
       </div> */}
-        <div className="p-4 border-2 border-[#2A2E36] rounded-xl mt-6">
+        <div className="p-2 md:p-4 border-2 border-[#2A2E36] rounded-xl mt-6">
           <div className="md:flex items-center justify-between">
             {isSuccess && (
-              <p className="text-white font-bold text-xl font-title my-4 ml-2 md:ml-4">
+              <p className="text-white font-bold text-sm md:text-xl font-title my-4 ml-2 md:ml-4">
                 {data.name} Price Chart <span className="uppercase">{data.symbol}/USD</span>{' '}
               </p>
             )}
@@ -397,31 +397,31 @@ const CurrencyDetailsPage = () => {
               <button
                 onClick={() => setChartDays(() => '1')}
                 type="button"
-                className="py-2 px-4 font-text text-xs md:text-sm font-semibold  rounded-l-lg border  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
+                className="py-2 px-1 md:px-4 font-text text-xs md:text-sm font-semibold  rounded-l-lg border  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
                 24 Hours
               </button>
               <button
                 onClick={() => setChartDays(() => '30')}
                 type="button"
-                className="py-2 px-4 font-text text-xs md:text-sm font-semibold  border-t border-b  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
+                className="py-2 px-1 md:px-4 font-text text-xs md:text-sm font-semibold  border-t border-b  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
                 30 Days
               </button>
               <button
                 onClick={() => setChartDays(() => '90')}
                 type="button"
-                className="py-2 px-4 font-text text-xs md:text-sm font-semibold   border  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
+                className="py-2 px-1 md:px-4 font-text text-xs md:text-sm font-semibold   border  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
                 3 Months
               </button>
               <button
                 onClick={() => setChartDays(() => '365')}
                 type="button"
-                className="py-2 px-4 font-text text-xs md:text-sm font-semibold   border  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
+                className="py-2 px-1 md:px-4 font-text text-xs md:text-sm font-semibold   border  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
                 1 Year
               </button>
               <button
                 onClick={() => setCandleStickChart(!candleStickChart)}
                 type="button"
-                className="py-2 px-4 font-text text-xs md:text-sm font-semibold  rounded-r-md border  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
+                className="py-2 px-1 md:px-4 font-text text-xs md:text-sm font-semibold  rounded-r-md border  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
                 {candleStickChart ? (
                   <img src="https://img.icons8.com/color-glass/96/000000/area-chart.png" className="inline-block w-5 h-5 " alt="line chart button" />
                 ) : (
