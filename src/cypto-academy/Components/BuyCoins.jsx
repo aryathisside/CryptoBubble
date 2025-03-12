@@ -13,7 +13,7 @@ import { FaCartShopping } from 'react-icons/fa6';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useGetCoinsDataQuery } from '../services/coinsDataApi';
 
-const BuyCoins = ({data}) => {
+const BuyCoins = ({ data }) => {
   // const [currency, setCurrency] = useState('usd');
   // const [currentPage, setCurrentPage] = useState(1);
 
@@ -21,12 +21,11 @@ const BuyCoins = ({data}) => {
 
   // const { data, error, isLoading, isSuccess } = useGetCoinsDataQuery({ currency, currentPage }, { pollingInterval: 300000 });
 
-  
-  const { currentUser } = useAuth();
+ const { currentUser } = useAuth();
   const [coinValue, setCoinValue] = useState(1);
-  const [coinUsdPrice, setCoinUsdPrice] = useState(data?.market_data?.current_price.usd);
+  const [coinUsdPrice, setCoinUsdPrice] = useState();
   const [orderLoading, setOrderLoading] = useState(false);
-  const [selectedCoin, setSelectedCoin] = useState(data[0]);
+  const [selectedCoin, setSelectedCoin] = useState([]);
   const [selectedCrypto, setSelectedCrypto] = useState('');
 
   const availableUsdCoins = useSelector((state) => state.availableCoins);
@@ -38,43 +37,44 @@ const BuyCoins = ({data}) => {
   const [availabeCoinAmt, setAvailabeCoinAmt] = useState(0);
   const navigate = useNavigate();
 
-  console.log('buy data', data);
+  
   console.log('selected coin', selectedCoin);
 
-  async function getCoinsData() {
-    try {
-      const response = await fetch(`${process.env.SIMULATOR_API}/coins/markets`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+  // async function getCoinsData() {
+  //   try {
+  //     const response = await fetch(`${process.env.SIMULATOR_API}/coins/markets`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
        
-      });
+  //     });
 
-      const result = await response.json();
+  //     const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to fetch trade history.');
-      }
-      console.log('Trade history:', result);
-      // return result.history; // Returns the trade history array
-      // setTradeHistory(result.history);
-      // setCurrentPage(1);
-    } catch (error) {
-      console.error('Error fetching trade history:', error.message);
-      // setTradeError(error.message);
-    } finally {
-      // setTradeLoading(false);
-    }
-  }
+  //     if (!response.ok) {
+  //       throw new Error(result.error || 'Failed to fetch trade history.');
+  //     }
+  //     console.log('Trade history:', result);
+  //     // return result.history; // Returns the trade history array
+  //     // setTradeHistory(result.history);
+  //     // setCurrentPage(1);
+  //   } catch (error) {
+  //     console.error('Error fetching trade history:', error.message);
+  //     // setTradeError(error.message);
+  //   } finally {
+  //     // setTradeLoading(false);
+  //   }
+  // }
 
-  useEffect(()=> {
-    getCoinsData();
-  }, [])
+  // useEffect(()=> {
+  //   getCoinsData();
+  // }, [])
 
   useEffect(() => {
     const updatedData = selectedCrypto ? data.filter((coin) => coin.id === selectedCrypto) : data;
     setSelectedCoin(updatedData);
+    
   }, [selectedCrypto]);
 
   useEffect(() => {
@@ -83,12 +83,12 @@ const BuyCoins = ({data}) => {
 
   const changeCoinValue = (e) => {
     setCoinValue(e.target.value);
-    setCoinUsdPrice(data.market_data.current_price.usd * e.target.value);
+    setCoinUsdPrice(selectedCoin[0].current_price * e.target.value);
   };
 
   const changeUsdValue = (e) => {
     setCoinUsdPrice(e.target.value);
-    setCoinValue(e.target.value / data.market_data.current_price.usd);
+    setCoinValue(e.target.value / selectedCoin[0].current_price);
   };
 
   const changemaxPrice = (e) => {
@@ -103,49 +103,25 @@ const BuyCoins = ({data}) => {
   };
 
   
-  // useEffect(() => {
-  //   dispatch(fetchAvailableCoins(currentUser.uid));
-  //   // get amount of coin that you have purchased
-  //   async function coinAmount() {
-  //     let {
-  //       data: availableCoinAmount
-  //       // , error
-  //     } = await supabase
-  //       .from("portfolio")
-  //       .select("coinName,coinAmount")
-  //       .eq("userId", `${currentUser.uid}`)
-  //       .eq("coinId", `${selectedCoin[0].id}`);
-  //     if (availableCoinAmount.length !== 0) {
-  //       setAvailabeCoinAmt(availableCoinAmount[0].coinAmount);
-  //     }
-  //   }
-  //   coinAmount();
-  // }, [currentUser.uid, selectedCoin[0].id, dispatch]);
+  useEffect(() => {
+    dispatch(fetchAvailableCoins(currentUser.uid));
+    // get amount of coin that you have purchased
+    async function coinAmount() {
+      let {
+        data: availableCoinAmount
+        // , error
+      } = await supabase
+        .from("portfolio")
+        .select("coinName,coinAmount")
+        .eq("userId", `${currentUser.uid}`)
+        .eq("coinId", `${selectedCoin[0].id}`);
+      if (availableCoinAmount.length !== 0) {
+        setAvailabeCoinAmt(availableCoinAmount[0].coinAmount);
+      }
+    }
+    coinAmount();
+  }, [currentUser.uid, selectedCoin[0]?.id, dispatch]);
 
-  // async function addTransactionToHistory(transaction) {
-  //   // Fetch current history and append new transaction
-  //   let { data: userData, error: fetchUserError } = await supabase
-  //     .from('users')
-  //     .select('history')
-  //     .eq('userId', `${currentUser.uid}`)
-  //     .single();
-
-  //   if (fetchUserError) {
-  //     throw new Error('Failed to fetch user history.');
-  //   }
-
-  //   const updatedHistory = userData?.history ? [...userData.history, transaction] : [transaction];
-
-  //   // Update user's history
-  //   const { error: updateHistoryError } = await supabase
-  //     .from('users')
-  //     .update({ history: updatedHistory })
-  //     .eq('userId', `${currentUser.uid}`);
-
-  //   if (updateHistoryError) {
-  //     throw new Error('Failed to update transaction history.');
-  //   }
-  // }
   async function addTransactionToHistory(transaction) {
     try {
       const response = await fetch(`${process.env.SIMULATOR_API}/save-trade-history`, {
@@ -183,7 +159,7 @@ const BuyCoins = ({data}) => {
       // check if the coin is already purchased i.e. add the coin amount  to our existing coin in portfolio db
 
       // update the sold coin to database
-      const portfolioUsdAmount = data.market_data.current_price.usd * (availabeCoinAmt - coinValue);
+      const portfolioUsdAmount = selectedCoin[0].current_price * (availabeCoinAmt - coinValue);
       const updatedCoinAmount = availabeCoinAmt - coinValue;
 
       const {
@@ -198,7 +174,7 @@ const BuyCoins = ({data}) => {
           }
         ])
         .eq("userId", `${currentUser.uid}`)
-        .eq("coinId", `${data.id}`);
+        .eq("coinId", `${selectedCoin[0].id}`);
 
       if (removefromPortfolioError) {
         throw new Error("Something went wrong, Please try again!");
@@ -394,163 +370,39 @@ const BuyCoins = ({data}) => {
       alert(error);
     }
   }
-  // async function onPlaceOrder() {
-  //     try {
-  //       setOrderLoading(true);
-  //       // get available coins and check if it is lesser than what we want to purchase
-  //       let { data: availableUsdCoin } = await supabase
-  //         .from('portfolio')
-  //         .select('coinId,coinName,amount')
-  //         .eq('userId', `${currentUser.uid}`)
-  //         .eq('coinId', 'USD');
-
-  //       const transaction = {
-  //         type: 'buy',
-  //         coinId: data.id,
-  //         coinValue: coinValue,
-  //         coinUsdPrice: coinUsdPrice,
-  //         timestamp: new Date().toISOString()
-  //       };
-
-  //       if (coinUsdPrice > availableUsdCoin[0].amount) {
-  //         throw new Error('Not enough coins!');
-  //       }
-
-  //       // check if the coin is already purchased i.e. add the coin amount coin to our existing coin in portfolio db
-  //       let { data: existingCoin } = await supabase.from('portfolio')
-  //         .select('coinId,coinName,amount,coinAmount')
-  //         .eq('userId', `${currentUser.uid}`)
-  //         .eq('coinId', `${data.id}`);
-
-  //       if (existingCoin.length !== 0) {
-  //         let { data: updateExistingCoin, error: updateExistingCoinErr } = await supabase
-  //           .from('portfolio')
-  //           .update({
-  //             amount: `${Number(existingCoin[0].amount) + Number(coinUsdPrice)}`,
-  //             coinAmount: `${Number(existingCoin[0].coinAmount) + Number(coinValue)}`
-  //           })
-  //           .eq('userId', `${currentUser.uid}`)
-  //           .eq('coinId', `${data.id}`);
-
-  //         // deduct the value from virtual usd
-  //         let updatedUsdValue = availableUsdCoin[0].amount - coinUsdPrice;
-  //         let { data: updateUsdCoin, error: updateUsdCoinError } = await supabase
-  //           .from('portfolio')
-  //           .update({ amount: parseFloat(updatedUsdValue) })
-  //           .eq('userId', `${currentUser.uid}`)
-  //           .eq('coinId', 'USD');
-
-  //         if (updateExistingCoinErr || updateUsdCoinError) {
-  //           throw new Error('Something went wrong!');
-  //         }
-
-  //         // calculate net worth
-  //         let { data: portfolioData } = await supabase.from('portfolio').select('*').eq('userId', `${currentUser.uid}`);
-  //         const userNetworth = portfolioData.reduce((previousValue, currentCoin) => previousValue + currentCoin.amount, 0);
-
-  //         await supabase
-  //           .from('users')
-  //           .update({ networth: parseFloat(userNetworth) })
-  //           .eq('userId', `${currentUser.uid}`);
-
-  //         // Add transaction to history
-  //         await addTransactionToHistory(transaction);  // Added here
-
-  //         setOrderLoading(false);
-  //         setModal(false);
-  //         alert('Coin purchased successfully');
-  //         navigate('papertrade/app/portfolio');
-  //         return;
-  //       }
-
-  //       // If coin is not already in the portfolio, add the purchased coin
-  //       const { error: addToPortfolioError } = await supabase.from('portfolio').insert([{
-  //         userId: `${currentUser.uid}`,
-  //         coinId: `${data.id}`,
-  //         coinSymbol: `${data.symbol}`,
-  //         coinName: `${data.name}`,
-  //         image: `${data.image.large}`,
-  //         amount: `${coinUsdPrice}`,
-  //         coinAmount: `${coinValue}`
-  //       }]);
-
-  //       if (addToPortfolioError) {
-  //         throw new Error('Something went wrong, Please try again!');
-  //       }
-
-  //       // deduct the value from virtual usd
-  //       let updatedUsdValue = availableUsdCoin[0].amount - coinUsdPrice;
-  //       let { error: updateUsdCoinError } = await supabase.from('portfolio')
-  //         .update({ amount: updatedUsdValue })
-  //         .eq('userId', `${currentUser.uid}`)
-  //         .eq('coinId', 'USD');
-
-  //       if (updateUsdCoinError) {
-  //         throw new Error('Something went wrong!');
-  //       }
-
-  //       // calculate net worth
-  //       let { data: portfolioData } = await supabase.from('portfolio').select('*').eq('userId', `${currentUser.uid}`);
-  //       const userNetworth = portfolioData.reduce((previousValue, currentCoin) => previousValue + currentCoin.amount, 0);
-
-  //       await supabase
-  //         .from('users')
-  //         .update({ networth: parseFloat(userNetworth) })
-  //         .eq('userId', `${currentUser.uid}`);
-
-  //       // Add transaction to history
-  //       await addTransactionToHistory(transaction);  // Added here
-
-  //       setOrderLoading(false);
-  //       setModal(false);
-  //       alert('Coin purchased successfully');
-  //       navigate('/papertrade/app/portfolio');
-
-  //     } catch (error) {
-  //       setOrderLoading(false);
-  //       alert(error);
-  //     }
-  // }
+ 
 
   return (
     //  Large Modal
     <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mb-4">
       <div className="flex w-full gap-2 pb-4 border-b-2 border-[#2A2E36]">
-      <button
-        className={`flex-1 py-2 border-2 rounded ${
-          tab === 1
-            ? "bg-[#CFA935] text-white border-[#CFA935]"
-            : "bg-transparent text-white border-[#2A2E36]"
-        }`}
-        onClick={() => setTab(1)}
-      >
-        Buy
-      </button>
+        <button
+          className={`flex-1 py-2 border-2 rounded ${
+            tab === 1 ? 'bg-[#CFA935] text-white border-[#CFA935]' : 'bg-transparent text-white border-[#2A2E36]'
+          }`}
+          onClick={() => setTab(1)}>
+          Buy
+        </button>
 
-      {/* Sell Button */}
-      <button
-        className={`flex-1 py-2 border-2 rounded ${
-          tab === 2
-            ? "bg-[#CFA935] text-white border-[#CFA935]"
-            : "bg-transparent text-white border-[#2A2E36]"
-        }`}
-        onClick={() => setTab(2)}
-      >
-        Sell
-      </button>
+        {/* Sell Button */}
+        <button
+          className={`flex-1 py-2 border-2 rounded ${
+            tab === 2 ? 'bg-[#CFA935] text-white border-[#CFA935]' : 'bg-transparent text-white border-[#2A2E36]'
+          }`}
+          onClick={() => setTab(2)}>
+          Sell
+        </button>
       </div>
-      {(tab === 1) ? (
+      {tab === 1 ? (
         <div>
           <div className="flex justify-between text-white mt-4">
             <div>
-              <div className="text-sm text-[#A9A9A9]">1 
-                 {`${selectedCoin[0]?.symbol}`.toUpperCase()}
-                 </div>
+              <div className="text-sm text-[#A9A9A9]">1{`${selectedCoin[0]?.symbol}`.toUpperCase()}</div>
               <div className="text-md font-bold">$ {selectedCoin[0]?.current_price}</div>
             </div>
             <div>
               <div className="text-sm text-[#A9A9A9]">Available Balance</div>
-              <div className="text-md font-bold"> $ {availableUsdCoins.status === "success" ? availableUsdCoins.data.amount : 0}</div>
+              <div className="text-md font-bold"> $ {availableUsdCoins.status === 'success' ? availableUsdCoins.data.amount : 0}</div>
             </div>
           </div>
 
@@ -591,19 +443,23 @@ const BuyCoins = ({data}) => {
             <BsArrowDownUp className="h-4 w-4 text-white m-auto" />
 
             {/* usd value */}
-            <div className="relative py-2 mt-2">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <img src={usd} alt="usd price" className="h-5 w-5" />
+            <div>
+              <div className="relative flex py-2 mt-2 border-[#2A2E36] border rounded-lg mt-3 mb-2">
+                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <img src={usd} alt="usd price" className="h-5 w-5" />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    min="0"
+                    id="coinUsdValue"
+                    name="coinUsdValue"
+                    value={coinUsdPrice}
+                    onChange={changeUsdValue}
+                    className="text-sm block w-full pl-12 py-2  bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
+                  />
+                </div>
               </div>
-              <input
-                type="number"
-                min="0"
-                id="coinUsdValue"
-                name="coinUsdValue"
-                value={coinUsdPrice}
-                onChange={changeUsdValue}
-                className=" border   text-sm rounded-lg block w-full pl-10 p-3  bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              />
             </div>
             <label className="flex items-center space-x-2 my-2">
               <input
@@ -676,14 +532,12 @@ const BuyCoins = ({data}) => {
           {' '}
           <div className="flex justify-between text-white mt-4">
             <div>
-              <div className="text-sm text-[#A9A9A9]">1 
-                 {`${selectedCoin[0]?.symbol}`.toUpperCase()}
-                 </div>
+              <div className="text-sm text-[#A9A9A9]">1{`${selectedCoin[0]?.symbol}`.toUpperCase()}</div>
               <div className="text-md font-bold">$ {selectedCoin[0]?.current_price}</div>
             </div>
             <div>
               <div className="text-sm text-[#A9A9A9]">Available Balance</div>
-              <div className="text-md font-bold"> $ {availableUsdCoins.status === "success" ? availableUsdCoins.data.amount : 0}</div>
+              <div className="text-md font-bold"> $ {availableUsdCoins.status === 'success' ? availableUsdCoins.data.amount : 0}</div>
             </div>
           </div>
           <div>
@@ -723,20 +577,22 @@ const BuyCoins = ({data}) => {
             <BsArrowDownUp className="h-4 w-4 text-white m-auto" />
 
             {/* usd value */}
-            <div className="relative  py-2 mt-2">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <img src={usd} alt="usd price" className="h-5 w-5" />
-              </div>
-              <div>
-              <input
-                type="text"
-                min="0"
-                id="coinUsdValue"
-                name="coinUsdValue"
-                value={coinUsdPrice}
-                onChange={changeUsdValue}
-                className=" border   text-sm rounded-lg block w-full pl-10 p-3  bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              />
+            <div>
+              <div className="relative flex py-2 mt-2 border-[#2A2E36] border rounded-lg mt-3 mb-2">
+                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <img src={usd} alt="usd price" className="h-5 w-5" />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    min="0"
+                    id="coinUsdValue"
+                    name="coinUsdValue"
+                    value={coinUsdPrice}
+                    onChange={changeUsdValue}
+                    className="text-sm block w-full pl-12 py-2  bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
+                  />
+                </div>
               </div>
             </div>
             <label className="flex items-center space-x-2 my-2">
@@ -807,7 +663,6 @@ const BuyCoins = ({data}) => {
         </div>
       )}
     </div>
-    
   );
 };
 

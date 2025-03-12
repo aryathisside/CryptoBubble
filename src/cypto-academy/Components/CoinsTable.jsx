@@ -19,7 +19,7 @@ const CoinsTable = () => {
 
   const [currency, setCurrency] = useState('usd');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
 
   // const [page, setPage] = useState(1);
 
@@ -283,7 +283,7 @@ const CoinsTable = () => {
       </div>
     </div>
       <div className="flex-[1] m-3 hidden md:block">
-      {/* <BuyCoins data={data} /> */}
+     {isSuccess && <BuyCoins data={data} />}
     <MiniWatchlist />
 
   </div>
