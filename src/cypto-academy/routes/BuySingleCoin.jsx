@@ -313,7 +313,6 @@ const BuySingleCoin = ({ data }) => {
         await addTransactionToHistory(transaction); // Added here
 
         setOrderLoading(false);
-        setModal(false);
         alert('Coin purchased successfully');
         navigate('/papertrade/app/portfolio');
         return;

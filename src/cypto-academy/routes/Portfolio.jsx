@@ -7,7 +7,8 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { IoIosArrowRoundForward } from 'react-icons/io';
 import MiniWatchlist from '../Components/MiniWatchlist';
 import { LuNotebookText } from 'react-icons/lu';
-
+import BuyCoins from '../Components/BuyCoins';
+import { useGetCoinsDataQuery } from '../services/coinsDataApi';
 import {
   useFetchAvailableCoinsQuery,
   useGetPortfolioCoinDataQuery,
@@ -42,6 +43,9 @@ const Portfolio = () => {
     isSuccess: fetchPortfolioCoinDataSuccess,
     refetch: refetchPortfolioCoinData
   } = useGetPortfolioCoinDataQuery(currentUser.uid, { pollingInterval: 20000 });
+
+    const { data, error:MarketFetcherror, isLoading:MarketFetchLoading, isSuccess:MarketFetchSuccess } = useGetCoinsDataQuery({ pollingInterval: 300000 });
+  
 
   //   async function getUserTradeHistory(userId) {
   //     try {
@@ -247,73 +251,7 @@ const Portfolio = () => {
             </ul>
           </div>
         </div>
-        <div className="flex-[1] m-3 hidden md:block">
-          <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mb-4">
-            <div className="flex w-full gap-2 pb-4 border-b-2 border-[#2A2E36]">
-              <button className="flex-1 bg-[#CFA935] text-white border-2 border-[#CFA935] rounded py-2">Buy</button>
-              <button className="flex-1 text-white border-2 rounded border-[#2A2E36] py-2">Sell</button>
-            </div>
-            <div className="flex justify-between text-white mt-4">
-              <div>
-                <div className="text-sm text-[#A9A9A9]">1 BTC</div>
-                <div className="text-md font-bold">$ 98,661.57</div>
-              </div>
-              <div>
-                <div className="text-sm text-[#A9A9A9]">Available Balance</div>
-                <div className="text-md font-bold"> $ 4,100,000</div>
-              </div>
-            </div>
-
-            <div>
-              <div className="relative py-2">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  {/* <img src={data?.image?.small} alt={data.name} className="h-5 w-5" /> */}
-                </div>
-                <input
-                  type="number"
-                  id="coinValue"
-                  name="coinValue"
-                  min="0"
-                  // value={coinValue}
-                  // onChange={changeCoinValue}
-                  className=" border   text-sm rounded-lg  block w-full pl-10 p-2.5  bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-
-              {/* <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" /> */}
-
-              <BsArrowDownUp className="h-4 w-4 text-white m-auto" />
-
-              {/* usd value */}
-              <div className="relative py-2 ">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <img src="" alt="usd price" className="h-5 w-5" />
-                </div>
-                <input
-                  type="number"
-                  min="0"
-                  id="coinUsdValue"
-                  name="coinUsdValue"
-                  // value={coinUsdPrice}
-                  // onChange={changeUsdValue}
-                  className=" border   text-sm rounded-lg block w-full pl-10 p-2.5  bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              <label className="flex items-center space-x-2 my-2">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 text-white appearance-none bg-[#171A24] border-2 border-[#2A2E36] rounded checked:bg-[#CFA935] checked:border-[#CFA935] focus:ring-2 focus:ring-[#2A2E36] cursor-pointer"
-                />
-                <span className="text-sm text-gray-300">Set Limit</span>
-              </label>
-            </div>
-            <button className="text-white w-full flex justify-center items-center bg-[#CFA935] p-2 rounded mt-4 gap-2 font-bold">
-              <FaShoppingCart />
-              Buy this crypto
-            </button>
-          </div>
-          <MiniWatchlist />
-        </div>
+            {MarketFetchSuccess && <BuyCoins data={data} />}
       </div>
     </section>
   );

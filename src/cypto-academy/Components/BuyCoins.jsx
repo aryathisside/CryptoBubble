@@ -271,7 +271,7 @@ const BuyCoins = ({ data }) => {
       let {
         data: existingCoin
         // error: existingCoinErr
-      } = await supabase.from('portfolio').select('coinId,coinName,amount,coinAmount').eq('userId', `${currentUser.uid}`).eq('coinId', `${data.id}`);
+      } = await supabase.from('portfolio').select('coinId,coinName,amount,coinAmount').eq('userId', `${currentUser.uid}`).eq('coinId', `${selectedCoin[0].id}`);
 
       if (existingCoin.length !== 0) {
         console.log('running this');
@@ -312,7 +312,7 @@ const BuyCoins = ({ data }) => {
         await addTransactionToHistory(transaction); // Added here
 
         setOrderLoading(false);
-        setModal(false);
+        // setModal(false);
         alert('Coin purchased successfully');
         navigate('/papertrade/app/portfolio');
         return;
