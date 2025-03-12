@@ -325,7 +325,7 @@ const BuySingleCoin = ({ data }) => {
           coinId: `${data.id}`,
           coinSymbol: `${data.symbol}`,
           coinName: `${data.name}`,
-          image: `${data.image}`,
+          image: `${data.image.large}`,
           amount: `${coinUsdPrice}`,
           coinAmount: `${coinValue}`,
           maxPrice: maxPrice, // Store max price if provided
