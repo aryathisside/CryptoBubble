@@ -109,7 +109,7 @@ const Portfolio = () => {
   return (
     <section className="lg:px-8 p-3">
       <div className="md:flex gap-4">
-        <div className="md:w-[1050px] flex-shrink-0">
+        <div className="w-full md:w-2/3 flex-shrink-0">
           <div className="bg-[#171A24] py-4 px-3 rounded-[12px] md:m-3 mb-3 sm:mb-0 w-full">
             <div className="md:flex justify-between items-center pb-4 border-b-2 border-[#2A2E36]">
               <div>
@@ -251,7 +251,7 @@ const Portfolio = () => {
             </ul>
           </div>
         </div>
-        <div className="flex-[1] m-3 hidden md:block">
+        <div className="w-1/3 m-3 hidden md:block">
             {MarketFetchSuccess && <BuyCoins data={data} />}
             <MiniWatchlist />
             </div>

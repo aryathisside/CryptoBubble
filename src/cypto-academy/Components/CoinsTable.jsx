@@ -71,7 +71,7 @@ const CoinsTable = () => {
 
   return (
     <>
-    <div className="z-10 max-w-[1050px]">
+    <div className="z-10 w-full md:w-2/3">
       {(isLoading || fetchGlobalCryptoLoading) && <Loader />}
       {error && <ErrorToast message="Something Went Wrong!" ref={toastRef} />}
       <div className="bg-[#171A24] py-6 px-4 rounded-[12px] m-3">
@@ -282,7 +282,7 @@ const CoinsTable = () => {
       /> */}
       </div>
     </div>
-      <div className="flex-[1] m-3 hidden md:block">
+      <div className="w-1/3 m-3 hidden md:block">
      {isSuccess && <BuyCoins data={data} />}
     <MiniWatchlist />
 
