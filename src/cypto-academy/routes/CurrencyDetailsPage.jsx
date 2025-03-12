@@ -469,7 +469,7 @@ const CurrencyDetailsPage = () => {
           <MiniWatchlist />
         </div>
       </div>
-      {isSuccess && <CoinDetail data={data} coinDetail={id} />}
+      {isSuccess && <CoinDetail data={data} coinDetail={data?.symbol} />}
     </section>
   );
 };

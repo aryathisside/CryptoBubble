@@ -9,7 +9,7 @@ const CryptoNews = () => {
 
   async function getSimulatorNews() {
     try {
-      const response = await fetch(`http://localhost:3004/v1/simulator/getNews`, {
+      const response = await fetch(`${process.env.SIMULATOR_API}/getNews`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

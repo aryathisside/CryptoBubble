@@ -26,7 +26,6 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { IoIosArrowRoundForward } from 'react-icons/io';
 
 const trailingActions = (coinId, userId, refetch) => {
-
   async function handleDelete() {
     try {
       const {
@@ -60,40 +59,43 @@ const Watchlist = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-   const [newsData, setNewsData] = useState([]);
+  const [newsData, setNewsData] = useState([]);
 
-    const { data, error:MarketFetcherror, isLoading:MarketFetchLoading, isSuccess:MarketFetchSuccess } = useGetCoinsDataQuery({ pollingInterval: 300000 });
-   
+  const {
+    data,
+    error: MarketFetcherror,
+    isLoading: MarketFetchLoading,
+    isSuccess: MarketFetchSuccess
+  } = useGetCoinsDataQuery({ pollingInterval: 300000 });
 
-  
-    async function getSimulatorNews() {
-      try {
-        const response = await fetch(`${process.env.SIMULATOR_API}/getNews`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-  
-        const result = await response.json();
-  
-        if (!response.ok) {
-          throw new Error(result.error || 'Failed to fetch trade history.');
+  async function getSimulatorNews() {
+    try {
+      const response = await fetch(`${process.env.SIMULATOR_API}/getNews`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
         }
-  
-        console.log('news :', result?.data?.results);
-        setNewsData(result?.data?.results);
- 
-        //   return result.history; // Returns the trade history array
-      } catch (error) {
-          console.error('Error fetching trade history:', error.message);
-        return [];
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to fetch trade history.');
       }
+
+      console.log('news :', result?.data?.results);
+      setNewsData(result?.data?.results);
+
+      //   return result.history; // Returns the trade history array
+    } catch (error) {
+      console.error('Error fetching trade history:', error.message);
+      return [];
     }
-  
-    useEffect(() => {
-      getSimulatorNews();
-    }, []);
+  }
+
+  useEffect(() => {
+    getSimulatorNews();
+  }, []);
 
   async function handleDelete(coinId, userId) {
     try {
@@ -155,7 +157,7 @@ const Watchlist = () => {
             <p className="text-white font-bold text-xl md:text-2xl font-title lg:mt-0 mb-2 ml-3">WatchList</p>
             <p className="text-[#A9A9A9] text-sm  font-title lg:mt-0 mb-4 ml-3">Keep track on your favorite crypto in one place.</p>
           </div>
-          <div className="md:px-4"  onClick={() => navigate('/papertrade/app/search')}>
+          <div className="md:px-4" onClick={() => navigate('/papertrade/app/search')}>
             <label for="table-search" className="sr-only">
               Search
             </label>
@@ -280,29 +282,29 @@ const Watchlist = () => {
         <DynamicPagination totalItems={watchlistData?.length} itemsPerPage={itemsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       </div>
       <div className="flex-[1] m-3 hidden md:block">
-      {MarketFetchSuccess && <BuyCoins data={data} />}
-      <div className="bg-[#171A24] py-6 px-4 rounded-[12px]">
+        {MarketFetchSuccess && <BuyCoins data={data} />}
+        <div className="bg-[#171A24] py-6 px-4 rounded-[12px]">
           <div className="flex justify-between items-center ">
             <div className="text-white">
               News <span className="text-[#A9A9A9]">(for watchlist cryptos)</span>
             </div>
-            <div className="border-2 border-[#2A2E36] p-2 rounded cursor-pointer"  onClick={() => navigate('/papertrade/app/news')}>
+            <div className="border-2 border-[#2A2E36] p-2 rounded cursor-pointer" onClick={() => navigate('/papertrade/app/news')}>
               <IoIosArrowRoundForward className="text-[#A9A9A9]" />
             </div>
           </div>
-           {newsData && newsData.slice(0,4).map((news, index)=> {
-                   return (
-                    <Link key={index}  to={news?.url} target="_blank" rel="noopener noreferrer">
-                     <div className="mt-2 mb-2" >
-                   <div className="text-[#A9A9A9] text-sm">{news?.domain}</div>
-                   <div className="text-white text-sm">{news?.title}</div>
-                 </div>
-                    </Link>
-                   )
-                 }) }
-
+          {newsData &&
+            newsData.slice(0, 4).map((news, index) => {
+              return (
+                <Link key={index} to={news?.url} target="_blank" rel="noopener noreferrer">
+                  <div className="mt-2 mb-2">
+                    <div className="text-[#A9A9A9] text-sm">{news?.domain}</div>
+                    <div className="text-white text-sm">{news?.title}</div>
+                  </div>
+                </Link>
+              );
+            })}
         </div>
-        </div>
+      </div>
     </section>
   );
 };
