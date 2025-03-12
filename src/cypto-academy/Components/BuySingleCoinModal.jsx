@@ -40,35 +40,35 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
 
   console.log('buy data', data);
 
-  async function getCoinsData() {
-    try {
-      const response = await fetch(`${process.env.SIMULATOR_API}/coins/markets`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+  // async function getCoinsData() {
+  //   try {
+  //     const response = await fetch(`${process.env.SIMULATOR_API}/coins/markets`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
 
-      const result = await response.json();
+  //     const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to fetch trade history.');
-      }
-      console.log('Trade history:', result);
-      // return result.history; // Returns the trade history array
-      // setTradeHistory(result.history);
-      // setCurrentPage(1);
-    } catch (error) {
-      console.error('Error fetching trade history:', error.message);
-      // setTradeError(error.message);
-    } finally {
-      // setTradeLoading(false);
-    }
-  }
+  //     if (!response.ok) {
+  //       throw new Error(result.error || 'Failed to fetch trade history.');
+  //     }
+  //     console.log('Trade history:', result);
+  //     // return result.history; // Returns the trade history array
+  //     // setTradeHistory(result.history);
+  //     // setCurrentPage(1);
+  //   } catch (error) {
+  //     console.error('Error fetching trade history:', error.message);
+  //     // setTradeError(error.message);
+  //   } finally {
+  //     // setTradeLoading(false);
+  //   }
+  // }
 
-  useEffect(() => {
-    getCoinsData();
-  }, []);
+  // useEffect(() => {
+  //   getCoinsData();
+  // }, []);
 
   useEffect(() => {
     dispatch(fetchAvailableCoins(currentUser.uid));

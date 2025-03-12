@@ -39,35 +39,35 @@ const BuySingleCoin = ({ data }) => {
 
   console.log('buy data', data);
 
-  async function getCoinsData() {
-    try {
-      const response = await fetch(`${process.env.SIMULATOR_API}/coins/markets`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+  // async function getCoinsData() {
+  //   try {
+  //     const response = await fetch(`${process.env.SIMULATOR_API}/coins/markets`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
 
-      const result = await response.json();
+  //     const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to fetch trade history.');
-      }
-      console.log('Trade history:', result);
-      // return result.history; // Returns the trade history array
-      // setTradeHistory(result.history);
-      // setCurrentPage(1);
-    } catch (error) {
-      console.error('Error fetching trade history:', error.message);
-      // setTradeError(error.message);
-    } finally {
-      // setTradeLoading(false);
-    }
-  }
+  //     if (!response.ok) {
+  //       throw new Error(result.error || 'Failed to fetch trade history.');
+  //     }
+  //     console.log('Trade history:', result);
+  //     // return result.history; // Returns the trade history array
+  //     // setTradeHistory(result.history);
+  //     // setCurrentPage(1);
+  //   } catch (error) {
+  //     console.error('Error fetching trade history:', error.message);
+  //     // setTradeError(error.message);
+  //   } finally {
+  //     // setTradeLoading(false);
+  //   }
+  // }
 
-  useEffect(() => {
-    getCoinsData();
-  }, []);
+  // useEffect(() => {
+  //   getCoinsData();
+  // }, []);
 
   useEffect(() => {
     dispatch(fetchAvailableCoins(currentUser.uid));
@@ -113,30 +113,7 @@ const BuySingleCoin = ({ data }) => {
     coinAmount();
   }, [currentUser.uid, data.id, dispatch]);
 
-  // async function addTransactionToHistory(transaction) {
-  //   // Fetch current history and append new transaction
-  //   let { data: userData, error: fetchUserError } = await supabase
-  //     .from('users')
-  //     .select('history')
-  //     .eq('userId', `${currentUser.uid}`)
-  //     .single();
 
-  //   if (fetchUserError) {
-  //     throw new Error('Failed to fetch user history.');
-  //   }
-
-  //   const updatedHistory = userData?.history ? [...userData.history, transaction] : [transaction];
-
-  //   // Update user's history
-  //   const { error: updateHistoryError } = await supabase
-  //     .from('users')
-  //     .update({ history: updatedHistory })
-  //     .eq('userId', `${currentUser.uid}`);
-
-  //   if (updateHistoryError) {
-  //     throw new Error('Failed to update transaction history.');
-  //   }
-  // }
   async function addTransactionToHistory(transaction) {
     try {
       const response = await fetch(`${process.env.SIMULATOR_API}/save-trade-history`, {
