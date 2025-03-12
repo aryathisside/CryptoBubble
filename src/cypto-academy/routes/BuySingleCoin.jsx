@@ -523,7 +523,7 @@ const BuySingleCoin = ({ data }) => {
           </div>
 
           <div>
-            <div className="relative flex py-2  border-[#2A2E36] border rounded-lg mt-3 mb-2">
+            <div className="relative flex py-2  buy-border border rounded-lg mt-3 mb-2">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <img src={data?.image?.small} alt="coin" className="h-5 w-5" />
               </div>
@@ -560,7 +560,7 @@ const BuySingleCoin = ({ data }) => {
 
             {/* usd value */}
             <div>
-              <div className="relative flex py-2 mt-2 border-[#2A2E36] border rounded-lg mt-3 mb-2">
+              <div className="relative flex py-2 mt-2 buy-border border rounded-lg mt-3 mb-2">
                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <img src={usd} alt="usd price" className="h-5 w-5" />
                 </div>
@@ -605,7 +605,7 @@ const BuySingleCoin = ({ data }) => {
                       min="0"
                       value={maxPrice}
                       onChange={changemaxPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
 
@@ -627,7 +627,7 @@ const BuySingleCoin = ({ data }) => {
                       name="minPrice"
                       value={minPrice}
                       onChange={changeminPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -657,7 +657,7 @@ const BuySingleCoin = ({ data }) => {
             </div>
           </div>
           <div>
-            <div className="relative flex py-2  border-[#2A2E36] border rounded-lg mt-3 mb-2">
+            <div className="relative flex py-2  buy-border border rounded-lg mt-3 mb-2">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <img src={data?.image?.small} alt="coin" className="h-5 w-5" />
               </div>
@@ -694,7 +694,7 @@ const BuySingleCoin = ({ data }) => {
 
             {/* usd value */}
             <div>
-              <div className="relative flex py-2 mt-2 border-[#2A2E36] border rounded-lg mt-3 mb-2">
+              <div className="relative flex py-2 mt-2 buy-border border rounded-lg mt-3 mb-2">
                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <img src={usd} alt="usd price" className="h-5 w-5" />
                 </div>
@@ -755,7 +755,7 @@ const BuySingleCoin = ({ data }) => {
                       min="0"
                       value={maxPrice}
                       onChange={changemaxPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
 
@@ -777,7 +777,7 @@ const BuySingleCoin = ({ data }) => {
                       name="minPrice"
                       value={minPrice}
                       onChange={changeminPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                 </div>

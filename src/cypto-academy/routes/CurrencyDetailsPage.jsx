@@ -141,7 +141,7 @@ const CurrencyDetailsPage = () => {
             {gunErrorMessage ? gunErrorMessage : 'Something went wrong!'}
           </p>
         )}
-        <div className="w-full lg:w-2/3 bg-[#171A24] pt-3 sm:pt-0  px-4 rounded-[12px] md:m-3">
+        <div className="w-full lg:w-[70%] bg-[#171A24] pt-3 sm:pt-0  px-4 rounded-[12px] md:m-3">
           {isSuccess && (
             <div className="mt-6">
               {/* back button */}
@@ -457,14 +457,19 @@ const CurrencyDetailsPage = () => {
 
             {/* <HistoricalChart id={id} /> */}
             {/* prettier-ignore */}
+            <div className="flex flex-col w-full">
+ 
+
+
             {isSuccess && chartDataSuccess && candleStickChart && <HistoricalChart id={id} data={chartData} days={chartDays} />}
+            </div>
             {/* prettier-ignore */}
             {isSuccess && chartDataSuccess && !candleStickChart && <HistoricalLineChart id={id} data={chartData} days={chartDays} name={data.name} />}
 
             {/* {isSuccess && <CoinStats data={data} />} */}
           </div>
         </div>
-        <div className="w-1/3 m-3 hidden lg:block">
+        <div className="w-[30%] m-3 hidden lg:block">
           {isSuccess && <BuySingleCoin data={data} />}
           <MiniWatchlist />
         </div>

@@ -407,7 +407,7 @@ const BuyCoins = ({ data }) => {
           </div>
 
           <div>
-            <div className="relative flex py-2  border-[#2A2E36] border rounded-lg mt-3 mb-2">
+            <div className="relative flex py-2 border rounded-lg mt-3 mb-2 buy-border">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <img src={selectedCoin[0]?.image} alt="coin" className="h-5 w-5" />
               </div>
@@ -444,7 +444,7 @@ const BuyCoins = ({ data }) => {
 
             {/* usd value */}
             <div>
-              <div className="relative flex py-2 mt-2 border-[#2A2E36] border rounded-lg mt-3 mb-2">
+              <div className="relative flex py-2 mt-2 buy-border border rounded-lg mt-3 mb-2">
                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <img src={usd} alt="usd price" className="h-5 w-5" />
                 </div>
@@ -489,7 +489,7 @@ const BuyCoins = ({ data }) => {
                       min="0"
                       value={maxPrice}
                       onChange={changemaxPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
 
@@ -511,7 +511,7 @@ const BuyCoins = ({ data }) => {
                       name="minPrice"
                       value={minPrice}
                       onChange={changeminPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -541,7 +541,7 @@ const BuyCoins = ({ data }) => {
             </div>
           </div>
           <div>
-            <div className="relative flex py-2  border-[#2A2E36] border rounded-lg mt-3 mb-2">
+            <div className="relative flex py-2 buy-border border rounded-lg mt-3 mb-2">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <img src={selectedCoin[0]?.image} alt="coin" className="h-5 w-5" />
               </div>
@@ -578,7 +578,7 @@ const BuyCoins = ({ data }) => {
 
             {/* usd value */}
             <div>
-              <div className="relative flex py-2 mt-2 border-[#2A2E36] border rounded-lg mt-3 mb-2">
+              <div className="relative flex py-2 mt-2 buy-border border rounded-lg mt-3 mb-2">
                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <img src={usd} alt="usd price" className="h-5 w-5" />
                 </div>
@@ -600,7 +600,7 @@ const BuyCoins = ({ data }) => {
                 type="checkbox"
                 checked={isChecked}
                 onChange={handleCheckboxChange}
-                className="w-4 h-4 text-white appearance-none bg-[#171A24] border-2 border-[#2A2E36] rounded checked:bg-[#CFA935] checked:border-[#CFA935] focus:ring-2 focus:ring-[#2A2E36] cursor-pointer"
+                className="w-4 h-4 text-white appearance-none bg-[#171A24] border-2 buy-border rounded checked:bg-[#CFA935] checked:border-[#CFA935] focus:ring-2 focus:ring-[#2A2E36] cursor-pointer"
               />
               <span className="text-sm text-gray-300">Set Limit</span>
             </label>
@@ -623,7 +623,7 @@ const BuyCoins = ({ data }) => {
                       min="0"
                       value={maxPrice}
                       onChange={changemaxPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
 
@@ -645,7 +645,7 @@ const BuyCoins = ({ data }) => {
                       name="minPrice"
                       value={minPrice}
                       onChange={changeminPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                 </div>

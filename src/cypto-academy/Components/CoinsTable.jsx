@@ -71,10 +71,10 @@ const CoinsTable = () => {
 
   return (
     <>
-    <div className="z-10 w-full md:w-2/3">
+    <div className="z-10 w-full md:w-[70%]">
       {(isLoading || fetchGlobalCryptoLoading) && <Loader />}
       {error && <ErrorToast message="Something Went Wrong!" ref={toastRef} />}
-      <div className="bg-[#171A24] py-6 px-4 rounded-[12px] m-3">
+      <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mx-3 mt-4 md:mt-4 mb-2 md:mb-4">
         <div className="md:flex justify-between border-b-2 border-[#2A2E36]">
           <div>
             <p className="text-white font-bold text-xl md:text-2xl font-title lg:mt-0 mb-2 ml-3">Market</p>
@@ -97,7 +97,7 @@ const CoinsTable = () => {
                 type="text"
                 id="table-search"
                 className="w-full mb-4 sm:w-auto text-sm rounded-lg block pl-10 p-2.5 bg-[#171A24] border-2 border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search for Cryptocurrency..."
+                placeholder="Search Crypto here..."
                 onChange={(e) => {
                   setSearch(e.target.value);
                 }}
@@ -193,7 +193,7 @@ const CoinsTable = () => {
         </Link>
       )} */}
       {/* coin table */}
-      <div className="bg-[#171A24] py-6 px-4 rounded-[12px] m-3">
+      <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mx-3 mb-3 md:mb-4 mt-3 md:mt-4">
         <div className="md:px-4 mb-2">
           <button className="border-2 border-[#CFA935] text-[#CFA935] p-2 rounded">Market Cap</button>
         </div>
@@ -282,7 +282,7 @@ const CoinsTable = () => {
       /> */}
       </div>
     </div>
-      <div className="w-1/3 m-3 hidden md:block">
+      <div className="w-[30%] mx-3 my-4 hidden md:block">
      {isSuccess && <BuyCoins data={data} />}
     <MiniWatchlist />
 

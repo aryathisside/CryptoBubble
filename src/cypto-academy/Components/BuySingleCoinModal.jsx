@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -15,7 +15,7 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { useGetCoinsDataQuery } from '../services/coinsDataApi';
 
 const BuySingleCoinModal = ({ data, modal, setModal }) => {
- // const [currency, setCurrency] = useState('usd');
+  // const [currency, setCurrency] = useState('usd');
   // const [currentPage, setCurrentPage] = useState(1);
 
   // // const [page, setPage] = useState(1);
@@ -102,11 +102,7 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
       let {
         data: availableCoinAmount
         // , error
-      } = await supabase
-        .from("portfolio")
-        .select("coinName,coinAmount")
-        .eq("userId", `${currentUser.uid}`)
-        .eq("coinId", `${data.id}`);
+      } = await supabase.from('portfolio').select('coinName,coinAmount').eq('userId', `${currentUser.uid}`).eq('coinId', `${data.id}`);
       if (availableCoinAmount.length !== 0) {
         setAvailabeCoinAmt(availableCoinAmount[0].coinAmount);
       }
@@ -375,204 +371,67 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
   return (
     //  Large Modal
     <div
-    className={`${
-      !modal && "hidden"
-    } flex flex-col fixed left-0 right-0 top-[20px] md:top-0 z-50 justify-center items-center bg-black bg-opacity-50 h-full md:h-screen`}
-    id="large-modal"
-    >
-            <div className="relative px-4 w-full max-w-xl h-full md:h-auto">
-         
-    <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mb-4">
-    <button
-              type="button"
-              className="flex justify-end text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto hover:bg-gray-600 hover:text-white"
-              data-modal-toggle="large-modal"
-              onClick={() => setModal(false)}
-            >
-              <AiOutlineClose className="w-5 h-5" />
-            </button>
-      <div className="flex w-full gap-2 pb-4 border-b-2 border-[#2A2E36]">
-        <button
-          className={`flex-1 py-2 border-2 rounded ${
-            tab === 1 ? 'bg-[#CFA935] text-white border-[#CFA935]' : 'bg-transparent text-white border-[#2A2E36]'
-          }`}
-          onClick={() => setTab(1)}>
-          Buy
-        </button>
-
-        {/* Sell Button */}
-        <button
-          className={`flex-1 py-2 border-2 rounded ${
-            tab === 2 ? 'bg-[#CFA935] text-white border-[#CFA935]' : 'bg-transparent text-white border-[#2A2E36]'
-          }`}
-          onClick={() => setTab(2)}>
-          Sell
-        </button>
-      </div>
-      {tab === 1 ? (
-        <div>
-          <div className="flex justify-between text-white mt-4">
-            <div>
-              <div className="text-sm text-[#A9A9A9]">1{`${data?.symbol}`.toUpperCase()}</div>
-              <div className="text-md font-bold">$ {data.market_data.current_price.usd}</div>
-            </div>
-            <div>
-              <div className="text-sm text-[#A9A9A9]">Available Balance</div>
-              <div className="text-md font-bold"> $ {availableUsdCoins.status === 'success' ? availableUsdCoins.data.amount : 0}</div>
-            </div>
-          </div>
-
-          <div>
-            <div className="relative flex py-2  border-[#2A2E36] border rounded-lg mt-3 mb-2">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <img src={data?.image?.small} alt="coin" className="h-5 w-5" />
-              </div>
-              <div className="w-3/4">
-                <input
-                  type="text"
-                  id="coinValue"
-                  name="coinValue"
-                  min="0"
-                  value={coinValue}
-                  onChange={changeCoinValue}
-                  className=" text-sm block w-full pl-12 py-2 bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
-                />
-              </div>
-              {/* <div className="w-1/4 pr-2">
-                <select
-                  className="w-full text-sm bg-transparent border-none text-white focus:ring-0 focus:outline-none cursor-pointer"
-                  onChange={(e) => setSelectedCrypto(e.target.value)}
-                  value={selectedCrypto}>
-                  {data &&
-                    data?.map((coin, index) => (
-                      <option key={index} value={coin.id} className="bg-[#171A24] text-white">
-                        <img src={usd} alt="coin" className="h-5 w-5" />
-                        <span>{`${coin.symbol}`.toUpperCase()}</span>
-                      </option>
-                    ))}
-                </select>
-              </div> */}
-            </div>
-
-            {/* <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" /> */}
-
-            <BsArrowDownUp className="h-4 w-4 text-white m-auto" />
-
-            {/* usd value */}
-            <div>
-              <div className="relative flex py-2 mt-2 border-[#2A2E36] border rounded-lg mt-3 mb-2">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <img src={usd} alt="usd price" className="h-5 w-5" />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    min="0"
-                    id="coinUsdValue"
-                    name="coinUsdValue"
-                    value={coinUsdPrice}
-                    onChange={changeUsdValue}
-                    className="text-sm block w-full pl-12 py-2  bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
-                  />
-                </div>
-              </div>
-            </div>
-            <label className="flex items-center space-x-2 my-2">
-              <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-                className="w-4 h-4 text-white appearance-none bg-[#171A24] border-2 border-[#2A2E36] rounded checked:bg-[#CFA935] checked:border-[#CFA935] focus:ring-2 focus:ring-[#2A2E36] cursor-pointer"
-              />
-              <span className="text-sm text-gray-300">Set Limit</span>
-            </label>
-            {isChecked && (
-              <div>
-                <div className="flex justify-between">
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Max Price</p>
-
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Min Price</p>
-                </div>
-                <div className="md:flex gap-2">
-                  <div className="relative py-4">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <img src={usd} alt="usd price" className="h-5 w-5" />
-                    </div>
-                    <input
-                      type="number"
-                      id="maxPrice"
-                      name="maxPrice"
-                      min="0"
-                      value={maxPrice}
-                      onChange={changemaxPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-
-                  <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" />
-
-                  <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" />
-
-                  {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
-
-                  {/* usd value */}
-                  <div className="relative py-4">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <img src={usd} alt="usd price" className="h-5 w-5" />
-                    </div>
-                    <input
-                      type="number"
-                      min="0"
-                      id="minPrice"
-                      name="minPrice"
-                      value={minPrice}
-                      onChange={changeminPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+      className={`${
+        !modal && 'hidden'
+      } flex flex-col fixed left-0 right-0 top-[20px] md:top-0 z-50 justify-center items-center bg-black bg-opacity-50 h-full md:h-screen`}
+      id="large-modal">
+      <div className="relative px-4 w-full max-w-xl h-full md:h-auto">
+        <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mb-4">
           <button
-            className="text-white w-full flex justify-center items-center bg-[#CFA935] p-2 rounded mt-4 gap-2 font-bold"
-            onClick={onPlaceOrder}
-            disabled={orderLoading}>
-            <FaShoppingCart />
-            {/* Buy this crypto */}
-            <span>{orderLoading ? `Buying this crypto` : `Buy this crypto`}</span>
+            type="button"
+            className="flex justify-end text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto hover:bg-gray-600 hover:text-white"
+            data-modal-toggle="large-modal"
+            onClick={() => setModal(false)}>
+            <AiOutlineClose className="w-5 h-5" />
           </button>
-        </div>
-      ) : (
-        <div>
-          {' '}
-          <div className="flex justify-between text-white mt-4">
-            <div>
-              <div className="text-sm text-[#A9A9A9]">1{`${data?.symbol}`.toUpperCase()}</div>
-              <div className="text-md font-bold">$ {data.market_data.current_price.usd}</div>
-            </div>
-            <div>
-              <div className="text-sm text-[#A9A9A9]">Available Balance</div>
-              <div className="text-md font-bold"> $ {availableUsdCoins.status === 'success' ? availableUsdCoins.data.amount : 0}</div>
-            </div>
+          <div className="flex w-full gap-2 pb-4 border-b-2 border-[#2A2E36]">
+            <button
+              className={`flex-1 py-2 border-2 rounded ${
+                tab === 1 ? 'bg-[#CFA935] text-white border-[#CFA935]' : 'bg-transparent text-white border-[#2A2E36]'
+              }`}
+              onClick={() => setTab(1)}>
+              Buy
+            </button>
+
+            {/* Sell Button */}
+            <button
+              className={`flex-1 py-2 border-2 rounded ${
+                tab === 2 ? 'bg-[#CFA935] text-white border-[#CFA935]' : 'bg-transparent text-white border-[#2A2E36]'
+              }`}
+              onClick={() => setTab(2)}>
+              Sell
+            </button>
           </div>
-          <div>
-            <div className="relative flex py-2  border-[#2A2E36] border rounded-lg mt-3 mb-2">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <img src={data?.image?.small} alt="coin" className="h-5 w-5" />
+          {tab === 1 ? (
+            <div>
+              <div className="flex justify-between text-white mt-4">
+                <div>
+                  <div className="text-sm text-[#A9A9A9]">1{`${data?.symbol}`.toUpperCase()}</div>
+                  <div className="text-md font-bold">$ {data.market_data.current_price.usd}</div>
+                </div>
+                <div>
+                  <div className="text-sm text-[#A9A9A9]">Available Balance</div>
+                  <div className="text-md font-bold"> $ {availableUsdCoins.status === 'success' ? availableUsdCoins.data.amount : 0}</div>
+                </div>
               </div>
-              <div className="w-3/4">
-                <input
-                  type="text"
-                  id="coinValue"
-                  name="coinValue"
-                  min="0"
-                  value={coinValue}
-                  onChange={changeCoinValue}
-                  className=" text-sm block w-full pl-12 py-2 bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
-                />
-              </div>
-              {/* <div className="w-1/4 pr-2">
+
+              <div>
+                <div className="relative flex py-2 buy-border border rounded-lg mt-3 mb-2">
+                  <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                    <img src={data?.image?.small} alt="coin" className="h-5 w-5" />
+                  </div>
+                  <div className="w-3/4">
+                    <input
+                      type="text"
+                      id="coinValue"
+                      name="coinValue"
+                      min="0"
+                      value={coinValue}
+                      onChange={changeCoinValue}
+                      className=" text-sm block w-full pl-12 py-2 bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
+                    />
+                  </div>
+                  {/* <div className="w-1/4 pr-2">
                 <select
                   className="w-full text-sm bg-transparent border-none text-white focus:ring-0 focus:outline-none cursor-pointer"
                   onChange={(e) => setSelectedCrypto(e.target.value)}
@@ -586,32 +445,166 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
                     ))}
                 </select>
               </div> */}
+                </div>
+
+                {/* <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" /> */}
+
+                <BsArrowDownUp className="h-4 w-4 text-white m-auto" />
+
+                {/* usd value */}
+                <div>
+                  <div className="relative flex py-2 mt-2 buy-border border rounded-lg mt-3 mb-2">
+                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                      <img src={usd} alt="usd price" className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        min="0"
+                        id="coinUsdValue"
+                        name="coinUsdValue"
+                        value={coinUsdPrice}
+                        onChange={changeUsdValue}
+                        className="text-sm block w-full pl-12 py-2  bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <label className="flex items-center space-x-2 my-2">
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}
+                    className="w-4 h-4 text-white appearance-none bg-[#171A24] border-2 buy-border rounded checked:bg-[#CFA935] checked:border-[#CFA935] focus:ring-2 focus:ring-[#2A2E36] cursor-pointer"
+                  />
+                  <span className="text-sm text-gray-300">Set Limit</span>
+                </label>
+                {isChecked && (
+                  <div>
+                    <div className="flex justify-between">
+                      <p className="text-base leading-relaxed font-semibold text-gray-200">Max Price</p>
+
+                      <p className="text-base leading-relaxed font-semibold text-gray-200">Min Price</p>
+                    </div>
+                    <div className="md:flex gap-2">
+                      <div className="relative py-4">
+                        <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                          <img src={usd} alt="usd price" className="h-5 w-5" />
+                        </div>
+                        <input
+                          type="number"
+                          id="maxPrice"
+                          name="maxPrice"
+                          min="0"
+                          value={maxPrice}
+                          onChange={changemaxPrice}
+                          className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+
+                      <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" />
+
+                      <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" />
+
+                      {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
+
+                      {/* usd value */}
+                      <div className="relative py-4">
+                        <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                          <img src={usd} alt="usd price" className="h-5 w-5" />
+                        </div>
+                        <input
+                          type="number"
+                          min="0"
+                          id="minPrice"
+                          name="minPrice"
+                          value={minPrice}
+                          onChange={changeminPrice}
+                          className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <button
+                className="text-white w-full flex justify-center items-center bg-[#CFA935] p-2 rounded mt-4 gap-2 font-bold"
+                onClick={onPlaceOrder}
+                disabled={orderLoading}>
+                <FaShoppingCart />
+                {/* Buy this crypto */}
+                <span>{orderLoading ? `Buying this crypto` : `Buy this crypto`}</span>
+              </button>
             </div>
-
-            {/* <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" /> */}
-
-            <BsArrowDownUp className="h-4 w-4 text-white m-auto" />
-
-            {/* usd value */}
+          ) : (
             <div>
-              <div className="relative flex py-2 mt-2 border-[#2A2E36] border rounded-lg mt-3 mb-2">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <img src={usd} alt="usd price" className="h-5 w-5" />
+              {' '}
+              <div className="flex justify-between text-white mt-4">
+                <div>
+                  <div className="text-sm text-[#A9A9A9]">1{`${data?.symbol}`.toUpperCase()}</div>
+                  <div className="text-md font-bold">$ {data.market_data.current_price.usd}</div>
                 </div>
                 <div>
-                  <input
-                    type="text"
-                    min="0"
-                    id="coinUsdValue"
-                    name="coinUsdValue"
-                    value={coinUsdPrice}
-                    onChange={changeUsdValue}
-                    className="text-sm block w-full pl-12 py-2  bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
-                  />
+                  <div className="text-sm text-[#A9A9A9]">Available Balance</div>
+                  <div className="text-md font-bold"> $ {availableUsdCoins.status === 'success' ? availableUsdCoins.data.amount : 0}</div>
                 </div>
               </div>
-            </div>
-            {/* <div className="relative  py-2 mt-2">
+              <div>
+                <div className="relative flex py-2  buy-border border rounded-lg mt-3 mb-2">
+                  <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                    <img src={data?.image?.small} alt="coin" className="h-5 w-5" />
+                  </div>
+                  <div className="w-3/4">
+                    <input
+                      type="text"
+                      id="coinValue"
+                      name="coinValue"
+                      min="0"
+                      value={coinValue}
+                      onChange={changeCoinValue}
+                      className=" text-sm block w-full pl-12 py-2 bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
+                    />
+                  </div>
+                  {/* <div className="w-1/4 pr-2">
+                <select
+                  className="w-full text-sm bg-transparent border-none text-white focus:ring-0 focus:outline-none cursor-pointer"
+                  onChange={(e) => setSelectedCrypto(e.target.value)}
+                  value={selectedCrypto}>
+                  {data &&
+                    data?.map((coin, index) => (
+                      <option key={index} value={coin.id} className="bg-[#171A24] text-white">
+                        <img src={usd} alt="coin" className="h-5 w-5" />
+                        <span>{`${coin.symbol}`.toUpperCase()}</span>
+                      </option>
+                    ))}
+                </select>
+              </div> */}
+                </div>
+
+                {/* <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" /> */}
+
+                <BsArrowDownUp className="h-4 w-4 text-white m-auto" />
+
+                {/* usd value */}
+                <div>
+                  <div className="relative flex py-2 mt-2 buy-border border rounded-lg mt-3 mb-2">
+                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                      <img src={usd} alt="usd price" className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        min="0"
+                        id="coinUsdValue"
+                        name="coinUsdValue"
+                        value={coinUsdPrice}
+                        onChange={changeUsdValue}
+                        className="text-sm block w-full pl-12 py-2  bg-[#171A24] placeholder-gray-400 text-white border-none focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+                {/* <div className="relative  py-2 mt-2">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <img src={usd} alt="usd price" className="h-5 w-5" />
               </div>
@@ -627,79 +620,77 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
                 />
               </div>
             </div> */}
-            <label className="flex items-center space-x-2 my-2">
-              <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-                className="w-4 h-4 text-white appearance-none bg-[#171A24] border-2 border-[#2A2E36] rounded checked:bg-[#CFA935] checked:border-[#CFA935] focus:ring-2 focus:ring-[#2A2E36] cursor-pointer"
-              />
-              <span className="text-sm text-gray-300">Set Limit</span>
-            </label>
-            {isChecked && (
-              <div>
-                <div className="flex justify-between">
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Max Price</p>
+                <label className="flex items-center space-x-2 my-2">
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}
+                    className="w-4 h-4 text-white appearance-none bg-[#171A24] border-2 buy-border rounded checked:bg-[#CFA935] checked:border-[#CFA935] focus:ring-2 focus:ring-[#2A2E36] cursor-pointer"
+                  />
+                  <span className="text-sm text-gray-300">Set Limit</span>
+                </label>
+                {isChecked && (
+                  <div>
+                    <div className="flex justify-between">
+                      <p className="text-base leading-relaxed font-semibold text-gray-200">Max Price</p>
 
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Min Price</p>
-                </div>
-                <div className="md:flex gap-2">
-                  <div className="relative py-4">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <img src={usd} alt="usd price" className="h-5 w-5" />
+                      <p className="text-base leading-relaxed font-semibold text-gray-200">Min Price</p>
                     </div>
-                    <input
-                      type="number"
-                      id="maxPrice"
-                      name="maxPrice"
-                      min="0"
-                      value={maxPrice}
-                      onChange={changemaxPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
+                    <div className="md:flex gap-2">
+                      <div className="relative py-4">
+                        <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                          <img src={usd} alt="usd price" className="h-5 w-5" />
+                        </div>
+                        <input
+                          type="number"
+                          id="maxPrice"
+                          name="maxPrice"
+                          min="0"
+                          value={maxPrice}
+                          onChange={changemaxPrice}
+                          className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
 
-                  
-                  <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" />
+                      <BsArrowLeftRight className="h-4 w-4 text-white m-auto hidden md:block" />
 
-                  <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" />
+                      <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" />
 
-                  {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
+                      {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
 
-                  {/* usd value */}
-                  <div className="relative py-4">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <img src={usd} alt="usd price" className="h-5 w-5" />
+                      {/* usd value */}
+                      <div className="relative py-4">
+                        <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                          <img src={usd} alt="usd price" className="h-5 w-5" />
+                        </div>
+                        <input
+                          type="number"
+                          min="0"
+                          id="minPrice"
+                          name="minPrice"
+                          value={minPrice}
+                          onChange={changeminPrice}
+                          className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
                     </div>
-                    <input
-                      type="number"
-                      min="0"
-                      id="minPrice"
-                      name="minPrice"
-                      value={minPrice}
-                      onChange={changeminPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    />
                   </div>
-                </div>
+                )}
               </div>
-            )}
-          </div>
-          <button
-            className="text-white w-full flex justify-center items-center bg-[#CFA935] p-2 rounded mt-4 gap-2 font-bold"
-            onClick={onPlaceSellOrder}
-            disabled={orderLoading}>
-            <FaShoppingCart />
-            {/* Buy this crypto */}
-            <span>{orderLoading ? `Selling this crypto` : `Sell this crypto`}</span>
-          </button>
+              <button
+                className="text-white w-full flex justify-center items-center bg-[#CFA935] p-2 rounded mt-4 gap-2 font-bold"
+                onClick={onPlaceSellOrder}
+                disabled={orderLoading}>
+                <FaShoppingCart />
+                {/* Buy this crypto */}
+                <span>{orderLoading ? `Selling this crypto` : `Sell this crypto`}</span>
+              </button>
+            </div>
+          )}
         </div>
-      )}
-    </div>
-    </div>
+      </div>
     </div>
   );
 };
 
 export default BuySingleCoinModal;
-

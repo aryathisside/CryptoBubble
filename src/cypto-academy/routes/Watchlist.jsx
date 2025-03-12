@@ -150,8 +150,8 @@ const Watchlist = () => {
   const currentItems = watchlistData?.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <section className="lg:px-4 py-2 lg:py-8  max-w-[1600px]  p-2 flex">
-      <div className="bg-[#171A24] w-full md:w-2/3 py-6 px-4 rounded-[12px] md:m-3 m-2">
+    <section className="lg:px-4 py-2 lg:py-8 w-full  p-2 flex">
+      <div className="bg-[#171A24] w-full md:w-[72%] py-6 px-4 rounded-[12px] md:m-3 m-2">
         <div className="md:flex justify-between">
           <div>
             <p className="text-white font-bold text-xl md:text-2xl font-title lg:mt-0 mb-2 ml-3">WatchList</p>
@@ -281,7 +281,7 @@ const Watchlist = () => {
         )}
         <DynamicPagination totalItems={watchlistData?.length} itemsPerPage={itemsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       </div>
-      <div className="w-1/3 m-3 hidden md:block">
+      <div className="w-[27%] m-3 hidden md:block">
         {MarketFetchSuccess && <BuyCoins data={data} />}
         <div className="bg-[#171A24] py-6 px-4 rounded-[12px]">
           <div className="flex justify-between items-center ">

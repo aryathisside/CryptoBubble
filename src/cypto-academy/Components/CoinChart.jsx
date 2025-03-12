@@ -22,7 +22,7 @@ export const TradingChart = ({ id, data, days }) => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 768);
       chart.applyOptions({
-        width: window.innerWidth > 1024 ? window.innerWidth - 610 : window.innerWidth - 140
+        width: chartContainerRef.current.clientWidth,
       });
     };
 
@@ -55,7 +55,7 @@ export const TradingChart = ({ id, data, days }) => {
           }
         }
       },
-      width: window.innerWidth > 1024 ? window.innerWidth - 610 : window.innerWidth - 140,
+      width: chartContainerRef.current.clientWidth,
       height: window.innerWidth >= 768 ? 610 : 400,
       crosshair: {
         mode: CrosshairMode.Normal
@@ -106,12 +106,12 @@ export const LineChart = ({ id, data, days, name }) => {
 
     const handleResize = () => {
       chart.applyOptions({
-        width: window.innerWidth > 1024 ? window.innerWidth - 610 : window.innerWidth - 140
+        width: chartContainerRef.current.clientWidth,
       });
     };
 
     const chart = createChart(chartContainerRef.current, {
-      width: window.innerWidth > 1024 ? window.innerWidth - 610 : window.innerWidth - 140,
+      width: chartContainerRef.current.clientWidth,
       height: window.innerWidth >= 768 ? 610 : 400,
       layout: {
         textColor: "rgba(255, 255, 255, 0.9)",

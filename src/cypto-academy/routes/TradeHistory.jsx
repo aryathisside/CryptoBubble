@@ -62,7 +62,7 @@ const TradeHistory = () => {
   const currentItems = tradeHistory?.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <section className="lg:px-4 py-2 lg:py-8  max-w-[1600px]  p-2 flex">
+    <section className="lg:px-4 py-2 lg:py-8  w-full p-2 flex">
       <div className="bg-[#171A24] w-full py-6 px-4 rounded-[12px] m-3">
         <div className="md:flex justify-between items-center">
           <div>
