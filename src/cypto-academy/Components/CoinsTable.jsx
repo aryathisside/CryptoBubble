@@ -23,7 +23,7 @@ const CoinsTable = () => {
 
   // const [page, setPage] = useState(1);
 
-  const { data, error, isLoading, isSuccess } = useGetCoinsDataQuery({ currency, currentPage }, { pollingInterval: 300000 });
+  const { data, error, isLoading, isSuccess } = useGetCoinsDataQuery({ currency, currentPage }, { pollingInterval: 60000 });
 
   const {
     data: globalCryptoData,

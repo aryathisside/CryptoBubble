@@ -42,9 +42,9 @@ const Portfolio = () => {
     isLoading: fetchPortfolioCoinDataLoading,
     isSuccess: fetchPortfolioCoinDataSuccess,
     refetch: refetchPortfolioCoinData
-  } = useGetPortfolioCoinDataQuery(currentUser.uid, { pollingInterval: 20000 });
+  } = useGetPortfolioCoinDataQuery(currentUser.uid, { pollingInterval: 60000 });
 
-    const { data, error:MarketFetcherror, isLoading:MarketFetchLoading, isSuccess:MarketFetchSuccess } = useGetCoinsDataQuery({ pollingInterval: 300000 });
+    const { data, error:MarketFetcherror, isLoading:MarketFetchLoading, isSuccess:MarketFetchSuccess } = useGetCoinsDataQuery({ pollingInterval: 60000 });
   
 
   //   async function getUserTradeHistory(userId) {

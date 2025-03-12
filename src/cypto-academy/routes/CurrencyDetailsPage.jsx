@@ -48,7 +48,7 @@ const CurrencyDetailsPage = () => {
   const [toggleBuyCoinsModal, setToggleBuyCoinsModal] = useState(false);
   const [toggleSellCoinsModal, setToggleSellCoinsModal] = useState(false);
 
-  const { data, error, isLoading, isSuccess } = useGetCoinDataQuery(id, { pollingInterval: 20000 });
+  const { data, error, isLoading, isSuccess } = useGetCoinDataQuery(id, { pollingInterval: 60000 });
 
   const {
     data: chartData,

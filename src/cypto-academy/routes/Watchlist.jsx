@@ -66,7 +66,7 @@ const Watchlist = () => {
     error: MarketFetcherror,
     isLoading: MarketFetchLoading,
     isSuccess: MarketFetchSuccess
-  } = useGetCoinsDataQuery({ pollingInterval: 300000 });
+  } = useGetCoinsDataQuery({ pollingInterval: 60000 });
 
   async function getSimulatorNews() {
     try {
@@ -122,7 +122,7 @@ const Watchlist = () => {
   } = useGetWatchlistDataQuery(currentUser.uid);
 
   useEffect(() => {
-    const interval = setInterval(() => refetch(), 20000);
+    const interval = setInterval(() => refetch(), 60000);
 
     return () => {
       clearInterval(interval);

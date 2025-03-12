@@ -26,7 +26,7 @@ const MiniWatchlist = () => {
         } = useGetWatchlistDataQuery(currentUser.uid);
       
         useEffect(() => {
-          const interval = setInterval(() => refetch(), 20000);
+          const interval = setInterval(() => refetch(), 60000);
       
           return () => {
             clearInterval(interval);
