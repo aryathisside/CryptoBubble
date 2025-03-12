@@ -204,7 +204,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
 
                   {/* Table Body */}
                   <tbody>
-                    {trendingCoins.coins.map((coin, index) => (
+                    {trendingCoins.coins.slice(0,10).map((coin, index) => (
                       <tr key={index} className=" hover:bg-[#1A1D25] transition">
                         {/* S.No */}
                         <td className="pl-6 py-4 text-white font-medium">#{index + 1}</td>
