@@ -68,7 +68,7 @@ const Watchlist = () => {
   
     async function getSimulatorNews() {
       try {
-        const response = await fetch(`http://localhost:3004/v1/simulator/getNews`, {
+        const response = await fetch(`${process.env.SIMULATOR_API}/getNews`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -279,8 +279,30 @@ const Watchlist = () => {
         )}
         <DynamicPagination totalItems={watchlistData?.length} itemsPerPage={itemsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       </div>
+      <div className="flex-[1] m-3 hidden md:block">
       {MarketFetchSuccess && <BuyCoins data={data} />}
-      
+      <div className="bg-[#171A24] py-6 px-4 rounded-[12px]">
+          <div className="flex justify-between items-center ">
+            <div className="text-white">
+              News <span className="text-[#A9A9A9]">(for watchlist cryptos)</span>
+            </div>
+            <div className="border-2 border-[#2A2E36] p-2 rounded cursor-pointer"  onClick={() => navigate('/papertrade/app/news')}>
+              <IoIosArrowRoundForward className="text-[#A9A9A9]" />
+            </div>
+          </div>
+           {newsData && newsData.slice(0,4).map((news, index)=> {
+                   return (
+                    <Link key={index}  to={news?.url} target="_blank" rel="noopener noreferrer">
+                     <div className="mt-2 mb-2" >
+                   <div className="text-[#A9A9A9] text-sm">{news?.domain}</div>
+                   <div className="text-white text-sm">{news?.title}</div>
+                 </div>
+                    </Link>
+                   )
+                 }) }
+
+        </div>
+        </div>
     </section>
   );
 };

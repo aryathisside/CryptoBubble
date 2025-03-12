@@ -251,7 +251,10 @@ const Portfolio = () => {
             </ul>
           </div>
         </div>
+        <div className="flex-[1] m-3 hidden md:block">
             {MarketFetchSuccess && <BuyCoins data={data} />}
+            <MiniWatchlist />
+            </div>
       </div>
     </section>
   );
