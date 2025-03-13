@@ -151,7 +151,7 @@ const Watchlist = () => {
 
   return (
     <section className="lg:px-4 py-2 lg:py-8 w-full  p-2 flex">
-      <div className="bg-[#171A24] w-full md:w-[72%] py-6 px-4 rounded-[12px] md:m-3 m-2">
+      <div className="bg-[#171A24] w-full md:w-[72%] py-6 px-4 rounded-[12px] md:mx-4 mt-4 sm:m-2 relative">
         <div className="md:flex justify-between">
           <div>
             <p className="text-white font-bold text-xl md:text-2xl font-title lg:mt-0 mb-2 ml-3">WatchList</p>
@@ -173,8 +173,8 @@ const Watchlist = () => {
               <input
                 type="text"
                 id="table-search"
-                className="w-full mb-4 sm:w-auto text-sm rounded-lg block pl-10 p-2.5 bg-[#171A24] border-2 border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search for Cryptocurrency..."
+                className="w-full mb-4 sm:w-[auto] lg:w-[300px] text-sm rounded-lg block pl-10 p-2.5 bg-[#171A24] border-2 border-[#2A2E36] placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Search Crypto here..."
                 onChange={(e) => {
                   setSearch(e.target.value);
                 }}
@@ -279,11 +279,13 @@ const Watchlist = () => {
               ))}
           </div>
         )}
+        <div className='absolute left-0 w-full bottom-4'>
         <DynamicPagination totalItems={watchlistData?.length} itemsPerPage={itemsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        </div>
       </div>
-      <div className="w-[27%] m-3 hidden md:block">
+      <div className="w-[27%] md:mx-4 mt-4 sm:mx-2 hidden md:block">
         {MarketFetchSuccess && <BuyCoins data={data} />}
-        <div className="bg-[#171A24] py-6 px-4 rounded-[12px]">
+        <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mt-4">
           <div className="flex justify-between items-center ">
             <div className="text-white">
               News <span className="text-[#A9A9A9]">(for watchlist cryptos)</span>

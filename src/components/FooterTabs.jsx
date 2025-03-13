@@ -246,7 +246,7 @@ const FooterTabs = () => {
                   <Box>
                     <StyledButton
                       onClick={() => updateFilterHandle({ type: 'all', id: null })}
-                      sx={{ mr: 1, mb: 1, px: 2, background: filter.type === 'all' ? '#0477DD !important' : null }}>
+                      sx={{ mr: 1, mb: 1, background: filter.type === 'all' ? '#0477DD !important' : null }}>
                       <Typography color="white" textTransform="none">
                         1-100
                       </Typography>

@@ -263,6 +263,7 @@ const HeaderTabs = () => {
 
         {layout === 'bubble' && !isMobile && (
           <Scrollbar
+          className='header-scroll'
             style={{ width: '50%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }} // Ensure it spans horizontally
             noScrollY // Disable vertical scrolling
             thumbXProps={{

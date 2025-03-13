@@ -249,10 +249,10 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
     </div>
   ) : (
     <div className="overflow-x-auto">
-      <table className="w-full border-2 border-[#2A2E36]">
+       <table className="w-full border-2 border-[#2A2E36]">
         {/* Table Head */}
         <thead className="bg-[#171A24] text-white">
-          <tr className="border-b border-[#2A2E36] text-left">
+          <tr className=" text-left">
             <th className="px-6 py-3 font-semibold">S.No.</th>
             <th className="px-6 py-3 font-semibold">Name</th>
             <th className="px-6 py-3 font-semibold">Amount</th>
@@ -265,7 +265,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
         <tbody>
           {fetchWatchlistSuccess &&
             watchlistData.slice(0, 7).map((coin, index) => (
-              <tr key={index} className="border-b border-[#2A2E36] hover:bg-[#1A1D25] transition">
+              <tr key={index} className=" hover:bg-[#1A1D25] transition">
                 {/* S.No */}
                 <td className="px-6 py-4 text-white font-medium">#{index + 1}</td>
 

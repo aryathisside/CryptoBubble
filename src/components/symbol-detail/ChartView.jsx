@@ -153,7 +153,7 @@ const ChartView = () => {
 
           {expanded && (
             <DialogContent sx={{ padding: 0 }}>
-              <Grid container overflow={'hidden'}>
+              <Grid container >
                 <Grid item xs={12} md={8.5}>
                   <TradeLinks symbol={selectedCurrency} />
                   <Box display={"flex"} alignItems={"center"} flexDirection={isMobile?"column":"row"}  justifyContent={"space-between"}>

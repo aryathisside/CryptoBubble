@@ -56,7 +56,7 @@ const NewsPage = () => {
             <p className="text-white font-bold text-xl md:text-2xl font-title lg:mt-0 mb-2 ml-3">News</p>
             <p className="text-[#A9A9A9] text-sm  font-title lg:mt-0 ml-3">Stay up to date with all the crypto news in the world.</p>
           </div>
-          <div className="md:px-4">
+          {/* <div className="md:px-4">
             <label for="table-search" className="sr-only">
               Search
             </label>
@@ -79,12 +79,12 @@ const NewsPage = () => {
                 }}
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
-      <div className="md:px-4 mb-2 ml-2">
+      {/* <div className="md:px-4 mb-2 ml-2">
         <button className="border-2 border-[#CFA935] text-[#CFA935] p-2 rounded">Market Cap</button>
-      </div>
+      </div> */}
       {loading && <Loader />}
       {!loading && <> 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-4 m-4">

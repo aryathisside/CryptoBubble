@@ -23,7 +23,7 @@ const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
 
   return (
     <div>
-      <div className="block md:hidden">
+      <div className="block lg:hidden">
          <SubPagination currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} />   
          </div>
     
@@ -33,7 +33,7 @@ const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
         {Math.min(currentPage * itemsPerPage, totalItems)}</strong> of <strong>{totalItems}</strong>
       </div>
 
-  <div className="hidden md:block">
+  <div className="hidden lg:block">
          <SubPagination currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} />   
          </div>
 

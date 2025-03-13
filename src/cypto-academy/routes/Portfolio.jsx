@@ -110,7 +110,7 @@ const Portfolio = () => {
     <section className="lg:px-8 p-3">
       <div className="md:flex gap-4">
         <div className="w-full md:w-[70%] flex-shrink-0">
-          <div className="bg-[#171A24] py-4 px-3 rounded-[12px] md:m-3 mb-3 sm:mb-0 w-full">
+          <div className="bg-[#171A24] py-4 px-3 rounded-[12px] sm:m-0 md:m-3 w-full">
             <div className="md:flex justify-between items-center pb-4 border-b-2 border-[#2A2E36]">
               <div>
                 <p className="text-white font-bold text-xl font-title mt-2 lg:mt-0 md:px-3">Portfolio</p>
@@ -176,7 +176,7 @@ const Portfolio = () => {
           </div>
 
           {/* portfolio Table */}
-          <div className="bg-[#171A24] py-4 px-3 rounded-[12px] md:m-3 w-full">
+          <div className="bg-[#171A24] py-4 px-3 rounded-[12px] md:mx-3 mt-4 w-full">
             <ul className="md:px-4 font-text flex flex-col space-y-1 pb-12 pt-4 text-white">
               {/* Table Head */}
               <li className="grid grid-cols-2 md:grid-cols-4 text-gray-500 py-2 px-1md:px-5 cursor-pointer bg-[#2A2E36] py-2 rounded-md">
