@@ -245,6 +245,10 @@ const BuySingleCoin = ({ data }) => {
         throw new Error('Not enough coins!');
       }
 
+      if(isChecked && (minPrice >=data?.market_data?.current_price?.usd || maxPrice <= data?.market_data?.current_price?.usd)) {
+        throw new Error('Please Enter a Valid Limit!');
+      }
+
       // check if the coin is already purchased i.e. add the coin amount coin to our existing coin in portfolio db
       let {
         data: existingCoin

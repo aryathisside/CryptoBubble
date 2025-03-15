@@ -17,6 +17,31 @@ const TradeHistory = () => {
 
   const itemsPerPage = 10;
 
+  const DownloadReport = async () => {
+    try {
+      const response = await fetch(`${process.env.SIMULATOR_API}/trading-history-report/${currentUser.uid}`, {
+        method: 'GET'
+      });
+      if (!response.ok) {
+        throw new Error(response.error || 'Failed to fetch trade history.');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'trade-history-report.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      // Revoke the object URL to free memory
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error fetching trade history:', error.message);
+      setTradeError(error.message);
+    }
+  };
+
   async function getUserTradeHistory(userId) {
     try {
       const response = await fetch(`${process.env.SIMULATOR_API}/get-trade-history`, {
@@ -99,7 +124,7 @@ const TradeHistory = () => {
                 />
               </div>
             </div>
-            <button className="flex gap-2 text-[#CFA935] border-2 px-4 py-2 mt-2 border-[#CFA935] rounded-md hover:bg-gray-700 leading-none h-auto">
+            <button className="flex gap-2 text-[#CFA935] border-2 px-4 py-2 mt-2 border-[#CFA935] rounded-md hover:bg-gray-700 leading-none h-auto" onClick={()=>DownloadReport()}>
             {window.innerWidth < 768 ? <IoMdCloudDownload /> : <><IoMdCloudDownload /> Download</>}
 
               
