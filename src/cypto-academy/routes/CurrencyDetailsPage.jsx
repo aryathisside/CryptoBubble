@@ -318,7 +318,7 @@ const CurrencyDetailsPage = () => {
 
           {isSuccess && (
             <div className="no-scrollbar flex flex-wrap md:gap-8 gap-3 justify-between rounded-box w-screen w-full overflow-auto max-w-full pt-8">
-              <div className="w-full md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
+              <div className="w-[47%] md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
                 <div className="flex items-center p-2 gap-3">
                   <img src={dollor} alt="btc logo" className="h-8 w-8 rounded-lg" />
                   <div className="text-white">Market Cap</div>
