@@ -76,7 +76,7 @@ const LoginPage = () => {
             </Typography>
           )}
 
-          <Box p={1} display={'flex'} flexDirection={'column'} width={'100%'} gap={1} padding={0}>
+          {/* <Box p={1} display={'flex'} flexDirection={'column'} width={'100%'} gap={1} padding={0}>
             <Typography variant="subtitle" color="#A9A9A9">
               Log in with your social media
             </Typography>
@@ -87,11 +87,11 @@ const LoginPage = () => {
               <StyledIconButton onClick={handleLinkedinLogin} sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
                 <img height={25} src="Social Media (1).png" alt="" />
               </StyledIconButton>
-              {/* <StyledIconButton sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
+              <StyledIconButton sx={{ height: '100%', width: 'fit-content', backgroundColor: '#2A2E36' }}>
               <img height={25} src="Social Media (2).png" alt="" />
-            </StyledIconButton> */}
+            </StyledIconButton>
             </Grid>
-          </Box>
+          </Box> */}
           <Box width={'100%'} border={'2px solid #2A2E36'}></Box>
           <Box width={'100%'} display={'flex'} justifyContent={'space-between'}>
             <Typography variant="subtitle" color="#A9A9A9">

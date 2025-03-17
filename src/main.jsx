@@ -23,6 +23,7 @@ const AppWrapper = () => {
   return (
     // Always wrap with AuthContextProvider
     <>
+    
       {isPaperTrade ? (
         // Wrap with both Provider and AuthContextProvider for /papertrade route
         <AuthContextProvider>

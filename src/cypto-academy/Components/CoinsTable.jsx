@@ -13,6 +13,8 @@ import DynamicPagination from '../../components/common/Pagination';
 import BuyCoins from './BuyCoins';
 import MiniWatchlist from './MiniWatchlist';
 import { MdOutlineStarBorder } from "react-icons/md";
+import percentIcon from "../Assets/svg/percent-icon.svg";
+import priceIcon from "../Assets/svg/price-icon.svg";
 
 const CoinsTable = () => {
   const navigate = useNavigate();
@@ -72,7 +74,7 @@ const CoinsTable = () => {
 
   return (
     <>
-    <div className="z-10 w-full md:w-[70%]">
+    <div className="z-10 w-full md:w-[72%]">
       {(isLoading || fetchGlobalCryptoLoading) && <Loader />}
       {error && <ErrorToast message="Something Went Wrong!" ref={toastRef} />}
       <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mx-3 md:mt-6 sm:mt-4 mb-2 md:mb-4">
@@ -116,8 +118,9 @@ const CoinsTable = () => {
                   <p className=" truncate text-sm text-white font-semibold break-words">{coins.name}</p>
                 </div>
                 <div className="text-white font-semibold pt-3">$ {coins.current_price}</div>
-                <div className=" items-center text-sm justify-end ml-auto md:ml-0 ">
-                  <p className={` ${coins?.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'} font-semibold`}>
+                <div className="flex items-center text-sm justify-start gap-1 ml-auto md:ml-0 ">
+                  <img src={percentIcon} alt='percent' />
+                  <p className={` ${coins?.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'} font-semibold text-sm`}>
                     {coins?.price_change_percentage_24h >= 0 && '+'}
                     {coins?.price_change_percentage_24h?.toFixed(2)}%
                   </p>
@@ -202,21 +205,27 @@ const CoinsTable = () => {
 
         <ul className="md:px-4 flex flex-col space-y-1 pb-12 font-text text-white p-2">
           {/* Table Head */}
-          <li className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 text-gray-500 py-3 px-1 md:px-5 cursor-pointer bg-[#2A2E36] rounded-lg">
-            <div className="hidden lg:flex justify-start items-center space-x-4 w-20">
+          <li className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 text-gray-500 py-3 px-1 md:px-5 cursor-pointer bg-[#2A2E36] rounded-lg">
+            <div className="hidden lg:flex justify-start items-center space-x-4 w-12">
               <p className="text-white pl-4">S.no</p>
             </div>
             <div className="flex justify-start items-center space-x-4">
-              <p className="text-white pl-4">Name</p>
+              <p className="w-28 md:w-40 text-white pl-4">Name</p>
             </div>
             <div className="flex items-center justify-end ml-auto md:ml-0 ">
               <p className="w-28 md:w-40  text-white">Price</p>
             </div>
             <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
-              <p className="w-24 md:w-40  text-white">24h Change</p>
+              <p className="w-24 md:w-40  text-white">24h Volume</p>
+            </div>
+            <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
+              <p className="w-24 md:w-40  text-white">24h %</p>
+            </div>
+            <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
+              <p className="w-24 md:w-40  text-white">24h High</p>
             </div>
             <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 ">
-              <p className="w-24 md:w-40  text-white">Market Cap</p>
+              <p className="w-24 md:w-40  text-white">24h Low</p>
             </div>
           </li>
           {/* coin prices */}
@@ -225,12 +234,12 @@ const CoinsTable = () => {
               <li
                 key={index}
                 onClick={() => navigate(`/papertrade/app/coin/${coins.id}`)}
-                className="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-5 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-gray-800 ">
-                <div className="w-20 hidden lg:flex items-center">
+                className="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-7 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer border-gray-800 ">
+                <div className="w-12 hidden lg:flex items-center">
                   <p className="pl-4 text-white flex items-center"><MdOutlineStarBorder/> {(currentPage - 1) * itemsPerPage + index + 1}</p>
                 </div>
                 <div className="flex items-center space-x-2 ">
-                  <img className="h-8 w-8 md:h-10 md:w-10 object-contain" src={coins.image} alt="cryptocurrency" loading="lazy" />
+                  <img className="h-7 w-7 md:h-8 md:w-8 object-contain" src={coins.image} alt="cryptocurrency" loading="lazy" />
                   <div>
                     <p className=" w-64 truncate text-white font-semibold break-words">{coins.name}</p>
                     <div className="flex space-x-1">
@@ -247,20 +256,27 @@ const CoinsTable = () => {
                   </div>
                 </div>
                 <div className="flex items-center justify-end ml-auto md:ml-0 ">
-                  <p className="w-28 md:w-40 text-white font-semibold">
+                  <p className="w-28 md:w-40 text-white flex gap-1 items-center">
                     ${coins.current_price}
+                    <img src={priceIcon} alt='price' className='w-4 h-4'/>
                     <br />
-                    <span className="md:hidden w-28 md:w-40 text-gray-500">MCap: {normalizeMarketCap(coins.market_cap)}</span>
+                    {/* <span className="md:hidden w-28 md:w-40 text-gray-500">MCap: {normalizeMarketCap(coins.market_cap)}</span> */}
                   </p>
                 </div>
+                <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 ">
+                  <p className="w-24 md:w-40 text-white ">${coins.total_volume}</p>
+                </div>
                 <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
-                  <p className={`w-24 md:w-40 ${coins?.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'} font-semibold`}>
+                  <p className={`w-24 md:w-40 ${coins?.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {coins?.price_change_percentage_24h >= 0 && '+'}
                     {coins?.price_change_percentage_24h?.toFixed(2)}%
                   </p>
                 </div>
-                <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 ">
-                  <p className="w-24 md:w-40  ">${coins.market_cap}</p>
+                <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 text-white">
+                  <p className="w-24 md:w-40  ">${coins.high_24h}</p>
+                </div>
+                <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 text-white">
+                  <p className="w-24 md:w-40  ">${coins.low_24h}</p>
                 </div>
               </li>
             ))}
@@ -284,7 +300,7 @@ const CoinsTable = () => {
       /> */}
       </div>
     </div>
-      <div className="w-[30%] mx-3 my-4 hidden md:block">
+      <div className="w-[28%] mx-3 my-4 hidden md:block">
      {isSuccess && <BuyCoins data={data} />}
     <MiniWatchlist />
 

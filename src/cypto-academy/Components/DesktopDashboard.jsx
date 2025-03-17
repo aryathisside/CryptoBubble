@@ -211,15 +211,15 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
 
                         {/* Coin Name */}
                         <td className="pl-6 py-4 flex items-center space-x-3">
-                          <img src={coin.item.large} alt={`${coin.item.name}`} className="w-10 h-10 rounded-md" />
+                          <img src={coin.item.large} alt={`${coin.item.name}`} className="w-8 h-8 rounded-md" />
                           <div>
-                            <p className="text-white font-semibold">{coin.item.name}</p>
+                            <p className="text-white font-semibold text-sm">{coin.item.name}</p>
                             <p className="text-gray-400 text-sm">{coin.item.symbol}/USD</p>
                           </div>
                         </td>
 
                         {/* Amount */}
-                        <td className="pl-6 py-4 text-white font-medium">${coin.item.price_btc.toFixed(9)}</td>
+                        <td className="pl-6 py-4 text-white font-medium text-sm">${coin.item.price_btc.toFixed(9)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -252,7 +252,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
        <table className="w-full border-2 border-[#2A2E36]">
         {/* Table Head */}
         <thead className="bg-[#171A24] text-white">
-          <tr className=" text-left">
+          <tr className="text-sm text-left">
             <th className="px-6 py-3 font-semibold">S.No.</th>
             <th className="px-6 py-3 font-semibold">Name</th>
             <th className="px-6 py-3 font-semibold">Amount</th>
@@ -271,21 +271,21 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
 
                 {/* Coin Name */}
                 <td className="px-6 py-4 flex items-center space-x-3">
-                  <img src={coin.image.large} alt={coin.name} className="w-10 h-10 rounded-md" />
+                  <img src={coin.image.large} alt={coin.name} className="w-8 h-8 rounded-md" />
                   <div>
-                    <p className="text-white font-semibold">{coin?.name}</p>
+                    <p className="text-white font-semibold text-sm">{coin?.name}</p>
                     <p className="text-gray-400 text-sm">{coin?.symbol.toUpperCase()}/USD</p>
                   </div>
                 </td>
 
                 {/* Amount */}
-                <td className="px-6 py-4 text-white font-medium">
+                <td className="px-6 py-4 text-white font-medium text-sm">
                   ${coin.market_data.current_price.usd.toLocaleString()}
                 </td>
 
                 {/* 24h Change */}
                 <td
-                  className={`px-6 py-4 font-semibold ${
+                  className={`px-6 py-4 font-semibold text-sm ${
                     coin?.market_data.price_change_percentage_24h >= 0 ? "text-green-400" : "text-red-400"
                   }`}
                 >

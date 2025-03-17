@@ -80,6 +80,7 @@ const handleSignUpClick=()=>{
 const handleSkip=async ()=>{
   await localStorage.setItem('token',"login without crediantials");
   // window.location.href = "/"
+  navigate("/")
   setAuthenticated(true)
 }
   return (

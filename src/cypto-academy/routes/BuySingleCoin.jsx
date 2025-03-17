@@ -12,6 +12,7 @@ import { fetchAvailableCoins } from '../Features/availableCoins';
 import { FaCartShopping } from 'react-icons/fa6';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useGetCoinsDataQuery } from '../services/coinsDataApi';
+import { toast } from 'react-toastify';
 
 const BuySingleCoin = ({ data }) => {
   // const [currency, setCurrency] = useState('usd');
@@ -114,243 +115,395 @@ const BuySingleCoin = ({ data }) => {
   }, [currentUser.uid, data.id, dispatch]);
 
 
-  async function addTransactionToHistory(transaction) {
-    try {
-      const response = await fetch(`${process.env.SIMULATOR_API}/save-trade-history`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          userId: currentUser.uid, // Ensure `currentUser.uid` is available
-          transaction: transaction
-        })
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to update transaction history.');
-      }
-
-      console.log('Transaction added successfully:', result.message);
-    } catch (error) {
-      console.error('Error:', error.message);
-    }
-  }
-
-  async function onPlaceSellOrder() {
-    try {
-      setOrderLoading(true);
-      // get available coins and check if it coin amount is more than what we want to sell
-
-      if (coinValue > availabeCoinAmt) {
-        throw new Error('Not enough coins!');
-      }
-
-      // check if the coin is already purchased i.e. add the coin amount  to our existing coin in portfolio db
-
-      // update the sold coin to database
-      const portfolioUsdAmount = data.market_data.current_price.usd * (availabeCoinAmt - coinValue);
-      const updatedCoinAmount = availabeCoinAmt - coinValue;
-
-      const {
-        // data: removefromPortfolio,
-        error: removefromPortfolioError
-      } = await supabase
-        .from('portfolio')
-        .update([
-          {
-            amount: `${portfolioUsdAmount.toFixed(3)}`,
-            coinAmount: `${updatedCoinAmount.toFixed(3)}`
-          }
-        ])
-        .eq('userId', `${currentUser.uid}`)
-        .eq('coinId', `${data.id}`);
-
-      if (removefromPortfolioError) {
-        throw new Error('Something went wrong, Please try again!');
-      }
-
-      // add the value to virtual usd
-      let updatedUsdValue = availableUsdCoins.data.amount + coinUsdPrice;
-
-      let {
-        // data: updateUsdCoin,
-        error: updateUsdCoinError
-      } = await supabase.from('portfolio').update({ amount: updatedUsdValue }).eq('userId', `${currentUser.uid}`).eq('coinId', 'USD');
-
-      if (updateUsdCoinError) {
-        throw new Error('Something went wrong!');
-      }
-
-      // delete the portfolio from db if the coinValue is 0
-      if (updatedCoinAmount === 0) {
-        // const {data: deleteRow, error: errorRow } =
-        await supabase.from('portfolio').delete().eq('userId', `${currentUser.uid}`).eq('coinId', `${data.id}`);
-      }
-
-      // Add transaction to history
-      const transaction = {
-        type: 'sell',
-        coinId: `${data.id}`,
-        symbol: `${data.symbol}`,
-        coinValue: `${coinValue}`,
-        coinUsdPrice: `${coinUsdPrice}`,
-        timestamp: new Date().toISOString()
-      };
-
-      await addTransactionToHistory(transaction); // Added here
-
-      // calculate networth
-      let { data: portfolioData } = await supabase.from('portfolio').select('*').eq('userId', `${currentUser.uid}`);
-
-      const userNetworth = portfolioData.reduce((previousValue, currentCoin) => previousValue + currentCoin.amount, 0);
-
-      const { data: updateNetworth, error: updateErr } = await supabase
-        .from('users')
-        .update({ networth: parseFloat(userNetworth) })
-        .eq('userId', `${currentUser.uid}`);
-
-      setOrderLoading(false);
-      // setModal(false);
-      alert('Coin Sold Successfully');
-      navigate('/papertrade/app/portfolio');
-    } catch (error) {
-      setOrderLoading(false);
-      alert(error);
-    }
-  }
-
-  async function onPlaceOrder() {
-    try {
-      setOrderLoading(true);
-      // get available coins and check if it is lesser than what we want to purchase
-      let { data: availableUsdCoin } = await supabase
-        .from('portfolio')
-        .select('coinId,coinName,amount')
-        .eq('userId', `${currentUser.uid}`)
-        .eq('coinId', 'USD');
-
-      const transaction = {
-        type: 'buy',
-        coinId: `${data.id}`,
-        symbol: `${data.symbol}`,
-        coinValue: `${coinValue}`,
-        coinUsdPrice: `${coinUsdPrice}`,
-        timestamp: new Date().toISOString()
-      };
-
-      if (coinUsdPrice > availableUsdCoin[0].amount) {
-        throw new Error('Not enough coins!');
-      }
-
-      if(isChecked && (minPrice >=data?.market_data?.current_price?.usd || maxPrice <= data?.market_data?.current_price?.usd)) {
-        throw new Error('Please Enter a Valid Limit!');
-      }
-
-      // check if the coin is already purchased i.e. add the coin amount coin to our existing coin in portfolio db
-      let {
-        data: existingCoin
-        // error: existingCoinErr
-      } = await supabase.from('portfolio').select('coinId,coinName,amount,coinAmount').eq('userId', `${currentUser.uid}`).eq('coinId', `${data.id}`);
-
-      if (existingCoin.length !== 0) {
-        console.log('running this');
-        let { data: updateExistingCoin, error: updateExistingCoinErr } = await supabase
-          .from('portfolio')
-          .update({
-            amount: `${Number(existingCoin[0].amount) + Number(coinUsdPrice)}`,
-            coinAmount: `${Number(existingCoin[0].coinAmount) + Number(coinValue)}`,
-            maxPrice: maxPrice ?? existingCoin[0].maxPrice, // Keep existing value if not provided
-            minPrice: minPrice ?? existingCoin[0].minPrice // Keep existing value if not provided
+   async function addTransactionToHistory(transaction) {
+      try {
+        const response = await fetch(`${process.env.SIMULATOR_API}/save-trade-history`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            userId: currentUser.uid, // Ensure `currentUser.uid` is available
+            transaction: transaction
           })
+        });
+  
+        const result = await response.json();
+  
+        if (!response.ok) {
+          // throw new Error(result.error || 'Failed to update transaction history.');
+          toast.error(result.error || 'Failed to update transaction history.', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          return;
+          
+        }
+  
+        console.log('Transaction added successfully:', result.message);
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    }
+  
+    async function onPlaceSellOrder() {
+      try {
+        setOrderLoading(true);
+        // get available coins and check if it coin amount is more than what we want to sell
+  
+        if (coinValue > availabeCoinAmt) {
+          // throw new Error('Not enough coins!');
+          toast.error('Not enough coins!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          return;
+        }
+  
+        // check if the coin is already purchased i.e. add the coin amount  to our existing coin in portfolio db
+  
+        // update the sold coin to database
+        const portfolioUsdAmount = data.market_data.current_price.usd * (availabeCoinAmt - coinValue);
+        const updatedCoinAmount = availabeCoinAmt - coinValue;
+  
+        const {
+          // data: removefromPortfolio,
+          error: removefromPortfolioError
+        } = await supabase
+          .from('portfolio')
+          .update([
+            {
+              amount: `${portfolioUsdAmount.toFixed(3)}`,
+              coinAmount: `${updatedCoinAmount.toFixed(3)}`
+            }
+          ])
           .eq('userId', `${currentUser.uid}`)
           .eq('coinId', `${data.id}`);
-
-        // deduct the value from virtual usd
-        let updatedUsdValue = availableUsdCoin[0].amount - coinUsdPrice;
-
-        let { data: updateUsdCoin, error: updateUsdCoinError } = await supabase
+  
+        if (removefromPortfolioError) {
+          // throw new Error('Something went wrong, Please try again!');
+          toast.error('Something went wrong, Please try again!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          return;
+        }
+  
+        // add the value to virtual usd
+        let updatedUsdValue = availableUsdCoins.data.amount + coinUsdPrice;
+  
+        let {
+          // data: updateUsdCoin,
+          error: updateUsdCoinError
+        } = await supabase.from('portfolio').update({ amount: updatedUsdValue }).eq('userId', `${currentUser.uid}`).eq('coinId', 'USD');
+  
+        if (updateUsdCoinError) {
+          // throw new Error('Something went wrong!');
+          toast.error('Something went wrong!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          return;
+        }
+  
+        // delete the portfolio from db if the coinValue is 0
+        if (updatedCoinAmount === 0) {
+          // const {data: deleteRow, error: errorRow } =
+          await supabase.from('portfolio').delete().eq('userId', `${currentUser.uid}`).eq('coinId', `${data.id}`);
+        }
+  
+        // Add transaction to history
+        const transaction = {
+          type: 'sell',
+          coinId: `${data.id}`,
+          symbol: `${data.symbol}`,
+          coinValue: `${coinValue}`,
+          coinUsdPrice: `${coinUsdPrice}`,
+          timestamp: new Date().toISOString()
+        };
+  
+        await addTransactionToHistory(transaction); // Added here
+  
+        // calculate networth
+        let { data: portfolioData } = await supabase.from('portfolio').select('*').eq('userId', `${currentUser.uid}`);
+  
+        const userNetworth = portfolioData.reduce((previousValue, currentCoin) => previousValue + currentCoin.amount, 0);
+  
+        const { data: updateNetworth, error: updateErr } = await supabase
+          .from('users')
+          .update({ networth: parseFloat(userNetworth) })
+          .eq('userId', `${currentUser.uid}`);
+  
+        setOrderLoading(false);
+        // setModal(false);
+        toast.success("Coin Sold Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        // alert('Coin Sold Successfully');
+        navigate('/papertrade/app/portfolio');
+      } catch (error) {
+        setOrderLoading(false);
+        // alert(error);
+        toast.error(error, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
+    }
+  
+    async function onPlaceOrder() {
+      try {
+        setOrderLoading(true);
+        // get available coins and check if it is lesser than what we want to purchase
+        let { data: availableUsdCoin } = await supabase
           .from('portfolio')
-          .update({ amount: parseFloat(updatedUsdValue) })
+          .select('coinId,coinName,amount')
           .eq('userId', `${currentUser.uid}`)
           .eq('coinId', 'USD');
-
-        if (updateExistingCoinErr || updateUsdCoinError) {
-          throw new Error('Something went wrong!');
+  
+        const transaction = {
+          type: 'buy',
+          coinId: `${data.id}`,
+          symbol: `${data.symbol}`,
+          coinValue: `${coinValue}`,
+          coinUsdPrice: `${coinUsdPrice}`,
+          timestamp: new Date().toISOString()
+        };
+  
+        if (coinUsdPrice > availableUsdCoin[0].amount) {
+          // throw new Error('Not enough coins!');
+          toast.error('Not enough coins!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          return;
         }
-
+  
+        if (isChecked && (minPrice >= data?.market_data?.current_price?.usd || maxPrice <= data?.market_data?.current_price?.usd)) {
+          // throw new Error('Please Enter a Valid Limit!');
+          toast.error('Please Enter a Valid Limit!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          setOrderLoading(false);
+          return;
+        }
+  
+        // check if the coin is already purchased i.e. add the coin amount coin to our existing coin in portfolio db
+        let {
+          data: existingCoin
+          // error: existingCoinErr
+        } = await supabase.from('portfolio').select('coinId,coinName,amount,coinAmount').eq('userId', `${currentUser.uid}`).eq('coinId', `${data.id}`);
+  
+        if (existingCoin.length !== 0) {
+          console.log('running this');
+          let { data: updateExistingCoin, error: updateExistingCoinErr } = await supabase
+            .from('portfolio')
+            .update({
+              amount: `${Number(existingCoin[0].amount) + Number(coinUsdPrice)}`,
+              coinAmount: `${Number(existingCoin[0].coinAmount) + Number(coinValue)}`,
+              maxPrice: maxPrice ?? existingCoin[0].maxPrice, // Keep existing value if not provided
+              minPrice: minPrice ?? existingCoin[0].minPrice // Keep existing value if not provided
+            })
+            .eq('userId', `${currentUser.uid}`)
+            .eq('coinId', `${data.id}`);
+  
+          // deduct the value from virtual usd
+          let updatedUsdValue = availableUsdCoin[0].amount - coinUsdPrice;
+  
+          let { data: updateUsdCoin, error: updateUsdCoinError } = await supabase
+            .from('portfolio')
+            .update({ amount: parseFloat(updatedUsdValue) })
+            .eq('userId', `${currentUser.uid}`)
+            .eq('coinId', 'USD');
+  
+          if (updateExistingCoinErr || updateUsdCoinError) {
+            // throw new Error('Something went wrong!');
+            toast.error('Something went wrong!', {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
+            return;
+          }
+  
+          // calculate net worth
+          let { data: portfolioData } = await supabase.from('portfolio').select('*').eq('userId', `${currentUser.uid}`);
+          const userNetworth = portfolioData.reduce((previousValue, currentCoin) => previousValue + currentCoin.amount, 0);
+  
+          await supabase
+            .from('users')
+            .update({ networth: parseFloat(userNetworth) })
+            .eq('userId', `${currentUser.uid}`);
+  
+          // Add transaction to history
+          await addTransactionToHistory(transaction); // Added here
+  
+          setOrderLoading(false);
+          // alert('Coin purchased successfully');
+          toast.success('Coin purchased successfully', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          navigate('/papertrade/app/portfolio');
+          return;
+        }
+  
+        // If coin is not already in the portfolio, add the purchased coin
+        const { error: addToPortfolioError } = await supabase.from('portfolio').insert([
+          {
+            userId: `${currentUser.uid}`,
+            coinId: `${data.id}`,
+            coinSymbol: `${data.symbol}`,
+            coinName: `${data.name}`,
+            image: `${data.image.large}`,
+            amount: `${coinUsdPrice}`,
+            coinAmount: `${coinValue}`,
+            maxPrice: maxPrice, // Store max price if provided
+            minPrice: minPrice // Store min price if provided
+          }
+        ]);
+  
+        if (addToPortfolioError) {
+          // throw new Error('Something went wrong, Please try again!');
+          toast.error('Something went wrong, Please try again!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          return;
+        }
+  
+        // deduct the value from virtual usd
+        let updatedUsdValue = availableUsdCoin[0].amount - coinUsdPrice;
+        let { error: updateUsdCoinError } = await supabase
+          .from('portfolio')
+          .update({ amount: updatedUsdValue })
+          .eq('userId', `${currentUser.uid}`)
+          .eq('coinId', 'USD');
+  
+        if (updateUsdCoinError) {
+          // throw new Error('Something went wrong!');
+          toast.error('Something went wrong!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          return;
+        }
+  
         // calculate net worth
         let { data: portfolioData } = await supabase.from('portfolio').select('*').eq('userId', `${currentUser.uid}`);
         const userNetworth = portfolioData.reduce((previousValue, currentCoin) => previousValue + currentCoin.amount, 0);
-
+  
         await supabase
           .from('users')
           .update({ networth: parseFloat(userNetworth) })
           .eq('userId', `${currentUser.uid}`);
-
+  
         // Add transaction to history
         await addTransactionToHistory(transaction); // Added here
-
+  
         setOrderLoading(false);
-        alert('Coin purchased successfully');
+        // setModal(false);
+        // alert('Coin purchased successfully');
+        toast.success('Coin purchased successfully', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
         navigate('/papertrade/app/portfolio');
-        return;
+      } catch (error) {
+        setOrderLoading(false);
+        // alert(error);
+        toast.error(error, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       }
-
-      // If coin is not already in the portfolio, add the purchased coin
-      const { error: addToPortfolioError } = await supabase.from('portfolio').insert([
-        {
-          userId: `${currentUser.uid}`,
-          coinId: `${data.id}`,
-          coinSymbol: `${data.symbol}`,
-          coinName: `${data.name}`,
-          image: `${data.image.large}`,
-          amount: `${coinUsdPrice}`,
-          coinAmount: `${coinValue}`,
-          maxPrice: maxPrice, // Store max price if provided
-          minPrice: minPrice // Store min price if provided
-        }
-      ]);
-
-      if (addToPortfolioError) {
-        throw new Error('Something went wrong, Please try again!');
-      }
-
-      // deduct the value from virtual usd
-      let updatedUsdValue = availableUsdCoin[0].amount - coinUsdPrice;
-      let { error: updateUsdCoinError } = await supabase
-        .from('portfolio')
-        .update({ amount: updatedUsdValue })
-        .eq('userId', `${currentUser.uid}`)
-        .eq('coinId', 'USD');
-
-      if (updateUsdCoinError) {
-        throw new Error('Something went wrong!');
-      }
-
-      // calculate net worth
-      let { data: portfolioData } = await supabase.from('portfolio').select('*').eq('userId', `${currentUser.uid}`);
-      const userNetworth = portfolioData.reduce((previousValue, currentCoin) => previousValue + currentCoin.amount, 0);
-
-      await supabase
-        .from('users')
-        .update({ networth: parseFloat(userNetworth) })
-        .eq('userId', `${currentUser.uid}`);
-
-      // Add transaction to history
-      await addTransactionToHistory(transaction); // Added here
-
-      setOrderLoading(false);
-      // setModal(false);
-      alert('Coin purchased successfully');
-      navigate('/papertrade/app/portfolio');
-    } catch (error) {
-      setOrderLoading(false);
-      alert(error);
     }
-  }
+  
   // async function onPlaceOrder() {
   //     try {
   //       setOrderLoading(true);
@@ -568,55 +721,55 @@ const BuySingleCoin = ({ data }) => {
               <span className="text-sm text-gray-300">Set Limit</span>
             </label>
             {isChecked && (
-              <div>
-                <div className="md:flex justify-between">
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Max Price</p>
-
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Min Price</p>
-                </div>
-                <div className="md:flex gap-2">
-                  <div className="relative py-4">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <img src={usd} alt="usd price" className="h-5 w-5" />
-                    </div>
-                    <input
-                      type="number"
-                      id="maxPrice"
-                      name="maxPrice"
-                      min="0"
-                      value={maxPrice}
-                      onChange={changemaxPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-
-                  <BsArrowLeftRight className="h-4 w-4 text-white m-auto" />
-
-                  {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" /> */}
-
-                  {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
-
-                  {/* usd value */}
-                  <div className="relative py-4">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <img src={usd} alt="usd price" className="h-5 w-5" />
-                    </div>
-                    <input
-                      type="number"
-                      min="0"
-                      id="minPrice"
-                      name="minPrice"
-                      value={minPrice}
-                      onChange={changeminPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-              </div>
+              <div className='pt-2'>
+                         <div className="md:flex justify-between">
+                           <p className="text-base leading-relaxed font-semibold text-gray-200">Take Profit</p>
+         
+                           <p className="text-base leading-relaxed font-semibold text-gray-200">Set Stop loss</p>
+                         </div>
+                         <div className="md:flex gap-2">
+                           <div className="relative pt-4">
+                             <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                               <img src={usd} alt="usd price" className="h-5 w-5" />
+                             </div>
+                             <input
+                               type="number"
+                               id="maxPrice"
+                               name="maxPrice"
+                               min="0"
+                               value={maxPrice}
+                               onChange={changemaxPrice}
+                               className=" border text-sm rounded-lg block w-full pl-10 py-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                             />
+                           </div>
+         
+                           <BsArrowLeftRight className="h-4 w-4 text-white m-auto" />
+         
+                           {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" /> */}
+         
+                           {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
+         
+                           {/* usd value */}
+                           <div className="relative py-4">
+                             <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                               <img src={usd} alt="usd price" className="h-5 w-5" />
+                             </div>
+                             <input
+                               type="number"
+                               min="0"
+                               id="minPrice"
+                               name="minPrice"
+                               value={minPrice}
+                               onChange={changeminPrice}
+                               className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                             />
+                           </div>
+                         </div>
+                       </div>
             )}
           </div>
-          <button
-            className="text-white w-full flex justify-center items-center bg-[#CFA935] p-2 rounded mt-4 gap-2 font-bold"
+         <button
+            className="text-white w-full text-sm py-2.5 flex justify-center items-center bg-[#CFA935] px-2 rounded mt-4 gap-2 font-semibold"
             onClick={onPlaceOrder}
             disabled={orderLoading}>
             <FaShoppingCart />
@@ -718,55 +871,55 @@ const BuySingleCoin = ({ data }) => {
               <span className="text-sm text-gray-300">Set Limit</span>
             </label>
             {isChecked && (
-              <div>
-                <div className="md:flex justify-between">
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Max Price</p>
-
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Min Price</p>
-                </div>
-                <div className="md:flex gap-2">
-                  <div className="relative py-4">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <img src={usd} alt="usd price" className="h-5 w-5" />
-                    </div>
-                    <input
-                      type="number"
-                      id="maxPrice"
-                      name="maxPrice"
-                      min="0"
-                      value={maxPrice}
-                      onChange={changemaxPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-
-                  <BsArrowLeftRight className="h-4 w-4 text-white m-auto" />
-
-                  {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" /> */}
-
-                  {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
-
-                  {/* usd value */}
-                  <div className="relative py-4">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <img src={usd} alt="usd price" className="h-5 w-5" />
-                    </div>
-                    <input
-                      type="number"
-                      min="0"
-                      id="minPrice"
-                      name="minPrice"
-                      value={minPrice}
-                      onChange={changeminPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-              </div>
+                <div className='pt-2'>
+                           <div className="md:flex justify-between">
+                             <p className="text-base leading-relaxed font-semibold text-gray-200">Take Profit</p>
+           
+                             <p className="text-base leading-relaxed font-semibold text-gray-200">Set Stop loss</p>
+                           </div>
+                           <div className="md:flex gap-2">
+                             <div className="relative pt-4">
+                               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                 <img src={usd} alt="usd price" className="h-5 w-5" />
+                               </div>
+                               <input
+                                 type="number"
+                                 id="maxPrice"
+                                 name="maxPrice"
+                                 min="0"
+                                 value={maxPrice}
+                                 onChange={changemaxPrice}
+                                 className=" border text-sm rounded-lg block w-full pl-10 py-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                               />
+                             </div>
+           
+                             <BsArrowLeftRight className="h-4 w-4 text-white m-auto" />
+           
+                             {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" /> */}
+           
+                             {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
+           
+                             {/* usd value */}
+                             <div className="relative py-4">
+                               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                 <img src={usd} alt="usd price" className="h-5 w-5" />
+                               </div>
+                               <input
+                                 type="number"
+                                 min="0"
+                                 id="minPrice"
+                                 name="minPrice"
+                                 value={minPrice}
+                                 onChange={changeminPrice}
+                                 className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                               />
+                             </div>
+                           </div>
+                         </div>
             )}
           </div>
           <button
-            className="text-white w-full flex justify-center items-center bg-[#CFA935] p-2 rounded mt-4 gap-2 font-bold"
+            className="text-white w-full text-sm py-2.5 flex justify-center items-center bg-[#CFA935] px-2 rounded mt-4 gap-2 font-semibold"
             onClick={onPlaceSellOrder}
             disabled={orderLoading}>
             <FaShoppingCart />

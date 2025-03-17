@@ -15,7 +15,7 @@ const Header = () => {
   return (
     <div className="bg-[#171A24] text-white shadow-md w-full sticky top-0 z-50">
       {/* Main container */}
-      <div className="sm:px-[40px] px-[20px] py-2 flex items-center justify-between w-full h-[60px] sm:h-[90px]">
+      <div className="p-3 flex items-center justify-between w-full h-[60px] sm:h-[90px]">
 
         {/* Logo Section - Centered properly */}
         <div className="flex items-center" onClick={()=> navigate('/')}>

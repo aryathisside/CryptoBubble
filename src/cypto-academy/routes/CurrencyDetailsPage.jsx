@@ -15,13 +15,16 @@ import { FaCartShopping } from 'react-icons/fa6';
 import { LiaCoinsSolid } from 'react-icons/lia';
 import graph from '../Assets/svg/graph.svg';
 import product from '../Assets/svg/product-logo.svg';
-import dollor from '../Assets/svg/dollar-logo.svg';
+import dollor from '../Assets/svg/dollar-graph-logo.svg';
+import highGraph from '../Assets/svg/graph-high-logo.svg';
+import lowGraph from '../Assets/svg/graph-low-logo.svg';
 import { useGetWatchlistDataQuery } from '../services/supabaseApi';
 import MiniWatchlist from '../Components/MiniWatchlist';
 import { BsArrowDownUp } from 'react-icons/bs';
 import { FaShoppingCart } from 'react-icons/fa';
 import CoinDetail from '../Components/CoinDetail';
 import BuySingleCoin from './BuySingleCoin';
+import { toast } from 'react-toastify';
 
 // import BuyCoins from "../Components/BuyCoins";
 // import SellCoins from "../Components/SellCoins";
@@ -88,7 +91,17 @@ const CurrencyDetailsPage = () => {
       navigate('/papertrade/app/watchlist');
       setAddToGun(false);
     } else {
-      setGunErrorMessage('already added to watchlist');
+      // setGunErrorMessage('already added to watchlist');
+      toast.success("Already added to watchlist", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       setGunError(true);
       setTimeout(() => {
         setGunError(false);
@@ -124,23 +137,38 @@ const CurrencyDetailsPage = () => {
     return marketCap;
   };
 
+  useEffect(() => {
+    if (error) {
+      toast.error("Something Went Wrong!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+    }
+  }, [error]);
+
   return (
     <section className="lg:px-8 p-3">
+       {(isLoading || isChartLoading) ? <Loader />:
       <div className="lg:flex">
         {isSuccess && <BuySingleCoinModal data={data} modal={toggleBuyCoinsModal} setModal={setToggleBuyCoinsModal} />}
         {/* {isSuccess && <SellCoins data={data} modal={toggleSellCoinsModal} setModal={setToggleSellCoinsModal} />} */}
         {/* prettier-ignore */}
-        {(isLoading || isChartLoading) && <Loader />}
+       
 
-        {error && <ErrorToast message="Something Went Wrong!" ref={toastRef} />}
+        {/* {error && <ErrorToast message="Something Went Wrong!" ref={toastRef} />} */}
 
-        {gunError && (
+        {/* {gunError && (
           <p
             className="absolute left-1/2 -translate-x-1/2 top-5 p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800  font-semibold"
             role="alert">
             {gunErrorMessage ? gunErrorMessage : 'Something went wrong!'}
           </p>
-        )}
+        )} */}
         <div className="w-full lg:w-[70%] bg-[#171A24] pt-3 sm:pt-0  px-4 rounded-[12px] md:m-3">
           {isSuccess && (
             <div className="mt-6">
@@ -228,12 +256,12 @@ const CurrencyDetailsPage = () => {
                   <div className="text-[#A9A9A9] text-sm border-b-4 border-[#CFA935] pb-3 flex gap-2 items-center">
                     <BsArrowDownUp /> All Time High/Low Price
                   </div>
-                  <div className="flex justify-between text-white">
+                  <div className="flex justify-between text-white mt-2">
                     <div>
-                      <span className="text-[#A9A9A9]">Low:</span> $216.57
+                      <span className="text-[#A9A9A9] text-sm">Low:</span> $216.57
                     </div>
                     <div>
-                      <span className="text-[#A9A9A9]">High:</span> ${data.market_data.ath.usd}
+                      <span className="text-[#A9A9A9] text-sm">High:</span> ${data.market_data.ath.usd}
                     </div>
                   </div>
                 </div>
@@ -292,32 +320,38 @@ const CurrencyDetailsPage = () => {
             <div className="no-scrollbar flex flex-wrap md:gap-8 gap-3 justify-between rounded-box w-screen w-full overflow-auto max-w-full pt-8">
               <div className="w-full md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
                 <div className="flex items-center p-2 gap-3">
-                  <img src={dollor} alt="btc logo" className="h-8 w-8 rounded-full" />
-                  <div className="text-white">Price</div>
+                  <img src={dollor} alt="btc logo" className="h-8 w-8 rounded-lg" />
+                  <div className="text-white">Market Cap</div>
                 </div>
-                <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">${data?.market_data?.current_price?.usd}</div>
+                <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">${data?.market_data?.market_cap?.[data?.symbol]}</div>
               </div>
               <div className="md:w-full md:flex-1 w-[47%] p-2  bg-[#080808]  overflow-hidden shadow rounded-lg">
                 <div className="flex items-center p-2 gap-3">
-                  <img src={graph} alt="btc logo" className="h-8 w-8 rounded-full" />
-                  <div className="text-white">24h Market Cap Change</div>
-                </div>
-                <div
-                  className={`font-text mt-1 leading-9 font-semibold pl-2 text-left text-xl font-bold ${
-                    data?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
-                  } `}>
-                  {data?.market_data.price_change_percentage_24h >= 0 && '+'}
-                  {data.market_data.price_change_percentage_24h.toFixed(3)}%
-                </div>
-              </div>
-              <div className="md:w-full md:flex-1 w-[47%] p-2  bg-[#080808]  overflow-hidden shadow rounded-lg">
-                <div className="flex items-center p-2 gap-3">
-                  <img src={product} alt="btc logo" className="h-8 w-8 rounded-full" />
+                  <img src={product} alt="btc logo" className="h-8 w-8 rounded-lg" />
                   <div className="text-white">Volume</div>
                 </div>
                 <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
                   {' '}
                   {normalizeMarketCap(data.market_data.total_volume.usd)}
+                </div>
+              </div>
+              <div className="md:w-full md:flex-1 w-[47%] p-2  bg-[#080808]  overflow-hidden shadow rounded-lg">
+                <div className="flex items-center p-2 gap-3">
+                  <img src={highGraph} alt="btc logo" className="h-8 w-8 rounded-lg" />
+                  <div className="text-white">24h High</div>
+                </div>
+                <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
+                  {' '}
+                  {data.market_data.high_24h?.[data?.symbol]}
+                </div>
+              </div>
+              <div className="md:w-full md:flex-1 w-[47%] p-2  bg-[#080808]  overflow-hidden shadow rounded-lg">
+                <div className="flex items-center p-2 gap-3">
+                  <img src={lowGraph} alt="btc logo" className="h-8 w-8 rounded-lg" />
+                  <div className="text-white">24 Low</div>
+                </div>
+                <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
+                {data.market_data.low_24h?.[data?.symbol]}
                 </div>
               </div>
               {/* <div className="md:w-full md:flex-1 w-[47%]">
@@ -404,8 +438,8 @@ const CurrencyDetailsPage = () => {
           <div className="p-2 md:p-4 border-2 border-[#2A2E36] rounded-xl mt-6">
             <div className="md:flex items-center justify-between">
               {isSuccess && (
-                <p className="text-white font-bold text-sm md:text-xl font-title my-4 ml-2 md:ml-4">
-                  {data.name} Price Chart <span className="uppercase">{data.symbol}/USD</span>{' '}
+                <p className="text-white font-semibold text-sm md:text-xl font-title my-4 ml-2 md:ml-4">
+                  {data.name} to <span className="uppercase">USD</span>{' '}Chart
                 </p>
               )}
 
@@ -473,7 +507,7 @@ const CurrencyDetailsPage = () => {
           {isSuccess && <BuySingleCoin data={data} />}
           <MiniWatchlist />
         </div>
-      </div>
+      </div>}
       {isSuccess && <CoinDetail data={data} coinDetail={data?.symbol} />}
     </section>
   );

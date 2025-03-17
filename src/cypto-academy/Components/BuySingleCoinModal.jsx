@@ -150,7 +150,19 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to update transaction history.');
+        // throw new Error(result.error || 'Failed to update transaction history.');
+        toast.error(result.error || 'Failed to update transaction history.', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
+        
       }
 
       console.log('Transaction added successfully:', result.message);
@@ -165,7 +177,18 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
       // get available coins and check if it coin amount is more than what we want to sell
 
       if (coinValue > availabeCoinAmt) {
-        throw new Error('Not enough coins!');
+        // throw new Error('Not enough coins!');
+        toast.error('Not enough coins!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       // check if the coin is already purchased i.e. add the coin amount  to our existing coin in portfolio db
@@ -189,7 +212,18 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
         .eq('coinId', `${data.id}`);
 
       if (removefromPortfolioError) {
-        throw new Error('Something went wrong, Please try again!');
+        // throw new Error('Something went wrong, Please try again!');
+        toast.error('Something went wrong, Please try again!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       // add the value to virtual usd
@@ -201,7 +235,18 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
       } = await supabase.from('portfolio').update({ amount: updatedUsdValue }).eq('userId', `${currentUser.uid}`).eq('coinId', 'USD');
 
       if (updateUsdCoinError) {
-        throw new Error('Something went wrong!');
+        // throw new Error('Something went wrong!');
+        toast.error('Something went wrong!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       // delete the portfolio from db if the coinValue is 0
@@ -233,12 +278,32 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
         .eq('userId', `${currentUser.uid}`);
 
       setOrderLoading(false);
-      // setModal(false);
-      alert('Coin Sold Successfully');
+      setModal(false);
+      toast.success("Coin Sold Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      // alert('Coin Sold Successfully');
       navigate('/papertrade/app/portfolio');
     } catch (error) {
       setOrderLoading(false);
-      alert(error);
+      // alert(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   }
 
@@ -262,11 +327,34 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
       };
 
       if (coinUsdPrice > availableUsdCoin[0].amount) {
-        throw new Error('Not enough coins!');
+        // throw new Error('Not enough coins!');
+        toast.error('Not enough coins!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
-      if( isChecked && (minPrice >=data?.market_data?.current_price?.usd || maxPrice <= data?.market_data?.current_price?.usd)) {
-        throw new Error('Please Enter a Valid Limit!');
+      if (isChecked && (minPrice >= data?.market_data?.current_price?.usd || maxPrice <= data?.market_data?.current_price?.usd)) {
+        // throw new Error('Please Enter a Valid Limit!');
+        toast.error('Please Enter a Valid Limit!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        setOrderLoading(false);
+        return;
       }
 
       // check if the coin is already purchased i.e. add the coin amount coin to our existing coin in portfolio db
@@ -298,7 +386,18 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
           .eq('coinId', 'USD');
 
         if (updateExistingCoinErr || updateUsdCoinError) {
-          throw new Error('Something went wrong!');
+          // throw new Error('Something went wrong!');
+          toast.error('Something went wrong!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          return;
         }
 
         // calculate net worth
@@ -314,7 +413,18 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
         await addTransactionToHistory(transaction); // Added here
 
         setOrderLoading(false);
-        alert('Coin purchased successfully');
+        setModal(false);
+        // alert('Coin purchased successfully');
+        toast.success('Coin purchased successfully', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
         navigate('/papertrade/app/portfolio');
         return;
       }
@@ -335,7 +445,18 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
       ]);
 
       if (addToPortfolioError) {
-        throw new Error('Something went wrong, Please try again!');
+        // throw new Error('Something went wrong, Please try again!');
+        toast.error('Something went wrong, Please try again!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       // deduct the value from virtual usd
@@ -347,7 +468,18 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
         .eq('coinId', 'USD');
 
       if (updateUsdCoinError) {
-        throw new Error('Something went wrong!');
+        // throw new Error('Something went wrong!');
+        toast.error('Something went wrong!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       // calculate net worth
@@ -363,12 +495,32 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
       await addTransactionToHistory(transaction); // Added here
 
       setOrderLoading(false);
-      // setModal(false);
-      alert('Coin purchased successfully');
+      setModal(false);
+      // alert('Coin purchased successfully');
+      toast.success('Coin purchased successfully', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       navigate('/papertrade/app/portfolio');
     } catch (error) {
       setOrderLoading(false);
-      alert(error);
+      // alert(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   }
 
@@ -486,9 +638,9 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
                 {isChecked && (
                   <div>
                     <div className="flex justify-between">
-                      <p className="text-base leading-relaxed font-semibold text-gray-200">Max Price</p>
+                      <p className="text-base leading-relaxed font-semibold text-gray-200">Take Profit</p>
 
-                      <p className="text-base leading-relaxed font-semibold text-gray-200">Min Price</p>
+                      <p className="text-base leading-relaxed font-semibold text-gray-200">Set Stop loss</p>
                     </div>
                     <div className="md:flex gap-2">
                       <div className="relative py-4">
@@ -636,9 +788,9 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
                 {isChecked && (
                   <div>
                     <div className="flex justify-between">
-                      <p className="text-base leading-relaxed font-semibold text-gray-200">Max Price</p>
+                      <p className="text-base leading-relaxed font-semibold text-gray-200">Take Profit</p>
 
-                      <p className="text-base leading-relaxed font-semibold text-gray-200">Min Price</p>
+                      <p className="text-base leading-relaxed font-semibold text-gray-200">Set Stop loss</p>
                     </div>
                     <div className="md:flex gap-2">
                       <div className="relative py-4">

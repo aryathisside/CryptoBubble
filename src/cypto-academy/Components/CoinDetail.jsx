@@ -110,13 +110,13 @@ const CoinDetail = ({ data, coinDetail }) => {
       <div className="bg-[#171A24] py-6 px-4 rounded-[12px] m-3 flex-1">
         <div className="flex justify-between items-center mb-2">
           <div className="text-white">About</div>
-          <div className="border-2 border-[#2A2E36] p-2 rounded">
+          {/* <div className="border-2 border-[#2A2E36] p-2 rounded">
             <IoIosArrowRoundForward className="text-[#A9A9A9]" />
-          </div>
+          </div> */}
          
         </div>
         <img src={data?.image?.large} className="w-12" alt={data?.name} />
-        <div className='text-[#A9A9A9]'>{data?.description?.en.slice(0,528)}</div>
+        <div className='text-[#A9A9A9] text-sm'>{data?.description?.en.slice(0,528)}</div>
       </div>
       <div className="bg-[#171A24] py-6 px-4 rounded-[12px] m-3 flex-1">
         <div className="flex justify-between items-center ">

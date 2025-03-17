@@ -12,6 +12,8 @@ import UserProfile from './pages/UserProfile';
 import DeactivateAccount from './pages/DeactivatePage';
 import AnimatedRoutes from '../src/cypto-academy/Components/AnimatedRoutes';
 import ScrollToTop from '../src/cypto-academy/Components/ScrollToTop';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import './index.css';
 
@@ -96,7 +98,7 @@ const App = () => {
         </Routes>
      
       )}
-
+      <ToastContainer />
       {/* </div> */}
     </>
   );

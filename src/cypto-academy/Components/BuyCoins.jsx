@@ -12,6 +12,7 @@ import { fetchAvailableCoins } from '../Features/availableCoins';
 import { FaCartShopping } from 'react-icons/fa6';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useGetCoinsDataQuery } from '../services/coinsDataApi';
+import { toast } from 'react-toastify';
 
 const BuyCoins = ({ data }) => {
   // const [currency, setCurrency] = useState('usd');
@@ -22,7 +23,7 @@ const BuyCoins = ({ data }) => {
   // const { data, error, isLoading, isSuccess } = useGetCoinsDataQuery({ currency, currentPage }, { pollingInterval: 300000 });
 
  const { currentUser } = useAuth();
-  const [coinValue, setCoinValue] = useState(1);
+  const [coinValue, setCoinValue] = useState(0);
   const [coinUsdPrice, setCoinUsdPrice] = useState();
   const [orderLoading, setOrderLoading] = useState(false);
   const [selectedCoin, setSelectedCoin] = useState([]);
@@ -138,10 +139,22 @@ const BuyCoins = ({ data }) => {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to update transaction history.');
+        // throw new Error(result.error || 'Failed to update transaction history.');
+        toast.error(result.error || 'Failed to update transaction history.', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       console.log('Transaction added successfully:', result.message);
+      
     } catch (error) {
       console.error('Error:', error.message);
     }
@@ -153,7 +166,18 @@ const BuyCoins = ({ data }) => {
       // get available coins and check if it coin amount is more than what we want to sell
 
       if (coinValue > availabeCoinAmt) {
-        throw new Error("Not enough coins!");
+        // throw new Error("Not enough coins!");
+        toast.error("Not enough coins!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       // check if the coin is already purchased i.e. add the coin amount  to our existing coin in portfolio db
@@ -177,7 +201,18 @@ const BuyCoins = ({ data }) => {
         .eq("coinId", `${selectedCoin[0].id}`);
 
       if (removefromPortfolioError) {
-        throw new Error("Something went wrong, Please try again!");
+        // throw new Error("Something went wrong, Please try again!");
+        toast.error("Something went wrong, Please try again!" ,{
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       // add the value to virtual usd
@@ -193,7 +228,18 @@ const BuyCoins = ({ data }) => {
         .eq("coinId", "USD");
 
       if (updateUsdCoinError) {
-        throw new Error("Something went wrong!");
+        // throw new Error("Something went wrong!");
+        toast.error("Something went wrong!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       // delete the portfolio from db if the coinValue is 0
@@ -236,11 +282,31 @@ const BuyCoins = ({ data }) => {
 
       setOrderLoading(false);
       // setModal(false);
-      alert("Coin Sold Successfully");
+      toast.success("Coin Sold Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      // alert("Coin Sold Successfully");
       navigate("/papertrade/app/portfolio");
     } catch (error) {
       setOrderLoading(false);
-      alert(error);
+      // alert(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   }
 
@@ -264,11 +330,34 @@ const BuyCoins = ({ data }) => {
       };
 
       if (coinUsdPrice > availableUsdCoin[0].amount) {
-        throw new Error('Not enough coins!');
+        // throw new Error('Not enough coins!');
+        toast.error('Not enough coins!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       if(isChecked && (minPrice >=selectedCoin[0].current_price || maxPrice <= selectedCoin[0].current_price)) {
-        throw new Error('Please Enter a Valid Limit!');
+        // throw new Error('Please Enter a Valid Limit!');
+        toast.error('Please Enter a Valid Limit!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        setOrderLoading(false);
+        return;
       }
 
       // check if the coin is already purchased i.e. add the coin amount coin to our existing coin in portfolio db
@@ -300,7 +389,18 @@ const BuyCoins = ({ data }) => {
           .eq('coinId', 'USD');
 
         if (updateExistingCoinErr || updateUsdCoinError) {
-          throw new Error('Something went wrong!');
+          // throw new Error('Something went wrong!');
+          toast.error('Something went wrong!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          return;
         }
 
         // calculate net worth
@@ -317,7 +417,17 @@ const BuyCoins = ({ data }) => {
 
         setOrderLoading(false);
         // setModal(false);
-        alert('Coin purchased successfully');
+        toast.success("Coin purchased successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        // alert('Coin purchased successfully');
         navigate('/papertrade/app/portfolio');
         return;
       }
@@ -338,7 +448,18 @@ const BuyCoins = ({ data }) => {
       ]);
 
       if (addToPortfolioError) {
-        throw new Error('Something went wrong, Please try again!');
+        // throw new Error('Something went wrong, Please try again!');
+        toast.error('Something went wrong, Please try again!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       // deduct the value from virtual usd
@@ -350,7 +471,18 @@ const BuyCoins = ({ data }) => {
         .eq('coinId', 'USD');
 
       if (updateUsdCoinError) {
-        throw new Error('Something went wrong!');
+        // throw new Error('Something went wrong!');
+        toast.error('Something went wrong!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
       }
 
       // calculate net worth
@@ -367,11 +499,29 @@ const BuyCoins = ({ data }) => {
 
       setOrderLoading(false);
       // setModal(false);
-      alert('Coin purchased successfully');
+      toast.success("Coin purchased successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+      // alert('Coin purchased successfully');
       navigate('/papertrade/app/portfolio');
     } catch (error) {
       setOrderLoading(false);
-      alert(error);
+      // alert(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
     }
   }
  
@@ -475,14 +625,14 @@ const BuyCoins = ({ data }) => {
               <span className="text-sm text-gray-300">Set Limit</span>
             </label>
             {isChecked && (
-              <div>
+              <div className='pt-2'>
                 <div className="md:flex justify-between">
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Max Price</p>
+                  <p className="text-base leading-relaxed font-semibold text-gray-200">Take Profit</p>
 
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Min Price</p>
+                  <p className="text-base leading-relaxed font-semibold text-gray-200">Set Stop loss</p>
                 </div>
                 <div className="md:flex gap-2">
-                  <div className="relative py-4">
+                  <div className="relative pt-4">
                     <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                       <img src={usd} alt="usd price" className="h-5 w-5" />
                     </div>
@@ -493,7 +643,7 @@ const BuyCoins = ({ data }) => {
                       min="0"
                       value={maxPrice}
                       onChange={changemaxPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      className=" border text-sm rounded-lg block w-full pl-10 py-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
 
@@ -523,7 +673,7 @@ const BuyCoins = ({ data }) => {
             )}
           </div>
           <button
-            className="text-white w-full flex justify-center items-center bg-[#CFA935] p-2 rounded mt-4 gap-2 font-bold"
+            className="text-white w-full text-sm py-2.5 flex justify-center items-center bg-[#CFA935] px-2 rounded mt-4 gap-2 font-semibold"
             onClick={onPlaceOrder}
             disabled={orderLoading}>
             <FaShoppingCart />
@@ -609,55 +759,55 @@ const BuyCoins = ({ data }) => {
               <span className="text-sm text-gray-300">Set Limit</span>
             </label>
             {isChecked && (
-              <div>
-                <div className="md:flex justify-between">
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Max Price</p>
-
-                  <p className="text-base leading-relaxed font-semibold text-gray-200">Min Price</p>
-                </div>
-                <div className="md:flex gap-2">
-                  <div className="relative py-4">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <img src={usd} alt="usd price" className="h-5 w-5" />
-                    </div>
-                    <input
-                      type="number"
-                      id="maxPrice"
-                      name="maxPrice"
-                      min="0"
-                      value={maxPrice}
-                      onChange={changemaxPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    />
+                  <div className='pt-2'>
+                  <div className="md:flex justify-between">
+                    <p className="text-base leading-relaxed font-semibold text-gray-200">Take Profit</p>
+  
+                    <p className="text-base leading-relaxed font-semibold text-gray-200">Set Stop loss</p>
                   </div>
-
-                  <BsArrowLeftRight className="h-4 w-4 text-white m-auto" />
-
-                  {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" /> */}
-
-                  {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
-
-                  {/* usd value */}
-                  <div className="relative py-4">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <img src={usd} alt="usd price" className="h-5 w-5" />
+                  <div className="md:flex gap-2">
+                    <div className="relative pt-4">
+                      <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                        <img src={usd} alt="usd price" className="h-5 w-5" />
+                      </div>
+                      <input
+                        type="number"
+                        id="maxPrice"
+                        name="maxPrice"
+                        min="0"
+                        value={maxPrice}
+                        onChange={changemaxPrice}
+                        className=" border text-sm rounded-lg block w-full pl-10 py-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      />
                     </div>
-                    <input
-                      type="number"
-                      min="0"
-                      id="minPrice"
-                      name="minPrice"
-                      value={minPrice}
-                      onChange={changeminPrice}
-                      className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    />
+  
+                    <BsArrowLeftRight className="h-4 w-4 text-white m-auto" />
+  
+                    {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto block md:hidden" /> */}
+  
+                    {/* <BsArrowDownUp className="h-4 w-4 text-white m-auto"/> */}
+  
+                    {/* usd value */}
+                    <div className="relative py-4">
+                      <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                        <img src={usd} alt="usd price" className="h-5 w-5" />
+                      </div>
+                      <input
+                        type="number"
+                        min="0"
+                        id="minPrice"
+                        name="minPrice"
+                        value={minPrice}
+                        onChange={changeminPrice}
+                        className=" border text-sm rounded-lg block w-full pl-10 p-2.5 bg-[#171A24] buy-border placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
             )}
           </div>
           <button
-            className="text-white w-full flex justify-center items-center bg-[#CFA935] p-2 rounded mt-4 gap-2 font-bold"
+            className="text-white w-full text-sm py-2.5 flex justify-center items-center bg-[#CFA935] px-2 rounded mt-4 gap-2 font-semibold"
             onClick={onPlaceSellOrder}
             disabled={orderLoading}>
             <FaShoppingCart />

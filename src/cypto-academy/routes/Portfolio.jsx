@@ -20,8 +20,8 @@ import emptyWatchlistLogo from '../Assets/svg/emptyWatchlist.svg';
 
 import Loader from '../Components/Loader';
 import { useAuth } from '../../Context/AuthContext';
-import digital from '../Assets/svg/digital-economy-logo.svg';
-import saving from '../Assets/svg/saving.svg';
+import digital from '../Assets/svg/money-logo.svg';
+import saving from '../Assets/svg/wallet-logo.svg';
 
 const Portfolio = () => {
   const { currentUser } = useAuth();
@@ -127,7 +127,7 @@ const Portfolio = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4  pt-4 px-2">
               <div className="w-full md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
                 <div className="flex items-center p-2 gap-3">
-                  <img src={saving} alt="btc logo" className="h-8 w-8 rounded-full" />
+                  <img src={saving} alt="btc logo" className="h-8 w-8 rounded-lg" />
                   <div className="text-white">Available Balance</div>
                 </div>
                 <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
@@ -137,7 +137,7 @@ const Portfolio = () => {
               </div>
               <div className="w-full md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
                 <div className="flex items-center p-2 gap-3">
-                  <img src={digital} alt="btc logo" className="h-8 w-8 rounded-full" />
+                  <img src={digital} alt="btc logo" className="h-8 w-8 rounded-lg" />
                   <div className="text-white">Virtual USD</div>
                 </div>
                 <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
