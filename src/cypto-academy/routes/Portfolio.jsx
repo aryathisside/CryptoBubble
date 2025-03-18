@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { supabase } from '../Utils/init-supabase';
@@ -26,6 +26,8 @@ import saving from '../Assets/svg/wallet-logo.svg';
 const Portfolio = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+  const [totalreturns,setreturns] = useState(0);
+  const [returnsPercent, setreturnsPercent] = useState(0);
 
   const {
     data: portfolioData,
@@ -78,8 +80,9 @@ const Portfolio = () => {
 
   // get coin percentage change
   function percentageChange(coinId, coinAmount, amount) {
+    
     const coinData = portfolioCoinData.filter((coin) => coin.id === coinId);
-
+  
     if (coinData.length !== 0) {
       const currentCoinPrice = coinData[0]?.market_data.current_price.usd;
       const oneCoinAmount = amount / coinAmount;
@@ -105,6 +108,35 @@ const Portfolio = () => {
     refetchPortfolioCoinData();
     refetchAvailableCoins();
   }, []);
+
+  const calculatePnL=()=>{
+    let totalValue=0
+    let totalPortfolioVal=0
+    for(let i=0;i<portfolioData.length;i++){
+    
+      totalValue+=portfolioData[i].amount
+      totalPortfolioVal+=(portfolioData[i].coinAmount*portfolioCoinData[i].market_data.current_price.usd)
+    }
+    // for(let i of portfolioData){
+    //   totalValue+=i.amount
+    //   // console.log(i);
+    // }
+    // for(let i of portfolioCoinData){
+    //   totalPortfolioVal+=(i.market_data.current_price.usd)
+    //   // console.log(i);
+    // }
+    const returns=totalPortfolioVal-totalValue
+    const returnsPer=(returns/totalValue)*100
+    setreturns(returns)
+    setreturnsPercent(returnsPer)
+    console.log(returns,returnsPer);
+  }
+  useEffect(()=>{
+    if(portfolioData && portfolioCoinData){
+    calculatePnL()
+    }
+  })
+
 
   return (
     <section className="lg:px-8 p-3">
