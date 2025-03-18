@@ -12,6 +12,10 @@ html {
   font-family: 'Montserrat', sans-serif;
 }
 
+.mt-navbar {
+  margin-top: 90px; /* Adjust based on the height of your navbar */
+}
+
 .font-title {
   /* font-family: "Poppins", sans-serif; */
   font-family: 'Montserrat', sans-serif;

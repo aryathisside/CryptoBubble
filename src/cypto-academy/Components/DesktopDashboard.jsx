@@ -163,13 +163,13 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
           <p className="text-[#CFA935] text-md sm:text-[24px]">Welcome,</p>
           <p className="text-white font-bold text-xl sm:text-2xl md:text-3xl font-title pt-2 sm:pt-6 md:pt-3 mb-4">{currentUser.displayName}</p>
           <div className="flex flex-wrap  gap-4 sm:gap-6 sm:pt-2">
-            <div className="bg-gradient-to-r from-[#2A2E36] to-[#171A24] border-1 sm:border-2 border-white w-full sm:w-[300px] p-4 rounded-md sm:rounded-xl">
+            <div className="bg-[black] w-full sm:w-[300px] p-4 rounded-md sm:rounded-xl">
               <p className="text-[#A9A9A9]">Account Balance</p>
               <div className="font-text mt-1 text-2xl sm:text-3xl leading-7 sm:leading-9 font-semibold text-white">
                 ${fetchAvailableUsdCoinsSuccess && availableUsdCoins[0]?.amount}
               </div>
             </div>
-            <div className="bg-gradient-to-r from-[#2A2E36] to-[#171A24] border-1 sm:border-2 border-white w-full sm:w-[300px] p-4 rounded-md sm:rounded-xl">
+            <div className="bg-[black] w-full sm:w-[300px] p-4 rounded-md sm:rounded-xl">
               <p className="text-[#A9A9A9]">Networth</p>
               <div className="font-text mt-1 text-2xl sm:text-3xl leading-7 sm:leading-9 font-semibold text-white">
                 {userNetworthSuccess && <span>${userNetworth[0]?.networth}</span>}

@@ -22,12 +22,17 @@ import Loader from '../Components/Loader';
 import { useAuth } from '../../Context/AuthContext';
 import digital from '../Assets/svg/money-logo.svg';
 import saving from '../Assets/svg/wallet-logo.svg';
+import dollar from '../Assets/svg/dollar-logo.svg';
+import profit from '../Assets/svg/profit-loss-logo.svg';
 
 const Portfolio = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [totalreturns,setreturns] = useState(0);
   const [returnsPercent, setreturnsPercent] = useState(0);
+  const [totalProfitLoss, setTotalProfitLoss] = useState(0);
+  const [totalInvestment, setTotalInvestment] = useState(0);
+  const [profitLossPercent, setProfitLossPercent] = useState(0);
 
   const {
     data: portfolioData,
@@ -87,7 +92,6 @@ const Portfolio = () => {
       const currentCoinPrice = coinData[0]?.market_data.current_price.usd;
       const oneCoinAmount = amount / coinAmount;
       const coinPercentageChange = ((currentCoinPrice - oneCoinAmount) / currentCoinPrice) * 100;
-      console.log(coinPercentageChange,"iiooo");
 
       return coinPercentageChange;
     }
@@ -102,11 +106,43 @@ const Portfolio = () => {
     refetch: refetchNetworth
   } = useGetUserNetworthQuery(currentUser.uid);
 
+  async function getTotalInvestment(userId) {
+    try {
+      const response = await fetch(`${process.env.SIMULATOR_API}/getProfitNLoss/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        // body: JSON.stringify({
+        //   userId: userId
+        // })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to fetch trade history.');
+      }
+      console.log('returnsss', result);
+      setTotalInvestment(result?.total_investment)
+      setTotalProfitLoss(result?.pnl);
+      setProfitLossPercent(result?.percent_change)
+      // setTradeHistory(result.history);
+      // setCurrentPage(1);
+    } catch (error) {
+      console.error('Error fetching trade history:', error.message);
+      // setTradeError(error.message);
+    } finally {
+      // setTradeLoading(false);
+    }
+  }
+
   useEffect(() => {
     refetchPortfolioData();
     refetchNetworth();
     refetchPortfolioCoinData();
     refetchAvailableCoins();
+    getTotalInvestment(currentUser.uid)
   }, []);
 
   const calculatePnL=()=>{
@@ -131,15 +167,18 @@ const Portfolio = () => {
     setreturnsPercent(returnsPer)
     console.log(returns,returnsPer);
   }
+
+
   useEffect(()=>{
     if(portfolioData && portfolioCoinData){
     calculatePnL()
     }
-  })
+  }, [])
 
 
   return (
     <section className="lg:px-8 p-3">
+      {(isLoading || fetchPortfolioCoinDataLoading || fetchAvailableUsdCoinsLoading) ? <Loader />:
       <div className="md:flex gap-4">
         <div className="w-full md:w-[70%] flex-shrink-0">
           <div className="bg-[#171A24] py-4 px-3 rounded-[12px] sm:m-0 md:m-3 w-full">
@@ -153,14 +192,14 @@ const Portfolio = () => {
                 <LuNotebookText /> Trade History
               </button>
             </div>
-            {(isLoading || fetchPortfolioCoinDataLoading || fetchAvailableUsdCoinsLoading) && <Loader />}
+            
             {error && <p className="text-red-400 text-xl">Something went wrong!</p>}
             {/* available coin and networth */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4  pt-4 px-2">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4  pt-4 px-2">
               <div className="w-full md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
                 <div className="flex items-center p-2 gap-3">
                   <img src={saving} alt="btc logo" className="h-8 w-8 rounded-lg" />
-                  <div className="text-white">Available Balance</div>
+                  <div className="text-white text-sm">Available Balance</div>
                 </div>
                 <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
                   {' '}
@@ -170,11 +209,35 @@ const Portfolio = () => {
               <div className="w-full md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
                 <div className="flex items-center p-2 gap-3">
                   <img src={digital} alt="btc logo" className="h-8 w-8 rounded-lg" />
-                  <div className="text-white">Virtual USD</div>
+                  <div className="text-white text-sm">Total Investment</div>
                 </div>
                 <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
                   {' '}
-                  ${fetchAvailableUsdCoinsSuccess && availableUsdCoins[0]?.amount}
+                  ${totalInvestment.toFixed(2)}
+                </div>
+             
+              </div>
+              <div className="w-full md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
+                <div className="flex items-center p-2 gap-3">
+                  <img src={dollar} alt="btc logo" className="h-8 w-8 rounded-lg" />
+                  <div className="text-white text-sm">Total Return</div>
+                </div>
+                <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
+                  {' '}
+                  ${totalreturns.toFixed(3)}
+                  <p className={` ${returnsPercent >= 0 ? 'text-green-400' : 'text-red-400'} text-[16px] `}>{returnsPercent.toFixed(2)}%</p>
+
+                </div>
+              </div>
+              <div className="w-full md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
+                <div className="flex items-center p-2 gap-3">
+                  <img src={profit} alt="btc logo" className="h-8 w-8 rounded-lg" />
+                  <div className="text-white text-sm">All time Profit/Loss</div>
+                </div>
+                <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
+                  {' '}
+                  ${totalProfitLoss.toFixed(2)}
+                  <p className={` ${totalProfitLoss>= 0 ? 'text-green-400' : 'text-red-400'} text-[16px]`}>{profitLossPercent.toFixed(2)}%</p>
                 </div>
               </div>
               {/* <div className="w-full flex-1">
@@ -288,7 +351,7 @@ const Portfolio = () => {
             {MarketFetchSuccess && <BuyCoins data={data} />}
             <MiniWatchlist />
             </div>
-      </div>
+      </div>}
     </section>
   );
 };

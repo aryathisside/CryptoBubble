@@ -205,27 +205,27 @@ const CoinsTable = () => {
 
         <ul className="md:px-4 flex flex-col space-y-1 pb-12 font-text text-white p-2">
           {/* Table Head */}
-          <li className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 text-gray-500 py-3 px-1 md:px-5 cursor-pointer bg-[#2A2E36] rounded-lg">
+          <li className="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-7 text-gray-500 py-3 px-1 md:px-5 cursor-pointer bg-[#2A2E36] rounded-lg">
             <div className="hidden lg:flex justify-start items-center space-x-4 w-12">
               <p className="text-white pl-4">S.no</p>
             </div>
             <div className="flex justify-start items-center space-x-4">
               <p className="w-28 md:w-40 text-white pl-4">Name</p>
             </div>
-            <div className="flex items-center justify-end ml-auto md:ml-0 ">
-              <p className="w-28 md:w-40  text-white">Price</p>
+            <div className="flex items-center justify-center ml-auto md:ml-0 ">
+              <p className=" text-white">Price</p>
             </div>
-            <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
-              <p className="w-24 md:w-40  text-white">24h Volume</p>
+            <div className="hidden lg:flex items-center justify-center ml-auto md:ml-0 ">
+              <p className=" text-white">24h Volume</p>
             </div>
-            <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
-              <p className="w-24 md:w-30  text-white">24h %</p>
+            <div className="hidden md:flex items-center justify-center ml-auto md:ml-0 ">
+              <p className=" text-white">24h %</p>
             </div>
-            <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
-              <p className="w-24 md:w-30  text-white">24h High</p>
+            <div className="hidden lg:flex items-center justify-center ml-auto md:ml-0 ">
+              <p className=" text-white">24h High</p>
             </div>
-            <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 ">
-              <p className="w-24 md:w-30  text-white">24h Low</p>
+            <div className="hidden lg:flex items-center justify-center ml-auto md:ml-0 ">
+              <p className="text-white">24h Low</p>
             </div>
           </li>
           {/* coin prices */}
@@ -255,28 +255,28 @@ const CoinsTable = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-end ml-auto md:ml-0 ">
-                  <p className="w-28 md:w-40 text-white flex gap-1 items-center">
+                <div className="flex items-center justify-center ml-auto md:ml-0 ">
+                  <p className=" text-white flex gap-1 items-center">
                     ${coins.current_price}
                     <img src={priceIcon} alt='price' className='w-4 h-4'/>
                     <br />
                     {/* <span className="md:hidden w-28 md:w-40 text-gray-500">MCap: {normalizeMarketCap(coins.market_cap)}</span> */}
                   </p>
                 </div>
-                <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 ">
-                  <p className="w-24 md:w-40 text-white ">${coins.total_volume}</p>
+                <div className="hidden lg:flex items-center justify-center ml-auto md:ml-0 ">
+                  <p className=" text-white ">${coins.total_volume}</p>
                 </div>
-                <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
-                  <p className={`w-24 md:w-30 ${coins?.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                <div className="hidden md:flex items-center justify-center ml-auto md:ml-0 ">
+                  <p className={` ${coins?.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {coins?.price_change_percentage_24h >= 0 && '+'}
                     {coins?.price_change_percentage_24h?.toFixed(2)}%
                   </p>
                 </div>
-                <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 text-white">
-                  <p className="w-24 md:w-30  ">${coins.high_24h}</p>
+                <div className="hidden lg:flex items-center justify-center ml-auto md:ml-0 text-white">
+                  <p className="">${coins.high_24h}</p>
                 </div>
-                <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 text-white">
-                  <p className="w-24 md:w-30  ">${coins.low_24h}</p>
+                <div className="hidden lg:flex items-center justify-center ml-auto md:ml-0 text-white">
+                  <p className=" ">${coins.low_24h}</p>
                 </div>
               </li>
             ))}
