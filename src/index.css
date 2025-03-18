@@ -45,6 +45,9 @@ html {
     -20px 0 #1ce950;
   animation: d5 1s infinite linear alternate;
 }
+.row-border-radius{
+  border-radius: 7px !important;
+}
 
 @keyframes d5 {
   0% {
