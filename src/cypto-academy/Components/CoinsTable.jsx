@@ -219,13 +219,13 @@ const CoinsTable = () => {
               <p className="w-24 md:w-40  text-white">24h Volume</p>
             </div>
             <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
-              <p className="w-24 md:w-40  text-white">24h %</p>
+              <p className="w-24 md:w-30  text-white">24h %</p>
             </div>
             <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
-              <p className="w-24 md:w-40  text-white">24h High</p>
+              <p className="w-24 md:w-30  text-white">24h High</p>
             </div>
             <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 ">
-              <p className="w-24 md:w-40  text-white">24h Low</p>
+              <p className="w-24 md:w-30  text-white">24h Low</p>
             </div>
           </li>
           {/* coin prices */}
@@ -267,16 +267,16 @@ const CoinsTable = () => {
                   <p className="w-24 md:w-40 text-white ">${coins.total_volume}</p>
                 </div>
                 <div className="hidden md:flex items-center justify-end ml-auto md:ml-0 ">
-                  <p className={`w-24 md:w-40 ${coins?.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <p className={`w-24 md:w-30 ${coins?.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {coins?.price_change_percentage_24h >= 0 && '+'}
                     {coins?.price_change_percentage_24h?.toFixed(2)}%
                   </p>
                 </div>
                 <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 text-white">
-                  <p className="w-24 md:w-40  ">${coins.high_24h}</p>
+                  <p className="w-24 md:w-30  ">${coins.high_24h}</p>
                 </div>
                 <div className="hidden lg:flex items-center justify-end ml-auto md:ml-0 text-white">
-                  <p className="w-24 md:w-40  ">${coins.low_24h}</p>
+                  <p className="w-24 md:w-30  ">${coins.low_24h}</p>
                 </div>
               </li>
             ))}

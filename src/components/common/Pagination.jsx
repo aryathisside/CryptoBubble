@@ -37,7 +37,7 @@ const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
          <SubPagination currentPage={currentPage} totalItems={totalItems} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} />   
          </div>
 
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 text-sm">
         <span>Jump to:</span>
         <input type="number" className="w-16 px-2 py-1 text-white bg-[#171A24] rounded-md border-2 border-[#2A2E36]" 
           value={jumpPage} 

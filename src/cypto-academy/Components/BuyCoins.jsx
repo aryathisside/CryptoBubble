@@ -13,6 +13,7 @@ import { FaCartShopping } from 'react-icons/fa6';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useGetCoinsDataQuery } from '../services/coinsDataApi';
 import { toast } from 'react-toastify';
+import { useGetPortfolioDataQuery } from '../services/supabaseApi';
 
 const BuyCoins = ({ data }) => {
   // const [currency, setCurrency] = useState('usd');
@@ -102,6 +103,16 @@ const BuyCoins = ({ data }) => {
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
+
+  
+    const {
+      data: portfolioData,
+      error,
+      isLoading,
+      // isFetching,
+      isSuccess,
+      refetch: refetchPortfolioData
+    } = useGetPortfolioDataQuery(currentUser.uid);
 
   
   useEffect(() => {
@@ -292,6 +303,7 @@ const BuyCoins = ({ data }) => {
         progress: undefined,
         theme: "dark",
       });
+      await refetchPortfolioData();
       // alert("Coin Sold Successfully");
       navigate("/papertrade/app/portfolio");
     } catch (error) {
@@ -427,6 +439,7 @@ const BuyCoins = ({ data }) => {
           progress: undefined,
           theme: "dark",
         });
+        await refetchPortfolioData();
         // alert('Coin purchased successfully');
         navigate('/papertrade/app/portfolio');
         return;

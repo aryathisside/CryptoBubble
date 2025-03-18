@@ -323,7 +323,7 @@ const CurrencyDetailsPage = () => {
                   <img src={dollor} alt="btc logo" className="h-8 w-8 rounded-lg" />
                   <div className="text-white">Market Cap</div>
                 </div>
-                <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">${data?.market_data?.market_cap?.[data?.symbol]}</div>
+                <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">${data?.market_data?.market_cap?.usd}</div>
               </div>
               <div className="md:w-full md:flex-1 w-[47%] p-2  bg-[#080808]  overflow-hidden shadow rounded-lg">
                 <div className="flex items-center p-2 gap-3">
@@ -342,7 +342,7 @@ const CurrencyDetailsPage = () => {
                 </div>
                 <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
                   {' '}
-                  {data.market_data.high_24h?.[data?.symbol]}
+                  {data.market_data.high_24h?.usd}
                 </div>
               </div>
               <div className="md:w-full md:flex-1 w-[47%] p-2  bg-[#080808]  overflow-hidden shadow rounded-lg">
@@ -351,7 +351,7 @@ const CurrencyDetailsPage = () => {
                   <div className="text-white">24 Low</div>
                 </div>
                 <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
-                {data.market_data.low_24h?.[data?.symbol]}
+                {data.market_data.low_24h?.usd}
                 </div>
               </div>
               {/* <div className="md:w-full md:flex-1 w-[47%]">
@@ -453,7 +453,7 @@ const CurrencyDetailsPage = () => {
                 <button
                   onClick={() => setChartDays(() => '30')}
                   type="button"
-                  className="py-2 px-1 md:px-4 font-text text-xs md:text-sm font-semibold  border-t border-b  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
+                  className="py-2 px-1 md:px-4 font-text text-xs md:text-sm font-semibold  border  focus:z-10 focus:ring-2  bg-gray-900 border-gray-600 text-white hover:text-white hover:bg-gray-600 focus:ring-blue-500 focus:text-white">
                   30 Days
                 </button>
                 <button

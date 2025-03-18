@@ -25,7 +25,7 @@ const generatePageNumbers = () => {
     };
   return (
 
-            <Pagination className="txt-14 justify-center">
+            <Pagination className="text-sm justify-center">
         <Pagination.First onClick={() => handlePageClick(1)} />
         <Pagination.Prev
           onClick={() => handlePageClick(currentPage - 1)}

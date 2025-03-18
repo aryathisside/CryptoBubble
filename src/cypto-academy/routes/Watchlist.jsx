@@ -106,6 +106,7 @@ const Watchlist = () => {
       if (error) {
         throw new Error(error);
       }
+      refetch();
     } catch (error) {
       console.log(error);
     }

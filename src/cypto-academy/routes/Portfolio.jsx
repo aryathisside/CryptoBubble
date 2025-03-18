@@ -177,6 +177,7 @@ const Portfolio = () => {
 
           {/* portfolio Table */}
           <div className="bg-[#171A24] py-4 px-3 rounded-[12px] md:mx-3 mt-4 w-full">
+            <div className="md:px-4 text-white font-bold text-lg">Crypto Allocations</div>
             <ul className="md:px-4 font-text flex flex-col space-y-1 pb-12 pt-4 text-white">
               {/* Table Head */}
               <li className="grid grid-cols-2 md:grid-cols-4 text-gray-500 py-2 px-1md:px-5 cursor-pointer bg-[#2A2E36] py-2 rounded-md">

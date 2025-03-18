@@ -87,6 +87,10 @@ const TradeHistory = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = tradeHistory?.slice(indexOfFirstItem, indexOfLastItem);
 
+  function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
   return (
     <section className="lg:px-4 py-2 lg:py-8  w-full p-2 flex">
       <div className="bg-[#171A24] w-full py-6 px-4 rounded-[12px] m-3">
@@ -134,22 +138,22 @@ const TradeHistory = () => {
 
         <ul className=" font-text flex flex-col space-y-1 pb-4 text-white">
           {/* Table Head */}
-          <li className="grid grid-cols-2 md:grid-cols-5 text-gray-500 py-2 px-1md:px-5 cursor-pointer bg-[#2A2E36] py-2 rounded-md">
+          <li className="grid grid-cols-2 md:grid-cols-5 py-2 px-1md:px-5 cursor-pointer bg-[#2A2E36] py-2 rounded-md text-[#A9A9A9]">
             <div className="flex justify-start items-center space-x-4">
-              <p className="text-white pl-4">Name</p>
+              <p className=" pl-4">Crypto Name</p>
             </div>
             <div className="hidden md:flex justify-start items-center space-x-4">
-              <p className="text-white pl-4">Buy/Sell</p>
+              <p className="pl-4">Buy/Sell</p>
             </div>
 
             <div className="flex justify-center md:justify-start items-center space-x-4">
-              <p className="text-white ">Price</p>
+              <p className="">Price</p>
             </div>
             <div className="hidden md:flex justify-center md:justify-start items-center space-x-4">
-              <p className="text-white ">Amount</p>
+              <p className="">Amount</p>
             </div>
             <div className="hidden md:flex items-center justify-start  ml-auto md:ml-0 ">
-              <p className="w-28 md:w-40  text-white text-left px-3">Time</p>
+              <p className="w-28 md:w-40 text-left px-3">Time</p>
             </div>
           </li>
           {tradeHistory &&
@@ -165,7 +169,7 @@ const TradeHistory = () => {
                     {/* <img className="h-8 w-8 md:h-10 md:w-10 object-contain" src={coin.image} alt="cryptocurrency" loading="lazy" /> */}
                     <div>
                       <p className=" w-24 md:w-64 text-white break-words text-md">
-                        {coin.coinId} <span className="text-[#CFA935] text-sm">{`${coin.symbol}`.toUpperCase()}</span>
+                        {capitalizeFirstLetter(coin.coinId)} <span className="text-[#CFA935] text-sm">{`${coin.symbol}`.toUpperCase()}</span>
                       </p>
                     </div>
                   </div>
