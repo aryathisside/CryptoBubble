@@ -11,7 +11,6 @@ import { supabase } from '../Utils/init-supabase';
 import { fetchAvailableCoins } from '../Features/availableCoins';
 import { FaCartShopping } from 'react-icons/fa6';
 import { FaShoppingCart } from 'react-icons/fa';
-import { useGetCoinsDataQuery } from '../services/coinsDataApi';
 import { toast } from 'react-toastify';
 import { useGetPortfolioDataQuery } from '../services/supabaseApi';
 
@@ -23,9 +22,9 @@ const BuyCoins = ({ data }) => {
 
   // const { data, error, isLoading, isSuccess } = useGetCoinsDataQuery({ currency, currentPage }, { pollingInterval: 300000 });
 
- const { currentUser } = useAuth();
+ const { currentUser} = useAuth();
   const [coinValue, setCoinValue] = useState(0);
-  const [coinUsdPrice, setCoinUsdPrice] = useState();
+  const [coinUsdPrice, setCoinUsdPrice] = useState(0);
   const [orderLoading, setOrderLoading] = useState(false);
   const [selectedCoin, setSelectedCoin] = useState([]);
   const [selectedCrypto, setSelectedCrypto] = useState('');
@@ -126,8 +125,7 @@ const BuyCoins = ({ data }) => {
         .from("portfolio")
         .select("coinName,coinAmount")
         .eq("userId", `${currentUser.uid}`)
-        .eq("coinId", `${selectedCoin[0].id}`);
-
+        .eq("coinId", `${selectedCoin[0]?.id}`);
       if (availableCoinAmount.length !== 0) {
         setAvailabeCoinAmt(availableCoinAmount[0].coinAmount);
       }
@@ -165,6 +163,7 @@ const BuyCoins = ({ data }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -231,6 +230,7 @@ const BuyCoins = ({ data }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -258,6 +258,7 @@ const BuyCoins = ({ data }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -280,7 +281,7 @@ const BuyCoins = ({ data }) => {
           coinUsdPrice: `${coinUsdPrice}`,
           timestamp: new Date().toISOString()
         };
-  
+        await refetchPortfolioData();
         await addTransactionToHistory(transaction);  // Added here
 
       // calculate networth
@@ -299,6 +300,7 @@ const BuyCoins = ({ data }) => {
         .update({ networth: parseFloat(userNetworth) })
         .eq("userId", `${currentUser.uid}`);
 
+
       setOrderLoading(false);
       // setModal(false);
       toast.success("Coin Sold Successfully", {
@@ -311,8 +313,7 @@ const BuyCoins = ({ data }) => {
         progress: undefined,
         theme: "dark",
       });
-      await refetchPortfolioData();
-      // await fetchCoinAmount()
+    
       // alert("Coin Sold Successfully");
       setCoinValue(0);
       setCoinUsdPrice(0)
@@ -443,7 +444,9 @@ const BuyCoins = ({ data }) => {
         await addTransactionToHistory(transaction); // Added here
 
         setOrderLoading(false);
-        // setModal(false);
+        await refetchPortfolioData();
+        setCoinValue(0);
+        setCoinUsdPrice(0);
         toast.success("Coin purchased successfully", {
           position: "top-right",
           autoClose: 3000,
@@ -454,8 +457,7 @@ const BuyCoins = ({ data }) => {
           progress: undefined,
           theme: "dark",
         });
-        await refetchPortfolioData();
-        // await fetchCoinAmount()
+      
         // alert('Coin purchased successfully');
         setCoinValue(0);
         setCoinUsdPrice(0)
@@ -490,6 +492,7 @@ const BuyCoins = ({ data }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -513,6 +516,7 @@ const BuyCoins = ({ data }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -525,6 +529,7 @@ const BuyCoins = ({ data }) => {
         .update({ networth: parseFloat(userNetworth) })
         .eq('userId', `${currentUser.uid}`);
 
+        await refetchPortfolioData(currentUser.uid);
       // Add transaction to history
       await addTransactionToHistory(transaction); // Added here
 
@@ -559,6 +564,9 @@ const BuyCoins = ({ data }) => {
       });
     }
   }
+
+
+  
  
 
   return (

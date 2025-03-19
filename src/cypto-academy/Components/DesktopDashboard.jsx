@@ -148,6 +148,8 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
     fetchData();
   }, [location?.state]);
 
+  console.log("Trending coins", trendingCoins);
+
   return (
     <>
       {/* loading State */}
@@ -166,13 +168,13 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
             <div className="bg-[black] w-full sm:w-[300px] p-4 rounded-md sm:rounded-xl">
               <p className="text-[#A9A9A9]">Account Balance</p>
               <div className="font-text mt-1 text-2xl sm:text-3xl leading-7 sm:leading-9 font-semibold text-white">
-                ${fetchAvailableUsdCoinsSuccess && availableUsdCoins[0]?.amount}
+                ${fetchAvailableUsdCoinsSuccess && availableUsdCoins[0]?.amount.toFixed(5)}
               </div>
             </div>
             <div className="bg-[black] w-full sm:w-[300px] p-4 rounded-md sm:rounded-xl">
               <p className="text-[#A9A9A9]">Networth</p>
               <div className="font-text mt-1 text-2xl sm:text-3xl leading-7 sm:leading-9 font-semibold text-white">
-                {userNetworthSuccess && <span>${userNetworth[0]?.networth}</span>}
+                {userNetworthSuccess && <span>${userNetworth[0]?.networth.toFixed(5)}</span>}
               </div>
             </div>
           </div>
@@ -198,7 +200,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
                     <tr className="text-left text-white text-sm bg-[#171A24]">
                       <th className="pl-6 py-3 font-semibold">S.No.</th>
                       <th className="pl-6 py-3 font-semibold">Name</th>
-                      <th className="pl-6 py-3 font-semibold">Amount</th>
+                      <th className="pl-6 py-3 font-semibold">Price</th>
                     </tr>
                   </thead>
 
@@ -219,7 +221,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
                         </td>
 
                         {/* Amount */}
-                        <td className="pl-6 py-4 text-white font-medium text-sm">${coin.item.price_btc.toFixed(9)}</td>
+                        <td className="pl-6 py-4 text-white font-medium text-sm">${coin.item?.data?.price.toFixed(2)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -255,7 +257,7 @@ const DesktopDashboard = ({ userNetworth: networth, availableCoins }) => {
           <tr className="text-sm text-left">
             <th className="px-6 py-3 font-semibold">S.No.</th>
             <th className="px-6 py-3 font-semibold">Name</th>
-            <th className="px-6 py-3 font-semibold">Amount</th>
+            <th className="px-6 py-3 font-semibold">Price</th>
             <th className="px-6 py-3 font-semibold">Change%</th>
             <th className="px-6 py-3 font-semibold">Action</th>
           </tr>

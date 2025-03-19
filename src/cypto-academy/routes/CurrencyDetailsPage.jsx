@@ -251,7 +251,7 @@ const CurrencyDetailsPage = () => {
                 <div className="flex-1">
                   <div className="flex justify-between mb-4">
                     <div className="text-white font-semibold">$ {data?.market_data?.current_price?.usd}</div>
-                    <div className="text-[#A9A9A9] text-sm">Bitcoin Price (USD)</div>
+                    <div className="text-[#A9A9A9] text-sm">{data?.name} Price (USD)</div>
                   </div>
                   <div className="text-[#A9A9A9] text-sm border-b-4 border-[#CFA935] pb-3 flex gap-2 items-center">
                     <BsArrowDownUp /> All Time High/Low Price

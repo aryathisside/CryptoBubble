@@ -73,8 +73,10 @@ const CoinsTable = () => {
 
   return (
     <>
+      {(isLoading || fetchGlobalCryptoLoading) ? <Loader />:
+      <>
       <div className="z-10 w-full md:w-[72%]">
-        {(isLoading || fetchGlobalCryptoLoading) && <Loader />}
+      
         {error && <ErrorToast message="Something Went Wrong!" ref={toastRef} />}
         <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mx-3 md:mt-6 sm:mt-4 mb-2 md:mb-4">
           <div className="md:flex justify-between border-b-2 border-[#2A2E36]">
@@ -295,6 +297,7 @@ const CoinsTable = () => {
         {isSuccess && <BuyCoins data={data} />}
         <MiniWatchlist />
       </div>
+      </>}
     </>
   );
 };

@@ -24,6 +24,7 @@ import DynamicPagination from '../../components/common/Pagination';
 import { BsArrowDownUp, BsArrowLeftRight } from 'react-icons/bs';
 import { FaShoppingCart } from 'react-icons/fa';
 import { IoIosArrowRoundForward } from 'react-icons/io';
+import priceIcon from '../Assets/svg/price-icon.svg';
 
 const trailingActions = (coinId, userId, refetch) => {
   async function handleDelete() {
@@ -58,7 +59,7 @@ const Watchlist = () => {
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 9;
   const [newsData, setNewsData] = useState([]);
 
   const {
@@ -150,9 +151,13 @@ const Watchlist = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = watchlistData?.slice(indexOfFirstItem, indexOfLastItem);
 
+
   return (
     <section className="lg:px-4 py-2 lg:py-8 w-full  p-2 flex">
-      <div className="bg-[#171A24] w-full md:w-[72%] py-6 px-4 rounded-[12px] md:mx-4 mt-4 sm:m-2 relative">
+        {isLoading ? <Loader />:
+
+      <>
+      <div className="bg-[#171A24] w-full lg:w-[72%] py-6 px-4 rounded-[12px] lg:mx-4 mt-4 sm:m-2 relative">
         <div className="md:flex justify-between">
           <div>
             <p className="text-white font-bold text-xl md:text-2xl font-title lg:mt-0 mb-2 ml-3">WatchList</p>
@@ -184,7 +189,6 @@ const Watchlist = () => {
           </div>
         </div>
         {/* <p className="text-white font-semibold text-md font-title  ml-3 mb-4">Swipe left to delete or view the coins.</p> */}
-        {isLoading && <Loader />}
         {error && watchlistData?.length !== 0 && <p className="text-2xl text-red-400 px-4">Something went wrong</p>}
         {/* coin table */}
         {watchlistData?.length === 0 && (
@@ -199,92 +203,101 @@ const Watchlist = () => {
             </Link>
           </div>
         )}
-        {isSuccess && watchlistData?.length !== 0 && (
-          <div fullSwipe={false} type={ListType.IOS} className="md:px-4 flex flex-col space-y-1 pb-12 mb-4 text-white font-text">
-            {/* Table Head */}
-            <li className="grid grid-cols-2 md:grid-cols-6 text-gray-500 py-3 px-1md:px-5 cursor-pointer bg-[#2A2E36] rounded-md ">
-              <div className="hidden md:flex justify-start items-center space-x-4">
-                <p className="text-white pl-4">S.no</p>
-              </div>
-              <div className="flex justify-start items-center space-x-4">
-                <p className="text-white pl-4">Name</p>
-              </div>
-              <div className="flex items-center ml-auto md:ml-0 ">
-                <p className="w-28 md:w-40  text-white">Price</p>
-              </div>
-              <div className="hidden md:flex items-center ml-auto md:ml-0 ">
-                <p className="w-24 md:w-40  text-white">24h Change</p>
-              </div>
-              <div className="hidden md:flex items-center ml-auto md:ml-0 ">
-                <p className="w-24 md:w-40  text-white">Market Cap</p>
-              </div>
-              <div className="hidden md:flex items-center  md:ml-0 ">
-                <p className="w-24 md:w-40  text-white">Action</p>
-              </div>
-            </li>
-            {isSuccess &&
-              watchlistData?.length !== 0 &&
-              currentItems.map((coin, index) => (
-                // <SwipeableListItem trailingActions={trailingActions(coin.id, currentUser.uid, refetch)} key={index}>
-                <div className="grid grid-cols-2 md:grid-cols-6 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer xl:w-full">
-                  <div className="hidden md:flex items-center space-x-2 ">
-                    <p className="pl-1 text-white">#{index + 1}</p>
-                  </div>
-                  <div className="flex items-center space-x-2 ">
-                    <img className="h-8 w-8 md:h-10 md:w-10 object-contain" src={coin.image.small} alt="cryptocurrency" loading="lazy" />
-                    <div>
-                      <p className="pr-2 md:w-64 truncate text-white break-words font-semibold">{coin.name}</p>
-                      <div className="flex space-x-1">
-                        <p>{`${coin.symbol}/USD`.toUpperCase()}</p>
-                        {/* <p
-                          className={`md:hidden w-24 md:w-40 ${
-                            coin?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
-                          } font-semibold`}>
+        <div className="overflow-x-auto mb-4">
+          {isSuccess && watchlistData?.length !== 0 && (
+            <table className="w-full text-white border-collapse font-light mt-4">
+              <thead className="bg-[#2A2E36]">
+              <tr className="text-[#A9A9A9] text-sm font-light">
+                  {/* Apply rounded corners based on screen size */}
+
+                  <th className="text-left p-2 rounded-tl-md rounded-bl-md">Name</th>
+                  <th className="p-2 text-center">Price</th>
+                  <th className="hidden lg:table-cell text-center p-2">24h Volume</th>
+                  <th className="hidden md:table-cell text-center p-2">24h %</th>
+                  <th className="hidden lg:table-cell text-center p-2">24h High</th>
+                  <th className="hidden lg:table-cell text-center p-2 ">24h Low</th>
+
+                  <th className="hidden md:table-cell px-4 py-3 text-left rounded-tr-md rounded-br-md">Action</th>
+                </tr>
+              </thead>
+
+              {/* Table Body */}
+              <tbody>
+                {currentItems.map((coin, index) => (
+                  <tr key={index} className="hover:bg-[#080808] cursor-pointer">
+                    <td className="flex items-center space-x-2 px-2 py-3">
+                      <img className="h-7 w-7 md:h-8 md:w-8 object-contain" src={coin.image.small} alt="crypto" loading="lazy" />
+                      <div>
+                        <p className="text-white font-semibold truncate text-sm">
+                          {coin.name} <span className="text-[#CFA935] text-[8px] bg-[#00000033] p-1.5"> {coin.symbol.toUpperCase()}</span>
+                        </p>
+
+                        {/* <p className=' text-sm'>{`$/USD`}</p> */}
+                      </div>
+                    </td>
+                    {/* <td className="px-4 py-2 flex items-center space-x-2">
+                      <img className="h-8 w-8 md:h-10 md:w-10 object-contain" src={coin.image.small} alt="cryptocurrency" loading="lazy" />
+                      <div>
+                        <p className="font-semibold">{coin.name}</p>
+                        <p className="text-gray-400">{`${coin.symbol}/USD`.toUpperCase()}</p>
+                      </div>
+                    </td> */}
+                    <td className="text-center p-3">
+                      <p className="flex items-center justify-center text-sm">
+                        ${coin?.market_data.current_price.usd}
+                        <img src={priceIcon} alt="price" className="w-4 h-4 ml-1" />
+                      </p>
+                      <p className="block md:hidden">
+                        <span className={coin?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}>
                           {coin?.market_data.price_change_percentage_24h >= 0 && '+'}
                           {coin?.market_data.price_change_percentage_24h?.toFixed(2)}%
-                        </p> */}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center ml-auto md:ml-0 ">
-                    <p className="w-28 md:w-40 text-white font-semibold">
+                        </span>
+                      </p>
+                    </td>
+                    <td className="hidden lg:table-cell  text-sm p-3">${coin?.market_data?.total_volume?.usd}</td>
+                    <td className="hidden md:table-cell px-4 py-2 font-semibold">
+                      <span className={coin?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}>
+                        {coin?.market_data.price_change_percentage_24h >= 0 && '+'}
+                        {coin?.market_data.price_change_percentage_24h?.toFixed(2)}%
+                      </span>
+                    </td>
+                    <td className="hidden lg:table-cell text-center  text-sm p-3">${coin?.market_data?.high_24h?.usd}</td>
+
+                    {/* 24h Low */}
+                    <td className="hidden lg:table-cell text-center text-sm p-3">${coin?.market_data?.low_24h?.usd}</td>
+                    {/* <td className="px-4 py-2 font-semibold">
                       ${coin?.market_data.current_price.usd}
-                      <br />
-                      <span className="md:hidden w-28 md:w-40 text-gray-500">MCap: {normalizeMarketCap(coin?.market_data.market_cap.usd)}</span>
-                    </p>
-                  </div>
-                  <div className="hidden md:flex items-center ">
-                    <p
-                      className={`w-24 md:w-40 ${
-                        coin?.market_data.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
-                      } font-semibold`}>
-                      {coin?.market_data.price_change_percentage_24h >= 0 && '+'}
-                      {coin?.market_data.price_change_percentage_24h?.toFixed(2)}%
-                    </p>
-                  </div>
-                  <div className="hidden md:flex items-center  ">
-                    <p className="w-24 md:w-40  ">${coin?.market_data.market_cap.usd}</p>
-                  </div>
-                  <div className="hidden md:flex items-center gap-2">
-                    <button
-                      className="text-white border-2 border-[#2A2E36] rounded-md p-2"
-                      onClick={() => navigate(`/papertrade/app/coin/${coin.id}`)}>
-                      <IoEyeOutline className="text-[18px]" />
-                    </button>
-                    <button className="text-white border-2 border-[#2A2E36] rounded-md p-2" onClick={() => handleDelete(coin.id, currentUser.uid)}>
-                      <FaRegTrashAlt className="text-[18px]" />
-                    </button>
-                  </div>
-                </div>
-                // </SwipeableListItem>
-              ))}
-          </div>
-        )}
-        <div className='absolute left-0 w-full bottom-4'>
-        <DynamicPagination totalItems={watchlistData?.length} itemsPerPage={itemsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                      <span className="md:hidden block text-gray-500 text-sm">MCap: {normalizeMarketCap(coin?.market_data.market_cap.usd)}</span>
+                    </td> */}
+
+                    {/* <td className="hidden md:table-cell px-4 py-2">${coin?.market_data.market_cap.usd}</td> */}
+                    <td className="hidden md:table-cell px-4 py-2 flex gap-2">
+                      <button
+                        className="text-white border-2 border-[#2A2E36] rounded-md p-2"
+                        onClick={() => navigate(`/papertrade/app/coin/${coin.id}`)}>
+                        <IoEyeOutline className="text-[18px]" />
+                      </button>
+                      <button className="text-white border-2 border-[#2A2E36] rounded-md p-2" onClick={() => handleDelete(coin.id, currentUser.uid)}>
+                        <FaRegTrashAlt className="text-[18px]" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        <div className="absolute left-0 w-full bottom-4 mt-4">
+          <DynamicPagination
+            totalItems={watchlistData?.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
       </div>
-      <div className="w-[27%] md:mx-4 mt-4 sm:mx-2 hidden md:block">
+      <div className="w-[27%] lg:mx-4 mt-4 sm:mx-2 hidden lg:block">
         {MarketFetchSuccess && <BuyCoins data={data} />}
         <div className="bg-[#171A24] py-6 px-4 rounded-[12px] mt-4">
           <div className="flex justify-between items-center ">
@@ -308,6 +321,7 @@ const Watchlist = () => {
             })}
         </div>
       </div>
+      </>}
     </section>
   );
 };

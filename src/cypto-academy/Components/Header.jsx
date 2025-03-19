@@ -56,7 +56,7 @@ const Header = () => {
           <button className="p-2 sm:border-2 border-[#2A2E36] rounded-md hover:bg-gray-700" onClick={() => navigate('/papertrade/app/profile')}>
             <FiUser className="text-[20px]" />
           </button>
-          <button className="text-[#CFA935] border-2 px-2 py-1 border-[#CFA935] rounded-md hover:bg-gray-700" onClick={()=> navigate('/')}>
+          <button className="text-[#CFA935] text-sm border-2 px-2 py-2 border-[#CFA935] rounded-md hover:bg-gray-700" onClick={()=> navigate('/')}>
             {window.innerWidth < 768 ? "CB" : "Crypto Bubble"}
           </button>
         </div>

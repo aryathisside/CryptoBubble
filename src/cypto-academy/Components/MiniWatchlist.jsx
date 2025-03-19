@@ -75,7 +75,7 @@ const MiniWatchlist = () => {
                   </li>
                   {isSuccess &&
                     watchlistData?.length !== 0 &&
-                    watchlistData.map((coin, index) => (
+                    watchlistData?.slice(0,8)?.map((coin, index) => (
 
                         <div className="grid grid-cols-3 text-gray-500 py-2 px-1md:px-5 hover:bg-gray-900 rounded-lg cursor-pointer xl:w-full" key={index} style={{height:"60px"}}>
             

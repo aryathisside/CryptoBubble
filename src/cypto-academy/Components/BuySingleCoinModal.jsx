@@ -161,6 +161,7 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
         
       }
@@ -188,6 +189,7 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -223,6 +225,7 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -246,6 +249,7 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -338,6 +342,7 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -397,6 +402,7 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
             progress: undefined,
             theme: "dark",
           });
+          setOrderLoading(false);
           return;
         }
 
@@ -456,6 +462,7 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -479,6 +486,7 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 

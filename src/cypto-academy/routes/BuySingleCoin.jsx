@@ -142,6 +142,7 @@ const BuySingleCoin = ({ data }) => {
             progress: undefined,
             theme: "dark",
           });
+          setOrderLoading(false);
           return;
           
         }
@@ -169,6 +170,7 @@ const BuySingleCoin = ({ data }) => {
             progress: undefined,
             theme: "dark",
           });
+          setOrderLoading(false);
           return;
         }
   
@@ -204,6 +206,7 @@ const BuySingleCoin = ({ data }) => {
             progress: undefined,
             theme: "dark",
           });
+          setOrderLoading(false);
           return;
         }
   
@@ -319,6 +322,7 @@ const BuySingleCoin = ({ data }) => {
             progress: undefined,
             theme: "dark",
           });
+          setOrderLoading(false);
           return;
         }
   
@@ -378,6 +382,7 @@ const BuySingleCoin = ({ data }) => {
               progress: undefined,
               theme: "dark",
             });
+            setOrderLoading(false);
             return;
           }
   
@@ -436,6 +441,7 @@ const BuySingleCoin = ({ data }) => {
             progress: undefined,
             theme: "dark",
           });
+          setOrderLoading(false);
           return;
         }
   
@@ -459,6 +465,7 @@ const BuySingleCoin = ({ data }) => {
             progress: undefined,
             theme: "dark",
           });
+          setOrderLoading(false);
           return;
         }
   
