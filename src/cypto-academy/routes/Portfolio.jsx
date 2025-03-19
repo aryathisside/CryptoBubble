@@ -145,35 +145,38 @@ const Portfolio = () => {
     getTotalInvestment(currentUser.uid)
   }, []);
 
-  const calculatePnL=()=>{
-    let totalValue=0
-    let totalPortfolioVal=0
-    for(let i=0;i<portfolioData.length;i++){
-    
-      totalValue+=portfolioData[i].amount
-      totalPortfolioVal+=(portfolioData[i].coinAmount*portfolioCoinData[i].market_data.current_price.usd)
+  const calculatePnL = () => {
+    if (!portfolioData || !portfolioCoinData) {
+      console.error("Portfolio data not available yet.");
+      return;
     }
-    // for(let i of portfolioData){
-    //   totalValue+=i.amount
-    //   // console.log(i);
-    // }
-    // for(let i of portfolioCoinData){
-    //   totalPortfolioVal+=(i.market_data.current_price.usd)
-    //   // console.log(i);
-    // }
-    const returns=totalPortfolioVal-totalValue
-    const returnsPer=(returns/totalValue)*100
-    setreturns(returns)
-    setreturnsPercent(returnsPer)
-    console.log(returns,returnsPer);
-  }
+  
+    let totalValue = 0;
+    let totalPortfolioVal = 0;
+  
+    portfolioData.forEach((item) => {
+      const coinData = portfolioCoinData.find((coin) => coin.id === item.coinId);
+      if (!coinData) return;
+  
+      totalValue += item.amount;
+      totalPortfolioVal += item.coinAmount * coinData.market_data.current_price.usd;
+    });
+  
+    const returns = totalPortfolioVal - totalValue;
+    const returnsPer = totalValue > 0 ? (returns / totalValue) * 100 : 0;
+  
+    setreturns(returns);
+    setreturnsPercent(returnsPer);
+    console.log(returns, returnsPer);
+  };
 
 
-  useEffect(()=>{
-    if(portfolioData && portfolioCoinData){
-    calculatePnL()
+  useEffect(() => {
+    if (isSuccess && fetchPortfolioCoinDataSuccess && portfolioData && portfolioCoinData) {
+      calculatePnL();
     }
-  }, [])
+  }, [portfolioData, portfolioCoinData, isSuccess, fetchPortfolioCoinDataSuccess]);  // Add dependencies
+  
 
 
   return (

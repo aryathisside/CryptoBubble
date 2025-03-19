@@ -127,12 +127,16 @@ const BuyCoins = ({ data }) => {
         .select("coinName,coinAmount")
         .eq("userId", `${currentUser.uid}`)
         .eq("coinId", `${selectedCoin[0].id}`);
+
       if (availableCoinAmount.length !== 0) {
         setAvailabeCoinAmt(availableCoinAmount[0].coinAmount);
       }
+      else{
+        setAvailabeCoinAmt(0);
+      }
     }
     coinAmount();
-  }, [currentUser.uid, selectedCoin[0]?.id, dispatch]);
+  }, [currentUser.uid, selectedCoin[0]?.id, tab,dispatch]);
 
   async function addTransactionToHistory(transaction) {
     try {
@@ -173,9 +177,12 @@ const BuyCoins = ({ data }) => {
 
   async function onPlaceSellOrder() {
     try {
+     
+      setCoinValue(Number(coinValue));
+      setCoinUsdPrice(Number(coinUsdPrice));
       setOrderLoading(true);
       // get available coins and check if it coin amount is more than what we want to sell
-
+      console.log(coinValue,availabeCoinAmt)
       if (coinValue > availabeCoinAmt) {
         // throw new Error("Not enough coins!");
         toast.error("Not enough coins!", {
@@ -188,6 +195,7 @@ const BuyCoins = ({ data }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -304,7 +312,10 @@ const BuyCoins = ({ data }) => {
         theme: "dark",
       });
       await refetchPortfolioData();
+      // await fetchCoinAmount()
       // alert("Coin Sold Successfully");
+      setCoinValue(0);
+      setCoinUsdPrice(0)
       navigate("/papertrade/app/portfolio");
     } catch (error) {
       setOrderLoading(false);
@@ -324,6 +335,8 @@ const BuyCoins = ({ data }) => {
 
   async function onPlaceOrder() {
     try {
+      setCoinValue(Number(coinValue));
+      setCoinUsdPrice(Number(coinUsdPrice));
       setOrderLoading(true);
       // get available coins and check if it is lesser than what we want to purchase
       let { data: availableUsdCoin } = await supabase
@@ -353,6 +366,7 @@ const BuyCoins = ({ data }) => {
           progress: undefined,
           theme: "dark",
         });
+        setOrderLoading(false);
         return;
       }
 
@@ -412,6 +426,7 @@ const BuyCoins = ({ data }) => {
             progress: undefined,
             theme: "dark",
           });
+          setOrderLoading(false);
           return;
         }
 
@@ -440,7 +455,10 @@ const BuyCoins = ({ data }) => {
           theme: "dark",
         });
         await refetchPortfolioData();
+        // await fetchCoinAmount()
         // alert('Coin purchased successfully');
+        setCoinValue(0);
+        setCoinUsdPrice(0)
         navigate('/papertrade/app/portfolio');
         return;
       }
@@ -522,6 +540,10 @@ const BuyCoins = ({ data }) => {
         theme: "dark",
       });
       // alert('Coin purchased successfully');
+      setCoinUsdPrice(0)
+      setCoinValue(0);
+      await refetchPortfolioData();
+      // await fetchCoinAmount()
       navigate('/papertrade/app/portfolio');
     } catch (error) {
       setOrderLoading(false);
