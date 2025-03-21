@@ -232,7 +232,7 @@ const ListView = () => {
             <img className="scale-up-center" src={Logo} alt="CRYPTO + Bubble" width={200} />
           </Box>
         ):(
-          <TableContainer sx={{ maxHeight: 'calc(95vh - 70px)', marginTop: '2px'}}>
+          <TableContainer sx={{ maxHeight: 'calc(95vh - 70px)', marginTop: '2px', paddingBottom:"20px"}}>
           <Table stickyHeader>
             <TableHead >
               <TableRow  >
