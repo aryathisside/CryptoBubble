@@ -12,6 +12,7 @@ import StyledButton from '../../ui/overrides/Button';
 import Scrollbar from 'react-scrollbars-custom';
 import Helper from '../../utils/Helper';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 
 const SettingsView = () => {
@@ -20,6 +21,7 @@ const SettingsView = () => {
   const updateFilter = useDataStore((state) => state.updateFilter);
   const filter = useDataStore((state) => state.filter);
   const isMobile = useDataStore((state) => state.isMobile);
+    const setLayout = useConfigStore((state) => state.setLayout);
   const { isAuthenticated, logout } = useDataStore();
    const [error, setError] = useState({
       message: '',
@@ -141,9 +143,16 @@ const SettingsView = () => {
     updateFilter(fil);
   };
   return (
-    <Box sx={{ flexGrow: 1, width: '100%', display:"flex", justifyContent:"center",mt:isMobile?0:4 }}>
-      <Stack  width={isMobile?"100%": "50%"} height={isMobile?"100%": "85%"} p={isMobile?0:2} bgcolor={"#171A24"} borderRadius={"10px"}>
-        <Box display="flex" justifyContent="space-between" alignItems={'center'} mb={2}>
+    <Box sx={{ flexGrow: 1, width: '100%',  display:"flex", justifyContent:"center",mt:isMobile?0:4 }}>
+      <Stack sx={{position:"relative",}} width={isMobile?"100%": "50%"} height={isMobile?"100%": "85%"} p={isMobile?0:2} bgcolor={"#171A24"} borderRadius={"10px"}>
+        <CloseIcon onClick={()=> setLayout("bubble")} sx={{ 
+        position: "absolute", 
+        top: 10, 
+        right: 10, 
+        cursor: "pointer",
+        zIndex: 10
+      }} />
+        <Box display="flex" justifyContent="space-between" alignItems={'center'} mb={2} mt={4}>
           <Typography typography="h6" color="white">
             Colors
           </Typography>

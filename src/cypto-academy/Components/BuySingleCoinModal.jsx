@@ -346,21 +346,37 @@ const BuySingleCoinModal = ({ data, modal, setModal }) => {
         return;
       }
 
-      if (isChecked && (minPrice >= data?.market_data?.current_price?.usd || maxPrice <= data?.market_data?.current_price?.usd)) {
-        // throw new Error('Please Enter a Valid Limit!');
-        toast.error('Please Enter a Valid Limit!', {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-        setOrderLoading(false);
-        return;
-      }
+          if (isChecked && (minPrice >= data?.market_data?.current_price?.usd)) {
+             // throw new Error('Please Enter a Valid Limit!');
+             toast.error('Minimum price must be less than the current market price.', {
+               position: "top-right",
+               autoClose: 3000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+               theme: "dark",
+             });
+             setOrderLoading(false);
+             return;
+           }
+   
+           if (isChecked && (maxPrice <= data?.market_data?.current_price?.usd)) {
+             // throw new Error('Please Enter a Valid Limit!');
+             toast.error('Maximum price must be greater than the current market price.', {
+               position: "top-right",
+               autoClose: 3000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+               theme: "dark",
+             });
+             setOrderLoading(false);
+             return;
+           }
 
       // check if the coin is already purchased i.e. add the coin amount coin to our existing coin in portfolio db
       let {

@@ -326,9 +326,25 @@ const BuySingleCoin = ({ data }) => {
           return;
         }
   
-        if (isChecked && (minPrice >= data?.market_data?.current_price?.usd || maxPrice <= data?.market_data?.current_price?.usd)) {
+        if (isChecked && (minPrice >= data?.market_data?.current_price?.usd)) {
           // throw new Error('Please Enter a Valid Limit!');
-          toast.error('Please Enter a Valid Limit!', {
+          toast.error('Minimum price must be less than the current market price.', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          setOrderLoading(false);
+          return;
+        }
+
+        if (isChecked && (maxPrice <= data?.market_data?.current_price?.usd)) {
+          // throw new Error('Please Enter a Valid Limit!');
+          toast.error('Maximum price must be greater than the current market price.', {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,

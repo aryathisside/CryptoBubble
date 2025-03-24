@@ -38,7 +38,7 @@ const BubblePlot = ({ selectedPeriod }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom:"28px"
+        marginBottom: { xs: '28px', sm: '0px' }
       }}
     >
       {isLoading && (
