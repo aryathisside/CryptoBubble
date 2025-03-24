@@ -325,8 +325,8 @@ const BuySingleCoin = ({ data }) => {
           setOrderLoading(false);
           return;
         }
-  
-        if (isChecked && (minPrice >= data?.market_data?.current_price?.usd || maxPrice <= data?.market_data?.current_price?.usd)) {
+        
+        if (isChecked && (minPrice <= 0 || maxPrice <= 0 || minPrice >= selectedCoin[0].current_price || maxPrice <= selectedCoin[0].current_price)) {  
           // throw new Error('Please Enter a Valid Limit!');
           toast.error('Please Enter a Valid Limit!', {
             position: "top-right",

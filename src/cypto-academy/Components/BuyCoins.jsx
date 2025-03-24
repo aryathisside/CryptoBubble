@@ -371,7 +371,7 @@ const BuyCoins = ({ data }) => {
         return;
       }
 
-      if(isChecked && (minPrice >=selectedCoin[0].current_price || maxPrice <= selectedCoin[0].current_price)) {
+      if (isChecked && (minPrice <= 0 || maxPrice <= 0 || minPrice >= selectedCoin[0].current_price || maxPrice <= selectedCoin[0].current_price)) {
         // throw new Error('Please Enter a Valid Limit!');
         toast.error('Please Enter a Valid Limit!', {
           position: "top-right",
