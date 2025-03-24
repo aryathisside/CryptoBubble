@@ -105,7 +105,7 @@ else
     echo "ℹ️ No existing container found. Skipping stop and removal."
 fi
 
-docker run -d -p ${EXTERNAL_PORT}:${INTERNAL_PORT} --env-file ${ENV_FILE_PATH} ${GITHUB_REGISTRY}/${GITHUB_REPO_NAME}:${VERSION_NO}
+docker run -d --name ${DOCKER_IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} --env-file ${ENV_FILE_PATH} ${GITHUB_REGISTRY}/${GITHUB_REPO_NAME}:${VERSION_NO}
 
 
 # echo "⚙️ Deploying using Docker Compose..."
@@ -135,4 +135,37 @@ fi
 
 echo "🎉 Application is now running on port " ${EXTERNAL_PORT}
 EOF
+
+
+# --- Clean up old image versions in GHCR ---
+# Set your package name (URL-encoded)
+PACKAGE_ENCODED=$(echo "${DOCKER_IMAGE_NAME}")
+API_URL="https://api.github.com/users/${GITHUB_USERNAME}/packages/container/${PACKAGE_ENCODED}/versions"
+
+echo "🔍 Retrieving list of package versions from GHCR..."
+versions_json=$(curl -s -H "Authorization: Bearer ${GITHUB_TOKEN}" "${API_URL}")
+
+# Count total versions
+total_versions=$(echo "${versions_json}" | jq 'length')
+echo "Total versions found: ${total_versions}"
+
+# Only proceed if there are more than 3 versions
+if [ "${total_versions}" -gt 3 ]; then
+    echo "Pruning versions... (keeping the latest 3)"
+    
+    # Extract version IDs to delete (sort by created_at descending and then skip the first 3)
+    ids_to_delete=$(echo "${versions_json}" | \
+      jq -r 'sort_by(.created_at) | reverse | .[3:] | .[].id')
+    
+    for id in ${ids_to_delete}; do
+        echo "Deleting version ID: ${id}"
+        curl -s -X DELETE -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            "https://api.github.com/users/${GITHUB_USERNAME}/packages/container/${PACKAGE_ENCODED}/versions/${id}" \
+            -o /dev/null
+        # Optionally, you could check the HTTP status code or output a message.
+    done
+else
+    echo "No pruning necessary. Total versions (${total_versions}) is within limit."
+fi
+
 
