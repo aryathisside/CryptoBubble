@@ -209,7 +209,7 @@ const Portfolio = () => {
                   </div>
                   <div className="font-text mt-1 text-xl pl-2 leading-9 font-semibold text-white">
                     {' '}
-                    ${userNetworthSuccess && userNetworth[0]?.networth}
+                    ${fetchAvailableUsdCoinsSuccess && availableUsdCoins[0]?.amount.toFixed(5)}
                   </div>
                 </div>
                 <div className="w-full md:flex-1 p-2 bg-[#080808] overflow-hidden shadow rounded-lg">
