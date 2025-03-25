@@ -83,20 +83,20 @@ const BuyCoins = ({ data }) => {
   }, [currentUser.uid, dispatch]);
 
   const changeCoinValue = (e) => {
-    setCoinValue(e.target.value);
-    setCoinUsdPrice(selectedCoin[0].current_price * e.target.value);
+    setCoinValue(Number(e.target.value));
+    setCoinUsdPrice(Number(selectedCoin[0].current_price * e.target.value));
   };
 
   const changeUsdValue = (e) => {
-    setCoinUsdPrice(e.target.value);
-    setCoinValue(e.target.value / selectedCoin[0].current_price);
+    setCoinUsdPrice(Number(e.target.value));
+    setCoinValue(Number(e.target.value / selectedCoin[0].current_price));
   };
 
   const changemaxPrice = (e) => {
-    setmaxPrice(e.target.value);
+    setmaxPrice(Number(e.target.value));
   };
   const changeminPrice = (e) => {
-    setminPrice(e.target.value);
+    setminPrice(Number(e.target.value));
   };
 
   const handleCheckboxChange = () => {
@@ -182,6 +182,21 @@ const BuyCoins = ({ data }) => {
       setOrderLoading(true);
       // get available coins and check if it coin amount is more than what we want to sell
       console.log(coinValue,availabeCoinAmt)
+
+      if(coinValue <= 0 || coinUsdPrice <= 0) {
+        toast.error('Please Enter a Valid Coin Value!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        setOrderLoading(false);
+        return;
+      }
       if (coinValue > availabeCoinAmt) {
         // throw new Error("Not enough coins!");
         toast.error("Not enough coins!", {
@@ -339,6 +354,20 @@ const BuyCoins = ({ data }) => {
       setCoinValue(Number(coinValue));
       setCoinUsdPrice(Number(coinUsdPrice));
       setOrderLoading(true);
+      if(coinValue <= 0 || coinUsdPrice <= 0) {
+        toast.error('Please Enter a Valid Coin Value!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        setOrderLoading(false);
+        return;
+      }
       // get available coins and check if it is lesser than what we want to purchase
       let { data: availableUsdCoin } = await supabase
         .from('portfolio')
@@ -354,6 +383,8 @@ const BuyCoins = ({ data }) => {
         coinUsdPrice: `${coinUsdPrice}`,
         timestamp: new Date().toISOString()
       };
+
+    
 
       if (coinUsdPrice > availableUsdCoin[0].amount) {
         // throw new Error('Not enough coins!');

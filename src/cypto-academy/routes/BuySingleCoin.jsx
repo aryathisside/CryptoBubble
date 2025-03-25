@@ -24,7 +24,7 @@ const BuySingleCoin = ({ data }) => {
 
   const { currentUser } = useAuth();
   const [coinValue, setCoinValue] = useState(1);
-  const [coinUsdPrice, setCoinUsdPrice] = useState(data?.market_data?.current_price.usd);
+  const [coinUsdPrice, setCoinUsdPrice] = useState(Number(data?.market_data?.current_price.usd));
   const [orderLoading, setOrderLoading] = useState(false);
   //   const [selectedCoin, setSelectedCoin] = useState(data[0]);
   //   const [selectedCrypto, setSelectedCrypto] = useState('');
@@ -75,24 +75,28 @@ const BuySingleCoin = ({ data }) => {
   }, [currentUser.uid, dispatch]);
 
   const changeCoinValue = (e) => {
-    setCoinValue(e.target.value);
-    setCoinUsdPrice(data.market_data.current_price.usd * e.target.value);
+    setCoinValue(Number(e.target.value));
+    setCoinUsdPrice(Number(data.market_data.current_price.usd * e.target.value));
   };
 
   const changeUsdValue = (e) => {
-    setCoinUsdPrice(e.target.value);
-    setCoinValue(e.target.value / data.market_data.current_price.usd);
+    setCoinUsdPrice(Number(e.target.value));
+    setCoinValue(Number(e.target.value / data.market_data.current_price.usd));
   };
 
   const changemaxPrice = (e) => {
-    setmaxPrice(e.target.value);
+    setmaxPrice(Number(e.target.value));
   };
   const changeminPrice = (e) => {
-    setminPrice(e.target.value);
+    setminPrice(Number(e.target.value));
   };
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
+    if (!isChecked) {
+      setmaxPrice(null);
+      setminPrice(null);
+    }
   };
 
   useEffect(() => {
@@ -156,6 +160,22 @@ const BuySingleCoin = ({ data }) => {
     async function onPlaceSellOrder() {
       try {
         setOrderLoading(true);
+
+         if(coinValue <= 0 || coinUsdPrice <= 0) {
+                toast.error('Please Enter a Valid Coin Value!', {
+                  position: "top-right",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                });
+                setOrderLoading(false);
+                return;
+              }
+
         // get available coins and check if it coin amount is more than what we want to sell
   
         if (coinValue > availabeCoinAmt) {
@@ -295,6 +315,21 @@ const BuySingleCoin = ({ data }) => {
       try {
         setOrderLoading(true);
         // get available coins and check if it is lesser than what we want to purchase
+         if(coinValue <= 0 || coinUsdPrice <= 0) {
+                toast.error('Please Enter a Valid Coin Value!', {
+                  position: "top-right",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                });
+                setOrderLoading(false);
+                return;
+              }
+              
         let { data: availableUsdCoin } = await supabase
           .from('portfolio')
           .select('coinId,coinName,amount')
