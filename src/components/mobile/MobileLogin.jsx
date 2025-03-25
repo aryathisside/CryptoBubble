@@ -67,7 +67,7 @@ const MobileLogin = ({showSignup}) => {
       setLoading(false)
       setAuthenticated(true)
       // window.location.href = "/"
-      // navigate("/")
+      navigate("/")
       // window.location.reload()
     }
 
