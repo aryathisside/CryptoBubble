@@ -13,6 +13,7 @@ import { fetchAvailableCoins } from '../Features/availableCoins';
 import { FaCartShopping } from 'react-icons/fa6';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useGetCoinsDataQuery } from '../services/coinsDataApi';
+import { toast } from 'react-toastify';
 
 const BuySingleCoinModal = ({ data, modal, setModal }) => {
   // const [currency, setCurrency] = useState('usd');
