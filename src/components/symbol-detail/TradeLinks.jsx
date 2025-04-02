@@ -7,8 +7,8 @@ const TradeLinks = ({ symbol, ...props }) => {
   };
   return (
     <Box display="flex" justifyContent="center" mb={1} gap={1} {...props}>
-      <StyledIconButton onClick={() => open(`https://coinmarketcap.com/currencies/${symbol.slug}`)}>
-      <img src="https://cdn.freelogovectors.net/wp-content/uploads/2023/05/coinmarketcap-logo-01-freelogovectors.net_.png" alt="" className='h-[20px] w-[20px]' style={{height:"20px",filter: "brightness(0) invert(1)"}}  />
+      <StyledIconButton onClick={() => open(`https://coinmarketcap.com/currencies/${symbol.slug}`)} sx={{p: 0}} style={{padding:'0px'}}>
+      <img src="https://cdn.freelogovectors.net/wp-content/uploads/2023/05/coinmarketcap-logo-01-freelogovectors.net_.png" alt="" className='' style={{height:"20px",filter: "brightness(0) invert(1)"}}  />
 
       </StyledIconButton>
       <StyledIconButton onClick={() => open(`https://www.coingecko.com/en/coins/${symbol.slug}`)} sx={{ pr: 0.7 }}>
